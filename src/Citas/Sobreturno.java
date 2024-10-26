@@ -5,15 +5,15 @@ import Locaciones.Consultorio;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
 import Usuarios.Usuario;
+import UtilidadesFechaYHora.FranjaHoraria;
 
-import javax.xml.datatype.DatatypeConfigurationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Sobreturno extends Cita{
-    public Sobreturno(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio) {
-        super(profesional, consultante, consultorio, gestor, horarioInicio);
+    public Sobreturno(Usuario gestor) {
+        super(gestor);
     }
 
     @Override
@@ -22,12 +22,22 @@ public class Sobreturno extends Cita{
     }
 
     @Override
-    public void setDia(LocalDate dia) {
-        this.dia = dia;
+    public void setHorario(FranjaHoraria horario) {
+        this.horario = horario;
     }
 
     @Override
-    public void setHorario(LocalTime horario) {
-        this.horario = horario;
+    public boolean admiteSimultaneidad() {
+        return true;
+    }
+
+    @Override
+    public LocalTime getHoraFin() {
+        return this.getHoraInicio();
+    }
+
+    @Override
+    public boolean colisiona(Cita turno) {
+        return false;
     }
 }

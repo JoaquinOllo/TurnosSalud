@@ -6,15 +6,15 @@ import Locaciones.Consultorio;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
 import Usuarios.Usuario;
+import UtilidadesFechaYHora.FranjaHoraria;
 
-import javax.xml.datatype.DatatypeConfigurationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public abstract class Cita {
     protected LocalDate dia;
-    protected LocalTime horario;
+    protected FranjaHoraria horario;
     private EstadoCita estado = EstadoCita.PENDIENTE_CONFIRMACION;
     private Consultante consultante;
     private Profesional profesional;
@@ -23,12 +23,7 @@ public abstract class Cita {
     private String razon;
 
 
-    public Cita(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio) {
-        dia = horarioInicio.toLocalDate();
-        horario = horarioInicio.toLocalTime();
-        this.profesional = profesional;
-        this.consultante = consultante;
-        this.consultorio = consultorio;
+    public Cita(Usuario gestor) {
         this.agendadoPor = gestor;
     }
 
@@ -47,13 +42,17 @@ public abstract class Cita {
         return dia;
     }
 
-    public abstract void setDia(LocalDate dia);
-
-    public LocalTime getHorario() {
-        return horario;
+    public setDia(LocalDate dia){
+        this.dia = dia;
     }
 
-    public abstract void setHorario(LocalTime horario);
+    public LocalTime getHoraInicio() {
+        return horario.getHoraInicio();
+    }
+
+    public void setHorario(FranjaHoraria horario){
+        this.horario = horario;
+    }
 
     public Consultante getConsultante() {
         return consultante;
@@ -94,4 +93,12 @@ public abstract class Cita {
     public String getRazon() {
         return razon;
     }
+
+    public abstract boolean admiteSimultaneidad();
+
+    public LocalTime getHoraFin(){
+        return this.horario.getHoraCierre();
+    }
+
+    public abstract boolean colisiona(Cita turno);
 }
