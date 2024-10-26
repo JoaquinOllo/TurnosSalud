@@ -15,11 +15,11 @@ import java.time.temporal.ChronoUnit;
 public class Turno extends Cita {
     private Duration duracion = Duration.of(30, ChronoUnit.MINUTES);
 
-    public Turno(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio) throws DatatypeConfigurationException {
+    public Turno(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio) {
         super(profesional, consultante, consultorio, gestor, horarioInicio);
     }
 
-    public Turno(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio, long duracionMinutos) throws DatatypeConfigurationException {
+    public Turno(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio, long duracionMinutos) {
         super(profesional, consultante, consultorio, gestor, horarioInicio);
         duracion = Duration.of(duracionMinutos, ChronoUnit.MINUTES);
     }

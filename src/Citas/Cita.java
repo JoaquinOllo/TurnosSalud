@@ -1,6 +1,7 @@
 package Citas;
 
 import Enumeradores.EstadoCita;
+import Excepciones.OperacionNoPermitidaException;
 import Locaciones.Consultorio;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
@@ -12,8 +13,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public abstract class Cita {
-    private LocalDate dia;
-    private LocalTime horario;
+    protected LocalDate dia;
+    protected LocalTime horario;
     private EstadoCita estado = EstadoCita.PENDIENTE_CONFIRMACION;
     private Consultante consultante;
     private Profesional profesional;
@@ -22,7 +23,7 @@ public abstract class Cita {
     private String razon;
 
 
-    public Cita(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio) throws DatatypeConfigurationException {
+    public Cita(Profesional profesional, Consultante consultante, Consultorio consultorio, Usuario gestor, LocalDateTime horarioInicio) {
         dia = horarioInicio.toLocalDate();
         horario = horarioInicio.toLocalTime();
         this.profesional = profesional;
@@ -35,12 +36,12 @@ public abstract class Cita {
         this.estado = EstadoCita.CONFIRMADO;
     }
 
-    public void cancelar(String motivo) {
+    public void cancelar(String motivo) throws OperacionNoPermitidaException {
         this.estado = EstadoCita.CANCELADO;
         this.razon = motivo;
     }
 
-    public abstract void posponer(String motivo, LocalDateTime nuevaFechaYHora);
+    public abstract void posponer(String motivo, LocalDateTime nuevaFechaYHora) throws OperacionNoPermitidaException;
 
     public LocalDate getDia() {
         return dia;
