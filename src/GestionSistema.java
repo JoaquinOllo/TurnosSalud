@@ -5,6 +5,7 @@ import Excepciones.OperacionNoPermitidaException;
 import Interfaces.I_GestionTurnos;
 import Locaciones.Consultorio;
 import Locaciones.Locacion;
+import Usuarios.Administrador;
 import Usuarios.Usuario;
 
 import java.util.ArrayList;
@@ -59,6 +60,11 @@ public class  GestionSistema {
     }
 
     public GestionSistema() {
+        this.turnos = new Agenda<>();
+        this.usuarioConectado = new Administrador();
+        this.consultorios = new ArrayList<>();
+        this.sedes = new ArrayList<>();
+        this.usuarios = new ArrayList<>();
     }
 
     public void agendarTurno(Turno turno) throws HorarioNoDisponibleException, OperacionNoPermitidaException {
