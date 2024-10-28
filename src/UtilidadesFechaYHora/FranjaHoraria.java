@@ -31,7 +31,7 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         this.franjaAbierta = true;
     }
 
-    public <T extends Cita> boolean citaCompatible(T turno) {
+    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno) {
         LocalTime horaInicioTurno = turno.getHoraInicio();
         LocalTime horaFinTurno = turno.getHoraFin();
 
@@ -53,4 +53,9 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         return duracion;
     }
 
+    public boolean noColisiona(FranjaHoraria franja){
+        return ((this.getHoraInicio().isBefore(franja.getHoraInicio()))
+                && this.getHoraCierre().compareTo(franja.horaInicio) < 1)
+                || (this.getHoraInicio().compareTo(franja.horaCierre) > -1);
+    }
 }

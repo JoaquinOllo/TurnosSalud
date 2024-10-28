@@ -73,12 +73,12 @@ public class  GestionSistema {
     private <T extends Cita> boolean citaDisponible(T turno) throws HorarioNoDisponibleException {
         boolean turnoDisponible = false;
 
-        if(turno.getProfesional().citaCompatible(turno)
-        && turno.getConsultorio().citaCompatible(turno)
+        if(turno.getProfesional().citaCompatibleConFranjaHoraria(turno)
+        && turno.getConsultorio().citaCompatibleConFranjaHoraria(turno)
         && turno.admiteSimultaneidad()){
             turnoDisponible = true;
         } else if (! turno.admiteSimultaneidad() && turnos.franjaDisponible(turno)) {
-
+            turnoDisponible = true;
         }
 
         return turnoDisponible;

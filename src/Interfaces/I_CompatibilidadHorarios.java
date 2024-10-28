@@ -4,5 +4,5 @@ import Citas.Cita;
 
 public interface I_CompatibilidadHorarios {
 
-    public <T extends Cita> boolean citaCompatible(T turno);
+    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno);
 }

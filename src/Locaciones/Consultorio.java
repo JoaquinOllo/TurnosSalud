@@ -25,7 +25,7 @@ public class Consultorio implements I_CompatibilidadHorarios {
         this.turnos = turnos;
     }
 
-    public <T extends Cita> boolean citaCompatible(T turno) {
-        this.locacion.citaCompatible(turno);
+    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno) {
+        this.locacion.citaCompatibleConFranjaHoraria(turno);
     }
 }

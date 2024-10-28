@@ -31,13 +31,13 @@ public class Locacion implements I_CompatibilidadHorarios {
         this.responsable = responsable;
     }
 
-    public <T extends Cita> boolean citaCompatible(T turno) {
+    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno) {
         Iterator<FranjaHoraria> iter_horarios =  horarios.iterator();
         boolean compatible = false;
         while (iter_horarios.hasNext() && ! compatible){
             FranjaHoraria franja = iter_horarios.next();
 
-            compatible = franja.citaCompatible(turno);
+            compatible = franja.citaCompatibleConFranjaHoraria(turno);
         }
         return compatible;
     }
