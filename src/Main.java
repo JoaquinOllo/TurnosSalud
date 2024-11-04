@@ -1,7 +1,4 @@
-import javax.swing.*;
-import javax.xml.datatype.DatatypeConfigurationException;
-import java.awt.*;
-import java.sql.Time;
+import Utilidades.GestionSistema;
 
 public class Main {
     public static void main(String[] args) {

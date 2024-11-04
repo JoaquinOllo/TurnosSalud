@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class MenuSistema {
 
-    public MenuSistema() {
+    public MenuSistema(GestionSistema sistema) {
         JFrame frame = new JFrame("Bienvenido a SuperDoctors");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);

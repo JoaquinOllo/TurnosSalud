@@ -1,3 +1,5 @@
+package Utilidades;
+
 import Citas.Turno;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
@@ -6,7 +8,6 @@ import Locaciones.Consultorio;
 import Locaciones.Locacion;
 import Usuarios.Administrador;
 import Usuarios.Usuario;
-import Utilidades.MenuSistema;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ public class  GestionSistema {
         this.consultorios = new ArrayList<>();
         this.sedes = new ArrayList<>();
         this.usuarios = new ArrayList<>();
-        this.menu = new MenuSistema();
+        this.menu = new MenuSistema(this);
     }
 
 
