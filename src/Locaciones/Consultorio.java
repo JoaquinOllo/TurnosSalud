@@ -1,13 +1,13 @@
 package Locaciones;
 
-import Citas.Cita;
+import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
 
 import java.util.ArrayList;
 
 public class Consultorio implements I_CompatibilidadHorarios {
     private Locacion locacion;
-    private ArrayList<Cita> turnos;
+    private ArrayList<Turno> turnos;
 
     public Locacion getLocacion() {
         return locacion;
@@ -17,15 +17,16 @@ public class Consultorio implements I_CompatibilidadHorarios {
         this.locacion = locacion;
     }
 
-    public ArrayList<Cita> getTurnos() {
+    public ArrayList<Turno> getTurnos() {
         return turnos;
     }
 
-    public void setTurnos(ArrayList<Cita> turnos) {
+    public void setTurnos(ArrayList<Turno> turnos) {
         this.turnos = turnos;
     }
 
-    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno) {
-        this.locacion.citaCompatibleConFranjaHoraria(turno);
+    public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
+        return this.locacion.citaCompatibleConFranjaHoraria(turno);
+
     }
 }

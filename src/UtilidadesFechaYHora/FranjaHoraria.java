@@ -1,6 +1,6 @@
 package UtilidadesFechaYHora;
 
-import Citas.Cita;
+import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
 
 import java.time.Duration;
@@ -31,7 +31,7 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         this.franjaAbierta = true;
     }
 
-    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno) {
+    public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
         LocalTime horaInicioTurno = turno.getHoraInicio();
         LocalTime horaFinTurno = turno.getHoraFin();
 

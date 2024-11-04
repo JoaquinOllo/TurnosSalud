@@ -1,12 +1,10 @@
-import Citas.Cita;
+import Citas.Turno;
 import Locaciones.Consultorio;
 import Usuarios.Profesional;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.List;
 
-public class Agenda<T extends Cita> extends ArrayList<T> {
+public class Agenda<T extends Turno> extends ArrayList<T> {
 
     public boolean franjaDisponible(T turno) {
         Agenda<T> agendaFiltrada = this.filtrarPorProfesional(turno.getProfesional()).filtrarPorConsultorio(turno.getConsultorio());

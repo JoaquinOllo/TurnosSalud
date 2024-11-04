@@ -1,6 +1,6 @@
 package Locaciones;
 
-import Citas.Cita;
+import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
 import Usuarios.Usuario;
 import UtilidadesFechaYHora.FranjaHoraria;
@@ -31,7 +31,7 @@ public class Locacion implements I_CompatibilidadHorarios {
         this.responsable = responsable;
     }
 
-    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno) {
+    public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
         Iterator<FranjaHoraria> iter_horarios =  horarios.iterator();
         boolean compatible = false;
         while (iter_horarios.hasNext() && ! compatible){

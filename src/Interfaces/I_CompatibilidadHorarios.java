@@ -1,8 +1,8 @@
 package Interfaces;
 
-import Citas.Cita;
+import Citas.Turno;
 
 public interface I_CompatibilidadHorarios {
 
-    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno);
+    public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno);
 }

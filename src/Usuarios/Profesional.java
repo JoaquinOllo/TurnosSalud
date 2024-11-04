@@ -1,6 +1,6 @@
 package Usuarios;
 
-import Citas.Cita;
+import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
 import Interfaces.I_GestionHC;
 import Interfaces.I_GestionTurnos;
@@ -59,7 +59,7 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_GestionHC
     Set<FranjaHoraria> horarioDeTrabajo = new HashSet<>();
 
 
-    public <T extends Cita> boolean citaCompatibleConFranjaHoraria(T turno) {
+    public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
         Iterator<FranjaHoraria> iter_horarios =  horarioDeTrabajo.iterator();
         boolean compatible = false;
         while (iter_horarios.hasNext() && ! compatible){

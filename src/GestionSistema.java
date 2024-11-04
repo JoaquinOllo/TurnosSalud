@@ -1,4 +1,3 @@
-import Citas.Cita;
 import Citas.Turno;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
@@ -17,7 +16,7 @@ public class  GestionSistema {
     private ArrayList<Usuario> usuarios;
     private Usuario usuarioConectado;
 
-    private Agenda<Cita> turnos;
+    private Agenda<Turno> turnos;
 
     public ArrayList<Consultorio> getConsultorios() {
         return consultorios;
@@ -35,7 +34,7 @@ public class  GestionSistema {
         return usuarioConectado;
     }
 
-    public ArrayList<Cita> getTurnos() {
+    public ArrayList<Turno> getTurnos() {
         return turnos;
     }
 
@@ -51,7 +50,7 @@ public class  GestionSistema {
         this.usuarios = usuarios;
     }
 
-    public void setTurnos(Agenda<Cita> turnos) {
+    public void setTurnos(Agenda<Turno> turnos) {
         this.turnos = turnos;
     }
 
@@ -76,14 +75,12 @@ public class  GestionSistema {
         }
     }
 
-    private <T extends Cita> boolean citaDisponible(T turno) throws HorarioNoDisponibleException {
+    private <T extends Turno> boolean citaDisponible(T turno) throws HorarioNoDisponibleException {
         boolean turnoDisponible = false;
 
         if(turno.getProfesional().citaCompatibleConFranjaHoraria(turno)
         && turno.getConsultorio().citaCompatibleConFranjaHoraria(turno)
-        && turno.admiteSimultaneidad()){
-            turnoDisponible = true;
-        } else if (! turno.admiteSimultaneidad() && turnos.franjaDisponible(turno)) {
+        &&  turnos.franjaDisponible(turno)) {
             turnoDisponible = true;
         }
 
