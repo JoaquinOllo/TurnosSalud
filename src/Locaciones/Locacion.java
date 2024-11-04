@@ -3,7 +3,7 @@ package Locaciones;
 import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
 import Usuarios.Usuario;
-import UtilidadesFechaYHora.FranjaHoraria;
+import Utilidades.FranjaHoraria;
 
 import java.util.ArrayList;
 import java.util.Iterator;

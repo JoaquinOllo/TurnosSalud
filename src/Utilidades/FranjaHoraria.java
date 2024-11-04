@@ -1,4 +1,4 @@
-package UtilidadesFechaYHora;
+package Utilidades;
 
 import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
@@ -40,7 +40,6 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
                 && turnoHabilitado.queryFrom(horaFinTurno);
     }
 
-
     public LocalTime getHoraInicio() {
         return this.horaInicio;
     }
@@ -54,8 +53,8 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
     }
 
     public boolean noColisiona(FranjaHoraria franja){
-        return ((this.getHoraInicio().isBefore(franja.getHoraInicio()))
-                && this.getHoraCierre().compareTo(franja.horaInicio) < 1)
-                || (this.getHoraInicio().compareTo(franja.horaCierre) > -1);
+        if (this.getHoraInicio().isBefore(franja.getHoraInicio()))
+            if (this.getHoraCierre().compareTo(franja.horaInicio) < 1) return true;
+        return this.getHoraInicio().compareTo(franja.horaCierre) > -1;
     }
 }

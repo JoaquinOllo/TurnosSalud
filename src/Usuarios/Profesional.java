@@ -4,7 +4,7 @@ import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
 import Interfaces.I_GestionHC;
 import Interfaces.I_GestionTurnos;
-import UtilidadesFechaYHora.FranjaHoraria;
+import Utilidades.FranjaHoraria;
 
 import java.util.HashSet;
 import java.util.Iterator;

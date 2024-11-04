@@ -6,7 +6,7 @@ import Locaciones.Consultorio;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
 import Usuarios.Usuario;
-import UtilidadesFechaYHora.FranjaHoraria;
+import Utilidades.FranjaHoraria;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
