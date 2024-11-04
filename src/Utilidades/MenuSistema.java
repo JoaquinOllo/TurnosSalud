@@ -1,15 +1,19 @@
 package Utilidades;
+import Citas.Turno;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MenuSistema {
+    private GestionSistema sistema;
 
     public MenuSistema(GestionSistema sistema) {
         JFrame frame = new JFrame("Bienvenido a SuperDoctors");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);
+        this.sistema=sistema;
 
         // Crear un panel principal
         JPanel mainPanel = new JPanel();
@@ -53,7 +57,8 @@ public class MenuSistema {
         });
 
         agregarCita.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Agregar Cita...");
+            Turno t1=new Turno(this.sistema.getUsuarioConectado());
+
         });
 
         verCitas.addActionListener(e -> {

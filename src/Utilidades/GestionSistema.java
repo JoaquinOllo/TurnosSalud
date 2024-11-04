@@ -6,8 +6,7 @@ import Excepciones.OperacionNoPermitidaException;
 import Interfaces.I_GestionTurnos;
 import Locaciones.Consultorio;
 import Locaciones.Locacion;
-import Usuarios.Administrador;
-import Usuarios.Usuario;
+import Usuarios.*;
 
 import java.util.ArrayList;
 
@@ -99,6 +98,17 @@ public class  GestionSistema {
         }
 
         return turnoDisponible;
+    }
+
+    public void pruebaMenu(){
+        consultorios.add(new Consultorio());
+        sedes.add(new Locacion());
+        usuarios.add(new Consultante());
+        usuarios.add(new Administrativo());
+        usuarios.add(new Administrador());
+        usuarios.add(new Profesional());
+        this.usuarioConectado=usuarios.get(2);
+
     }
 
 }
