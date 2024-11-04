@@ -7,41 +7,36 @@ import Interfaces.I_GestionTurnos;
 public class Administrativo extends Usuario implements I_GestionTurnos, I_GestionAdministrativa, I_GestionConsultorios {
     @Override
     public boolean agendaTurnos() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean confirmaTurnos() {
-        return false;
-    }
-
-    @Override
-    public boolean aceptaSobreturnos() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean cancelaTurnos() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean reprogramaTurnos() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean administraUsuarios() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean defineHorariosConsultorios() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean administraConsultorios() {
-        return false;
+        return true;
     }
 }

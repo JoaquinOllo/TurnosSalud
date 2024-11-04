@@ -13,21 +13,16 @@ public class Consultante extends Usuario implements I_GestionTurnos {
 
     @Override
     public boolean confirmaTurnos() {
-        return false;
-    }
-
-    @Override
-    public boolean aceptaSobreturnos() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean cancelaTurnos() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean reprogramaTurnos() {
-        return false;
+        return true;
     }
 }

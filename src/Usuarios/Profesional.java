@@ -22,11 +22,6 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_GestionHC
     }
 
     @Override
-    public boolean aceptaSobreturnos() {
-        return false;
-    }
-
-    @Override
     public boolean cancelaTurnos() {
         return false;
     }

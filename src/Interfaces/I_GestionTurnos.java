@@ -6,8 +6,6 @@ public interface I_GestionTurnos {
 
     public boolean confirmaTurnos();
 
-    public boolean aceptaSobreturnos();
-
     public boolean cancelaTurnos();
     public boolean reprogramaTurnos();
 
