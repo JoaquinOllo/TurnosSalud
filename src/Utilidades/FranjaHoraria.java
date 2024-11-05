@@ -5,13 +5,14 @@ import Interfaces.I_CompatibilidadHorarios;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalQuery;
+import java.time.temporal.TemporalUnit;
 
 public class FranjaHoraria implements I_CompatibilidadHorarios {
     LocalTime horaInicio;
     LocalTime horaCierre;
     Duration duracion;
-    boolean franjaAbierta;
 
     private final TemporalQuery<Boolean> turnoHabilitado = inicio  -> {
         LocalTime ini = LocalTime.from(inicio);
@@ -23,13 +24,24 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         this.horaInicio = horaInicio;
         this.horaCierre = horarioFin;
         this.duracion = Duration.between(horaInicio, horarioFin);
-        this.franjaAbierta = false;
     }
 
-    public FranjaHoraria(LocalTime horaInicio) {
+    public FranjaHoraria(LocalTime horaInicio, Duration duracion) {
         this.horaInicio = horaInicio;
-        this.franjaAbierta = true;
+        this.duracion = duracion;
+        this.horaCierre = horaInicio.plus(duracion);
     }
+
+    public FranjaHoraria(int horaInicio, int duracionMinutos){
+        this.horaInicio = LocalTime.of(horaInicio, 0);
+        this.duracion = Duration.of(duracionMinutos, ChronoUnit.MINUTES);
+    }
+
+    public FranjaHoraria(int horaInicio, int minutosInicio, int duracionMinutos){
+        this.horaInicio = LocalTime.of(horaInicio, minutosInicio);
+        this.duracion = Duration.of(duracionMinutos, ChronoUnit.MINUTES);
+    }
+
 
     public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
         LocalTime horaInicioTurno = turno.getHoraInicio();

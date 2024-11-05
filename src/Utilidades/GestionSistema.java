@@ -9,6 +9,8 @@ import Locaciones.Locacion;
 import Usuarios.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class  GestionSistema {
 
@@ -100,14 +102,37 @@ public class  GestionSistema {
         return turnoDisponible;
     }
 
-    public void pruebaMenu(){
-        consultorios.add(new Consultorio());
-        sedes.add(new Locacion());
-        usuarios.add(new Consultante());
-        usuarios.add(new Administrativo());
-        usuarios.add(new Administrador());
-        usuarios.add(new Profesional());
-        this.usuarioConectado=usuarios.get(2);
+    public void arranqueParaPruebas(){
+        Locacion locacion = new Locacion();
+        sedes.add(locacion);
+        locacion.setDireccion("Maipú 3532");
+
+        Set<FranjaHoraria> horarios = new HashSet<>();
+        horarios.add(new FranjaHoraria(8, 480));
+
+        locacion.setHorarios(horarios);
+
+        Consultorio consultorio = new Consultorio();
+        consultorios.add(consultorio);
+
+        Consultante consultante = new Consultante();
+        consultante.setNombre("Pipo");
+        consultante.setApellido("Pescador");
+        usuarios.add(consultante);
+
+        Administrador administrador = new Administrador();
+        administrador.setNombre("Ardo");
+        administrador.setApellido("Kiwi");
+        usuarios.add(administrador);
+
+        Profesional profesional = new Profesional();
+        profesional.setNombre("Rosa");
+        profesional.setApellido("Atlante");
+        usuarios.add(profesional);
+
+        locacion.setResponsable(profesional);
+
+        this.usuarioConectado=administrador;
 
     }
 

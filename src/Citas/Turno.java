@@ -22,15 +22,21 @@ public class Turno {
     private Consultorio consultorio;
     private String razon;
 
-
     public Turno(Usuario gestor) {
         this.agendadoPor = gestor;
     }
 
+    /**
+     * Este método confirma un turno, cambiando su estado.
+     */
     public void confirmar() {
         this.estado = EstadoCita.CONFIRMADO;
     }
 
+    /**
+     * @param motivo
+     * @throws OperacionNoPermitidaException
+     */
     public void cancelar(String motivo) throws OperacionNoPermitidaException {
         this.estado = EstadoCita.CANCELADO;
         this.razon = motivo;

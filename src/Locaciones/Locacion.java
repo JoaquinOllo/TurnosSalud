@@ -41,4 +41,20 @@ public class Locacion implements I_CompatibilidadHorarios {
         }
         return compatible;
     }
+
+    public ArrayList<Consultorio> getConsultorios() {
+        return consultorios;
+    }
+
+    public void setConsultorios(ArrayList<Consultorio> consultorios) {
+        this.consultorios = consultorios;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 }
