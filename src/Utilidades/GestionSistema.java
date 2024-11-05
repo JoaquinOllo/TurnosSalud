@@ -134,6 +134,11 @@ public class  GestionSistema {
 
         this.usuarioConectado=administrador;
 
+        menu.menuInicial();
+    }
+
+    public void arranque(){
+
     }
 
 }

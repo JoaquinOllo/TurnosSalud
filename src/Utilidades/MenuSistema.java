@@ -10,10 +10,13 @@ public class MenuSistema {
     private GestionSistema sistema;
 
     public MenuSistema(GestionSistema sistema) {
+        this.sistema=sistema;
+    }
+
+    public void menuInicial() {
         JFrame frame = new JFrame("Bienvenido a SuperDoctors");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);
-        this.sistema=sistema;
 
         // Crear un panel principal
         JPanel mainPanel = new JPanel();
