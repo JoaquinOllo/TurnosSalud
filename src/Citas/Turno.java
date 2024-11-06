@@ -1,5 +1,6 @@
 package Citas;
 
+import Enumeradores.Especialidad;
 import Enumeradores.EstadoCita;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
@@ -22,9 +23,14 @@ public class Turno {
     private Usuario agendadoPor;
     private Consultorio consultorio;
     private String razon;
+    private Especialidad especialidad=Especialidad.CARDIOLOGIA;
 
     public Turno(Usuario gestor) {
         this.agendadoPor = gestor;
+    }
+
+    public Turno() {
+
     }
 
     /**

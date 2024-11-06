@@ -1,0 +1,12 @@
+package Enumeradores;
+
+public enum Especialidad {
+    DERMATOLOGIA,
+    CARDIOLOGIA,
+    TRAUMATOLOGIA,
+    GENERALISTA,
+    ALERGISTA,
+    FONOAUDIOLOGIA,
+    GINECOLOGIA,
+    GASTRONTEROLOGIA
+}

@@ -50,6 +50,7 @@ public class MenuSistema {
         botonIniciarSesion = new JButton("Iniciar Sesión");
         botonIniciarSesion.addActionListener(e -> {
             this.sistema.conectarse(campoUsuario.getText(), campoContrasena);
+            frame.dispose(); // Destruye la ventana (la cierra completamente)
         });
 
         panelPrincipal.add(botonIniciarSesion);
@@ -106,7 +107,9 @@ public class MenuSistema {
         });
 
         agregarCita.addActionListener(e -> {
-            Turno t1=new Turno(this.sistema.getUsuarioConectado());
+            Turno t1=new Turno();
+            menuCita(t1);
+
 
         });
 
@@ -121,5 +124,69 @@ public class MenuSistema {
         // Agregar el panel principal al marco
         frame.add(mainPanel);
         frame.setVisible(true);
+    }
+
+    public void menuCita(Turno t1){
+        JFrame frame = new JFrame("Turnos");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 250);
+
+        // Crear un panel principal
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
+
+        // Crear un JLabel para el título
+        JLabel titleLabel = new JLabel("Turnos", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
+        titleLabel.setForeground(Color.BLACK); // Color del texto del título
+        mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
+
+        // Crear un panel para el menú de opciones
+        JPanel menuPanel = new JPanel();
+        menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
+
+        // Crear los elementos del menú de opciones
+        JButton elegirEspecialidad = new JButton("Elegir Especialidad");
+        JButton elegirProfesional = new JButton("Elegir Profesional");
+        JButton elegirConsultorio = new JButton("Elegir consultorio");
+        JButton elegirDiaYHorario = new JButton("Elegir dia y horario");
+        JButton volverAlInicio = new JButton("Volver al inicio");
+
+        // Agregar botones al panel del menú
+        menuPanel.add(elegirEspecialidad);
+        menuPanel.add(elegirProfesional);
+        menuPanel.add(elegirConsultorio);
+        menuPanel.add(elegirDiaYHorario);
+        menuPanel.add(volverAlInicio);
+
+        // Agregar el panel del menú al panel principal
+        mainPanel.add(menuPanel, BorderLayout.CENTER); // Agregar el panel del menú en el centro del panel principal
+
+        // Eventos para los botones
+        elegirEspecialidad.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Elegir especialidad...");
+        });
+
+        elegirProfesional.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Elegir profesional...");
+        });
+        elegirConsultorio.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Elegir consultorio...");
+        });
+
+        elegirDiaYHorario.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Elegir dia y horario...");
+        });
+
+        volverAlInicio.addActionListener(e -> {
+            //System.exit(0);
+            frame.setVisible(false); // Solo oculta la ventana
+        });
+
+        // Agregar el panel principal al marco
+        frame.add(mainPanel);
+        frame.setVisible(true);
+
     }
 }
