@@ -13,6 +13,52 @@ public class MenuSistema {
         this.sistema=sistema;
     }
 
+    public void menuConexion(){
+        JFrame frame = new JFrame("Bienvenido a SuperDoctors - Conexión");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 250);
+
+        JTextField campoUsuario;
+        JPasswordField campoContrasena;
+        JButton botonIniciarSesion;
+        JLabel etiquetaMensaje;
+
+        frame.setLocationRelativeTo(null); // Centrar ventana
+
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new GridLayout(4, 1, 10, 10));
+
+        // Campo de usuario
+        JLabel etiquetaUsuario = new JLabel("Usuario:");
+        campoUsuario = new JTextField(15);
+        JPanel panelUsuario = new JPanel();
+        panelUsuario.add(etiquetaUsuario);
+        panelUsuario.add(campoUsuario);
+
+        // Campo de contraseña
+        JLabel etiquetaContrasena = new JLabel("Contraseña:");
+        campoContrasena = new JPasswordField(15);
+        JPanel panelContrasena = new JPanel();
+        panelContrasena.add(etiquetaContrasena);
+        panelContrasena.add(campoContrasena);
+
+        panelPrincipal.add(panelUsuario);
+        panelPrincipal.add(panelContrasena);
+        panelPrincipal.setVisible(true);
+
+        // Botón de inicio de sesión
+        botonIniciarSesion = new JButton("Iniciar Sesión");
+        botonIniciarSesion.addActionListener(e -> {
+            this.sistema.conectarse(campoUsuario.getText(), campoContrasena);
+        });
+
+        panelPrincipal.add(botonIniciarSesion);
+
+        frame.add(panelPrincipal);
+        frame.setVisible(true);
+
+        }
+
     public void menuInicial() {
         JFrame frame = new JFrame("Bienvenido a SuperDoctors");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

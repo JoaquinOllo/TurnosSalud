@@ -8,6 +8,7 @@ import Locaciones.Consultorio;
 import Locaciones.Locacion;
 import Usuarios.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -118,27 +119,45 @@ public class  GestionSistema {
         Consultante consultante = new Consultante();
         consultante.setNombre("Pipo");
         consultante.setApellido("Pescador");
+        consultante.setNombreUsuario("pipo");
         usuarios.add(consultante);
 
         Administrador administrador = new Administrador();
         administrador.setNombre("Ardo");
         administrador.setApellido("Kiwi");
+        administrador.setNombreUsuario("admin");
+        administrador.setContrasenha("admin");
         usuarios.add(administrador);
 
         Profesional profesional = new Profesional();
         profesional.setNombre("Rosa");
         profesional.setApellido("Atlante");
+        profesional.setNombreUsuario("rosa");
         usuarios.add(profesional);
 
         locacion.setResponsable(profesional);
 
         this.usuarioConectado=administrador;
 
-        menu.menuInicial();
+        menu.menuConexion();
     }
 
     public void arranque(){
 
+    }
+
+    public boolean conectarse (String nombreUsuario, JPasswordField contrasenha){
+        boolean credencialesCorrectas = false;
+
+        for (Usuario usuario : usuarios){
+            if (usuario.getNombreUsuario().equals(nombreUsuario)){
+                Usuario usuarioEnConexion = usuario;
+
+                credencialesCorrectas = usuarioEnConexion.getContrasenha().equals(contrasenha.getPassword().toString());
+            }
+        }
+        menu.menuInicial();
+        return credencialesCorrectas;
     }
 
 }

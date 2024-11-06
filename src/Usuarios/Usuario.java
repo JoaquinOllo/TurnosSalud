@@ -1,7 +1,5 @@
 package Usuarios;
 
-import Interfaces.I_GestionTurnos;
-
 public abstract class Usuario {
     private String nombre;
     private String apellido;
@@ -9,7 +7,9 @@ public abstract class Usuario {
     private String correo;
     private String nroTelefono;
 
-    private Usuario contacto;
+    private String nombreUsuario;
+    private String contrasenha;
+
     private String direccion;
 
     public String getNombre() {
@@ -52,19 +52,27 @@ public abstract class Usuario {
         this.nroTelefono = nroTelefono;
     }
 
-    public Usuario getContacto() {
-        return contacto;
-    }
-
-    public void setContacto(Usuario contacto) {
-        this.contacto = contacto;
-    }
-
     public String getDireccion() {
         return direccion;
     }
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getContrasenha() {
+        return contrasenha;
+    }
+
+    public void setContrasenha(String contrasenha) {
+        this.contrasenha = contrasenha;
     }
 }
