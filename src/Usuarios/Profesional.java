@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Profesional extends Usuario implements I_GestionTurnos, I_GestionHC, I_CompatibilidadHorarios {
+public class Profesional extends Usuario implements I_GestionTurnos, I_CompatibilidadHorarios {
     @Override
     public boolean agendaTurnos() {
         return false;
@@ -28,26 +28,6 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_GestionHC
 
     @Override
     public boolean reprogramaTurnos() {
-        return false;
-    }
-
-    @Override
-    public boolean lecturaHCPropia() {
-        return false;
-    }
-
-    @Override
-    public boolean editaHCPropia() {
-        return false;
-    }
-
-    @Override
-    public boolean lecturaHC() {
-        return false;
-    }
-
-    @Override
-    public boolean editaHC() {
         return false;
     }
 
