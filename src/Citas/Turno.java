@@ -1,6 +1,7 @@
 package Citas;
 
 import Enumeradores.EstadoCita;
+import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
 import Locaciones.Consultorio;
 import Usuarios.Consultante;
@@ -102,13 +103,26 @@ public class Turno {
     public LocalTime getHoraFin(){
         return this.horario.getHoraCierre();
     }
-
     public void posponer(String motivo, LocalDateTime nuevaFechaYHora) {
-
+        this.dia = nuevaFechaYHora.toLocalDate();
+        this.horario = new FranjaHoraria(nuevaFechaYHora.toLocalTime(), this.horario.getDuracion());
+        this.razon = motivo;
+    }
+    public boolean colisiona(Turno turno) {
+        return this.horario.noColisiona(turno.horario);
     }
 
-    public boolean colisiona(Turno turno) {
-        // completar
-        return this.horario.noColisiona(turno.horario);
+    public void tomarTurno (){
+        this.estado = EstadoCita.TOMADO;
+    }
+
+    public void pacienteAusente (){
+        this.estado = EstadoCita.AUSENTE;
+        this.razon = "Paciente ausente";
+    }
+
+    public void profesionalAusente(){
+        this.estado = EstadoCita.AUSENTE;
+        this.razon = "Profesional ausente";
     }
 }

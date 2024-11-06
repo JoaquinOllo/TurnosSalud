@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalQuery;
-import java.time.temporal.TemporalUnit;
 
 public class FranjaHoraria implements I_CompatibilidadHorarios {
     LocalTime horaInicio;
