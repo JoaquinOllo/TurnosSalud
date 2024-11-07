@@ -1,8 +1,17 @@
 package Usuarios;
 
+import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_GestionTurnos;
 
 public class Consultante extends Usuario implements I_GestionTurnos {
+
+    public Consultante(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+        super(nombreUsuario, contrasenha);
+    }
+
+    public Consultante()  {
+        super();
+    }
 
     @Override
     public boolean agendaTurnos() {

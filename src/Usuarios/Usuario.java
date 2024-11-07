@@ -1,11 +1,17 @@
 package Usuarios;
 
+import Excepciones.UsuarioInvalidoException;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class Usuario {
     private String nombre;
     private String apellido;
     private int edad;
     private String correo;
     private String nroTelefono;
+    private static Set<String> usuarios = new HashSet<>();
 
     private String nombreUsuario;
     private String contrasenha;
@@ -64,8 +70,10 @@ public abstract class Usuario {
         return nombreUsuario;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setNombreUsuario(String nombreUsuario) throws UsuarioInvalidoException {
+        if (validarNombreUsuario(nombreUsuario)){
+            this.nombreUsuario = nombreUsuario;
+        }
     }
 
     public String getContrasenha() {
@@ -74,5 +82,25 @@ public abstract class Usuario {
 
     public void setContrasenha(String contrasenha) {
         this.contrasenha = contrasenha;
+    }
+
+    private boolean validarNombreUsuario(String nombreUsuario) throws UsuarioInvalidoException {
+        boolean usuarioValido = usuarios.stream().noneMatch(e -> e.equals(nombreUsuario));
+
+        if (!usuarioValido){
+            throw new UsuarioInvalidoException(nombreUsuario);
+        } else {
+            usuarios.add(nombreUsuario);
+        }
+
+        return true;
+    }
+
+    public Usuario(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+        setNombreUsuario(nombreUsuario);
+        this.contrasenha = contrasenha;
+    }
+
+    public Usuario() {
     }
 }

@@ -1,6 +1,7 @@
 package Usuarios;
 
 import Citas.Turno;
+import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_CompatibilidadHorarios;
 import Interfaces.I_GestionHC;
 import Interfaces.I_GestionTurnos;
@@ -11,6 +12,15 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class Profesional extends Usuario implements I_GestionTurnos, I_CompatibilidadHorarios {
+    public Profesional(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+        super(nombreUsuario, contrasenha);
+    }
+
+    public Profesional() {
+        super();
+    }
+
+
     @Override
     public boolean agendaTurnos() {
         return false;

@@ -164,6 +164,8 @@ public class Interfaz {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
 
+        frame.setLocationRelativeTo(null); // Centrar ventana
+
         // Crear un JLabel para el título
         JLabel titleLabel = new JLabel("Turnos", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño

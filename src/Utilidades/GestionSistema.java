@@ -3,6 +3,7 @@ package Utilidades;
 import Citas.Turno;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
+import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_GestionTurnos;
 import Locaciones.Consultorio;
 import Locaciones.Locacion;
@@ -70,7 +71,6 @@ public class  GestionSistema {
      */
     public GestionSistema() {
         this.turnos = new Agenda<>();
-        this.usuarioConectado = new Administrador();
         this.consultorios = new ArrayList<>();
         this.sedes = new ArrayList<>();
         this.usuarios = new ArrayList<>();
@@ -103,7 +103,7 @@ public class  GestionSistema {
         return turnoDisponible;
     }
 
-    public void arranqueParaPruebas(){
+    public void arranqueParaPruebas() throws UsuarioInvalidoException {
         Locacion locacion = new Locacion();
         sedes.add(locacion);
         locacion.setDireccion("Maipú 3532");
@@ -116,25 +116,19 @@ public class  GestionSistema {
         Consultorio consultorio = new Consultorio();
         consultorios.add(consultorio);
 
-        Consultante consultante = new Consultante();
+        Consultante consultante = new Consultante("pipo", "pipo");
         consultante.setNombre("Pipo");
         consultante.setApellido("Pescador");
-        consultante.setNombreUsuario("pipo");
-        consultante.setContrasenha("pipo");
         usuarios.add(consultante);
 
-        Administrador administrador = new Administrador();
+        Administrador administrador = new Administrador("admin", "admin");
         administrador.setNombre("Ardo");
         administrador.setApellido("Kiwi");
-        administrador.setNombreUsuario("admin");
-        administrador.setContrasenha("admin");
         usuarios.add(administrador);
 
-        Profesional profesional = new Profesional();
+        Profesional profesional = new Profesional("rosa", "rosa");
         profesional.setNombre("Rosa");
         profesional.setApellido("Atlante");
-        profesional.setNombreUsuario("rosa");
-        profesional.setContrasenha("rosa");
         usuarios.add(profesional);
 
         locacion.setResponsable(profesional);
