@@ -2,8 +2,11 @@ package Utilidades;
 
 import Citas.Turno;
 import Locaciones.Consultorio;
+import Locaciones.Sede;
 import Usuarios.Profesional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Agenda<T extends Turno> extends ArrayList<T> {
@@ -33,4 +36,46 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         }
         return turnosPorProfesional;
     }
+
+    private Agenda<T> filtrarPorSede(Sede sede) {
+        Agenda<T> turnosPorSede=new Agenda<>();
+        for(T turno:this){
+            if(turno.getSede().equals(sede)){
+                turnosPorSede.add(turno);
+            }
+        }
+        return turnosPorSede;
+    }
+
+    private Agenda<T> filtrarPorDia(LocalDate dia) {
+        Agenda<T> turnosPorDia =new Agenda<>();
+        for(T turno:this){
+            if(turno.getDia().equals(dia)){
+                turnosPorDia.add(turno);
+            }
+        }
+        return turnosPorDia;
+    }
+
+    private Agenda<T> filtrarPorHoraInicio(LocalTime horario) {
+        Agenda<T> turnosPorHorario =new Agenda<>();
+        for(T turno:this){
+            if(turno.getHoraInicio().equals(horario)){
+                turnosPorHorario.add(turno);
+            }
+        }
+        return turnosPorHorario;
+    }
+
+    private Agenda<T> filtrarPorHoraFin(LocalTime horario) {
+        Agenda<T> turnosPorHorario =new Agenda<>();
+        for(T turno:this){
+            if(turno.getHoraInicio().equals(horario)){
+                turnosPorHorario.add(turno);
+            }
+        }
+        return turnosPorHorario;
+    }
+
+
 }

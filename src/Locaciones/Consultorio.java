@@ -6,15 +6,15 @@ import Interfaces.I_CompatibilidadHorarios;
 import java.util.ArrayList;
 
 public class Consultorio implements I_CompatibilidadHorarios {
-    private Locacion locacion;
+    private Sede sede;
     private ArrayList<Turno> turnos;
 
-    public Locacion getLocacion() {
-        return locacion;
+    public Sede getSede() {
+        return sede;
     }
 
-    public void setLocacion(Locacion locacion) {
-        this.locacion = locacion;
+    public void setSede(Sede sede) {
+        this.sede = sede;
     }
 
     public ArrayList<Turno> getTurnos() {
@@ -26,6 +26,6 @@ public class Consultorio implements I_CompatibilidadHorarios {
     }
 
     public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
-        return this.locacion.citaCompatibleConFranjaHoraria(turno);
+        return this.sede.citaCompatibleConFranjaHoraria(turno);
     }
 }

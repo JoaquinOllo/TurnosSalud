@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Locacion implements I_CompatibilidadHorarios {
+public class Sede implements I_CompatibilidadHorarios {
     private Set<FranjaHoraria> horarios;
     private Usuario responsable;
     private ArrayList<Consultorio> consultorios;

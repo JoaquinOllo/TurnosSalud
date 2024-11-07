@@ -2,7 +2,6 @@ package Citas;
 
 import Enumeradores.Especialidad;
 import Enumeradores.EstadoCita;
-import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
 import Locaciones.Consultorio;
 import Usuarios.Consultante;
@@ -130,5 +129,9 @@ public class Turno {
     public void profesionalAusente(){
         this.estado = EstadoCita.AUSENTE;
         this.razon = "Profesional ausente";
+    }
+
+    public Object getSede() {
+        return this.getConsultorio().getSede();
     }
 }

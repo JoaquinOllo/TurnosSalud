@@ -6,7 +6,7 @@ import Excepciones.OperacionNoPermitidaException;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_GestionTurnos;
 import Locaciones.Consultorio;
-import Locaciones.Locacion;
+import Locaciones.Sede;
 import Usuarios.*;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ import java.util.Set;
 public class  GestionSistema {
 
     private ArrayList<Consultorio> consultorios;
-    private ArrayList<Locacion> sedes;
+    private ArrayList<Sede> sedes;
     private ArrayList<Usuario> usuarios;
     private Usuario usuarioConectado;
     private Interfaz menu;
@@ -28,7 +28,7 @@ public class  GestionSistema {
         return consultorios;
     }
 
-    public ArrayList<Locacion> getSedes() {
+    public ArrayList<Sede> getSedes() {
         return sedes;
     }
 
@@ -51,7 +51,7 @@ public class  GestionSistema {
     /**
      * @param sedes
      */
-    public void setSedes(ArrayList<Locacion> sedes) {
+    public void setSedes(ArrayList<Sede> sedes) {
         this.sedes = sedes;
     }
 
@@ -104,14 +104,14 @@ public class  GestionSistema {
     }
 
     public void arranqueParaPruebas() throws UsuarioInvalidoException {
-        Locacion locacion = new Locacion();
-        sedes.add(locacion);
-        locacion.setDireccion("Maipú 3532");
+        Sede sede = new Sede();
+        sedes.add(sede);
+        sede.setDireccion("Maipú 3532");
 
         Set<FranjaHoraria> horarios = new HashSet<>();
         horarios.add(new FranjaHoraria(8, 480));
 
-        locacion.setHorarios(horarios);
+        sede.setHorarios(horarios);
 
         Consultorio consultorio = new Consultorio();
         consultorios.add(consultorio);
@@ -131,7 +131,7 @@ public class  GestionSistema {
         profesional.setApellido("Atlante");
         usuarios.add(profesional);
 
-        locacion.setResponsable(profesional);
+        sede.setResponsable(profesional);
 
         this.usuarioConectado=administrador;
 
