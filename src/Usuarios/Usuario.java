@@ -76,6 +76,20 @@ public abstract class Usuario {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", edad=" + edad +
+                ", correo='" + correo + '\'' +
+                ", nroTelefono='" + nroTelefono + '\'' +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
+                ", contrasenha='" + contrasenha + '\'' +
+                ", direccion='" + direccion + '\'' +
+                '}';
+    }
+
     public String getContrasenha() {
         return contrasenha;
     }
