@@ -152,11 +152,13 @@ public class  GestionSistema {
         for (Usuario usuario : usuarios){
             if (usuario.getNombreUsuario().equals(nombreUsuario)){
                 Usuario usuarioEnConexion = usuario;
+                String str_contrasenha = new String(contrasenha.getPassword());
 
-                credencialesCorrectas = usuarioEnConexion.getContrasenha().equals(contrasenha.getPassword().toString());
+                credencialesCorrectas = usuarioEnConexion.getContrasenha().equals(str_contrasenha);
+                System.out.println(contrasenha.getPassword());
+                System.out.println(usuario.getNombreUsuario());
             }
         }
-        menu.menuInicial();
         return credencialesCorrectas;
     }
 

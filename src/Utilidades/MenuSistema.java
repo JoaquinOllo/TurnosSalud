@@ -50,8 +50,34 @@ public class MenuSistema {
         // Botón de inicio de sesión
         botonIniciarSesion = new JButton("Iniciar Sesión");
         botonIniciarSesion.addActionListener(e -> {
-            this.sistema.conectarse(campoUsuario.getText(), campoContrasena);
-            frame.dispose(); // Destruye la ventana (la cierra completamente)
+            if (this.sistema.conectarse(campoUsuario.getText(), campoContrasena)){
+                frame.dispose(); // Destruye la ventana (la cierra completamente)
+                menuInicial();
+            } else {
+                JDialog modalError = new JDialog(frame, "Credenciales incorrectas", true);
+                JLabel mensaje = new JLabel("El usuario o la contraseña ingresados " +
+                        "son incorrectos. " +
+                        "Intente nuevamente.");
+                mensaje.setHorizontalAlignment(SwingConstants.CENTER);
+
+                // Crear el botón de cerrar
+                JButton botonCerrar = new JButton("Cerrar");
+                botonCerrar.addActionListener(b -> modalError.dispose());
+
+                // Crear el panel principal y añadir componentes
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                panel.add(mensaje);
+                panel.add(Box.createVerticalStrut(10));  // Espacio entre el mensaje y el botón
+                panel.add(botonCerrar);
+
+                // Configurar el diálogo
+                modalError.getContentPane().add(panel);
+                modalError.setSize(300, 150);
+                modalError.setLocationRelativeTo(modalError.getParent());
+                modalError.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                modalError.setVisible(true);
+            }
         });
 
         panelPrincipal.add(botonIniciarSesion);
@@ -70,6 +96,7 @@ public class MenuSistema {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
+        frame.setLocationRelativeTo(null); // Centrar ventana
 
         // Crear un JLabel para el título
         JLabel titleLabel = new JLabel("Bienvenido a SuperDoctors", SwingConstants.CENTER);
