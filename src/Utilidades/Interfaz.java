@@ -181,6 +181,11 @@ public class Interfaz {
         JButton elegirDiaYHorario = new JButton("4- Elegir dia y horario");
         JButton volverAlInicio = new JButton("Volver al inicio");
 
+        // Inicialmente deshabilitar los botones de las opciones posteriores
+        elegirProfesional.setEnabled(false);
+        elegirConsultorio.setEnabled(false);
+        elegirDiaYHorario.setEnabled(false);
+
         // Agregar botones al panel del menú
         menuPanel.add(elegirEspecialidad);
         menuPanel.add(elegirProfesional);
@@ -194,13 +199,19 @@ public class Interfaz {
         // Eventos para los botones
         elegirEspecialidad.addActionListener(e -> {
             menuElegirEspecialidad(frame, turnoNuevo);
+            // Habilitar el botón "Elegir Profesional" después de seleccionar la especialidad
+            elegirProfesional.setEnabled(true);
         });
 
         elegirProfesional.addActionListener(e -> {
             menuElegirProfesional(frame, turnoNuevo);
+            elegirConsultorio.setEnabled(true);
+
         });
         elegirConsultorio.addActionListener(e -> {
             menuElegirConsultorio(frame, turnoNuevo);
+            elegirDiaYHorario.setEnabled(true);
+
         });
 
         elegirDiaYHorario.addActionListener(e -> {
