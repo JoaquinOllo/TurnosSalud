@@ -120,6 +120,7 @@ public class  GestionSistema {
         consultante.setNombre("Pipo");
         consultante.setApellido("Pescador");
         consultante.setNombreUsuario("pipo");
+        consultante.setContrasenha("pipo");
         usuarios.add(consultante);
 
         Administrador administrador = new Administrador();
@@ -133,6 +134,7 @@ public class  GestionSistema {
         profesional.setNombre("Rosa");
         profesional.setApellido("Atlante");
         profesional.setNombreUsuario("rosa");
+        profesional.setContrasenha("rosa");
         usuarios.add(profesional);
 
         locacion.setResponsable(profesional);
