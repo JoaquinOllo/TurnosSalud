@@ -5,6 +5,7 @@ import Locaciones.Consultorio;
 import Locaciones.Sede;
 import Usuarios.Profesional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -77,5 +78,14 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorHorario;
     }
 
+    private Agenda<T> filtrarPorPeriodo(FranjaHoraria franja) {
+        Agenda<T> turnosPorPeriodo =new Agenda<>();
+        for(T turno:this){
+            if(turno.getFranjaHoraria().citaCompatibleConFranjaHoraria(franja)){
+                turnosPorPeriodo.add(turno);
+            }
+        }
+        return turnosPorPeriodo;
+    }
 
 }

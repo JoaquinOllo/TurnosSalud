@@ -134,4 +134,8 @@ public class Turno {
     public Object getSede() {
         return this.getConsultorio().getSede();
     }
+
+    public FranjaHoraria getFranjaHoraria (){
+        return this.horario;
+    }
 }

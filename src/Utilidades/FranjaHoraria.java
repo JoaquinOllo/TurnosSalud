@@ -15,8 +15,8 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
 
     private final TemporalQuery<Boolean> turnoHabilitado = inicio  -> {
         LocalTime ini = LocalTime.from(inicio);
-        return ini.isAfter(this.horaInicio)
-                && ini.isBefore(this.horaCierre);
+        return (ini.isAfter(this.horaInicio) | ini.equals(this.horaInicio))
+                && (ini.equals(this.horaCierre) | ini.isBefore(this.horaCierre));
     };
 
     public FranjaHoraria(LocalTime horaInicio, LocalTime horarioFin) {
@@ -50,6 +50,16 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         return turnoHabilitado.queryFrom(horaInicioTurno)
                 && turnoHabilitado.queryFrom(horaFinTurno);
     }
+
+    public <T extends Turno> boolean citaCompatibleConFranjaHoraria(FranjaHoraria franja) {
+        LocalTime horaInicioTurno = franja.horaInicio;
+        LocalTime horaFinTurno = franja.horaCierre;
+
+
+        return turnoHabilitado.queryFrom(horaInicioTurno)
+                && turnoHabilitado.queryFrom(horaFinTurno);
+    }
+
 
     public LocalTime getHoraInicio() {
         return this.horaInicio;
