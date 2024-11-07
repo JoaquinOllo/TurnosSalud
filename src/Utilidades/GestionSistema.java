@@ -19,7 +19,7 @@ public class  GestionSistema {
     private ArrayList<Locacion> sedes;
     private ArrayList<Usuario> usuarios;
     private Usuario usuarioConectado;
-    private MenuSistema menu;
+    private Interfaz menu;
 
     private Agenda<Turno> turnos;
 
@@ -74,7 +74,7 @@ public class  GestionSistema {
         this.consultorios = new ArrayList<>();
         this.sedes = new ArrayList<>();
         this.usuarios = new ArrayList<>();
-        this.menu = new MenuSistema(this);
+        this.menu = new Interfaz(this);
     }
 
 
@@ -155,8 +155,6 @@ public class  GestionSistema {
                 String str_contrasenha = new String(contrasenha.getPassword());
 
                 credencialesCorrectas = usuarioEnConexion.getContrasenha().equals(str_contrasenha);
-                System.out.println(contrasenha.getPassword());
-                System.out.println(usuario.getNombreUsuario());
             }
         }
         return credencialesCorrectas;

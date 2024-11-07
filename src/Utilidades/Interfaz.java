@@ -4,13 +4,11 @@ import Usuarios.Consultante;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class MenuSistema {
+public class Interfaz {
     private GestionSistema sistema;
 
-    public MenuSistema(GestionSistema sistema) {
+    public Interfaz(GestionSistema sistema) {
         this.sistema=sistema;
     }
 
@@ -88,9 +86,10 @@ public class MenuSistema {
         }
 
     public void menuInicial() {
-        JFrame frame = new JFrame("Bienvenido a SuperDoctors");
+        JFrame frame = new JFrame("SuperDoctors - " + sistema.getUsuarioConectado().getNombreUsuario() + " - "
+                + sistema.getUsuarioConectado().getClass().getSimpleName());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 250);
+        frame.setSize(600, 500);
 
         // Crear un panel principal
         JPanel mainPanel = new JPanel();
@@ -155,7 +154,7 @@ public class MenuSistema {
         frame.setVisible(true);
     }
 
-    public void menuCita(Turno t1){
+    public void menuCita(Turno turnoNuevo){
         JFrame frame = new JFrame("Turnos");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);
@@ -194,18 +193,19 @@ public class MenuSistema {
 
         // Eventos para los botones
         elegirEspecialidad.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir especialidad...");
+            menuElegirEspecialidad(frame, turnoNuevo);
         });
 
         elegirProfesional.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir profesional...");
+            menuElegirProfesional(frame, turnoNuevo);
         });
         elegirConsultorio.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir consultorio...");
+            menuElegirConsultorio(frame, turnoNuevo);
         });
 
         elegirDiaYHorario.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir dia y horario...");
+            menuElegirDia(frame, turnoNuevo);
+            menuElegirHorario(frame, turnoNuevo);
         });
 
         volverAlInicio.addActionListener(e -> {
@@ -294,4 +294,111 @@ public class MenuSistema {
         frame.setVisible(true);
 
     }
+
+    public void menuElegirEspecialidad(JFrame frame, Turno turno) {
+        JDialog dialog = new JDialog(frame, "Elegir Especialidad", true);
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(frame);
+
+        // Panel con información y opciones
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Selecciona la especialidad...");
+        JButton confirmarButton = new JButton("Confirmar");
+
+        confirmarButton.addActionListener(e -> {
+            // Aquí puedes procesar la especialidad seleccionada y actualizar el objeto turno
+            dialog.dispose();
+        });
+
+        panel.add(label);
+        panel.add(confirmarButton);
+
+        dialog.getContentPane().add(panel);
+        dialog.setVisible(true);
+    }
+
+    public void menuElegirProfesional(JFrame frame, Turno turno) {
+        JDialog dialog = new JDialog(frame, "Elegir Profesional", true);
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(frame);
+
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Selecciona el profesional...");
+        JButton confirmarButton = new JButton("Confirmar");
+
+        confirmarButton.addActionListener(e -> {
+            // Procesa la selección de profesional y actualiza el turno
+            dialog.dispose();
+        });
+
+        panel.add(label);
+        panel.add(confirmarButton);
+
+        dialog.getContentPane().add(panel);
+        dialog.setVisible(true);
+    }
+
+    public void menuElegirConsultorio(JFrame frame, Turno turno) {
+        JDialog dialog = new JDialog(frame, "Elegir Consultorio", true);
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(frame);
+
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Selecciona el consultorio...");
+        JButton confirmarButton = new JButton("Confirmar");
+
+        confirmarButton.addActionListener(e -> {
+            // Procesa la selección de consultorio y actualiza el turno
+            dialog.dispose();
+        });
+
+        panel.add(label);
+        panel.add(confirmarButton);
+
+        dialog.getContentPane().add(panel);
+        dialog.setVisible(true);
+    }
+
+    public void menuElegirDia(JFrame frame, Turno turno) {
+        JDialog dialog = new JDialog(frame, "Elegir Día", true);
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(frame);
+
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Selecciona el día...");
+        JButton confirmarButton = new JButton("Confirmar");
+
+        confirmarButton.addActionListener(e -> {
+            // Procesa la selección de día y actualiza el turno
+            dialog.dispose();
+        });
+
+        panel.add(label);
+        panel.add(confirmarButton);
+
+        dialog.getContentPane().add(panel);
+        dialog.setVisible(true);
+    }
+
+    public void menuElegirHorario(JFrame frame, Turno turno) {
+        JDialog dialog = new JDialog(frame, "Elegir Horario", true);
+        dialog.setSize(300, 200);
+        dialog.setLocationRelativeTo(frame);
+
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Selecciona el horario...");
+        JButton confirmarButton = new JButton("Confirmar");
+
+        confirmarButton.addActionListener(e -> {
+            // Procesa la selección de horario y actualiza el turno
+            dialog.dispose();
+        });
+
+        panel.add(label);
+        panel.add(confirmarButton);
+
+        dialog.getContentPane().add(panel);
+        dialog.setVisible(true);
+    }
+
 }
