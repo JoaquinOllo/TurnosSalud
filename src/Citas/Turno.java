@@ -12,9 +12,10 @@ import Utilidades.FranjaHoraria;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 
-public class Turno {
-    protected LocalDate dia;
+public class Turno  {
+    protected Date dia;
     protected FranjaHoraria horario;
     private EstadoCita estado = EstadoCita.PENDIENTE_CONFIRMACION;
     private Consultante consultante;
@@ -48,11 +49,11 @@ public class Turno {
         this.razon = motivo;
     }
 
-    public LocalDate getDia() {
+    public Date getDia() {
         return dia;
     }
 
-    public void setDia(LocalDate dia){
+    public void setDia(Date dia){
         this.dia = dia;
     }
 
@@ -104,15 +105,22 @@ public class Turno {
         return razon;
     }
 
+    public Especialidad getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(Especialidad especialidad) {
+        this.especialidad = especialidad;
+    }
 
     public LocalTime getHoraFin(){
         return this.horario.getHoraCierre();
     }
-    public void posponer(String motivo, LocalDateTime nuevaFechaYHora) {
+    /*public void posponer(String motivo, LocalDateTime nuevaFechaYHora) {
         this.dia = nuevaFechaYHora.toLocalDate();
         this.horario = new FranjaHoraria(nuevaFechaYHora.toLocalTime(), this.horario.getDuracion());
         this.razon = motivo;
-    }
+    }*/
     public boolean colisiona(Turno turno) {
         return this.horario.noColisiona(turno.horario);
     }

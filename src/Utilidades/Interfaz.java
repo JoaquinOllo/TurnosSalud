@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.Array;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -213,9 +214,12 @@ public class Interfaz  {
         }
 
 
-    public void menuCita(Turno turnoNuevo){
+    public Turno menuCita(Turno turnoNuevo){
         // DATOS A RECOPILAR
         final Especialidad[] especialidadElegida = {null};
+        final Profesional[] profesionalElegido = {null};
+        final Date[] fechaElegida = {null}; // Para almacenar la fecha seleccionada
+
 
         JFrame frame = new JFrame("Turnos");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -290,11 +294,33 @@ public class Interfaz  {
         });
 
         elegirProfesional.addActionListener(e -> {
+            // Guardar el profesional seleccionado
+            profesionalElegido[0] = (Profesional) elegirProfesional.getSelectedItem();
             elegirDia.setEnabled(true);
+            confirmar.setEnabled(true);
         });
 
         elegirDia.addChangeListener(e -> {
+            // Guardar la fecha seleccionada
+            fechaElegida[0] = (Date) elegirDia.getValue();
         });
+        confirmar.addActionListener(e -> {
+            // Aquí setearíamos los valores en turnoNuevo
+            if (especialidadElegida[0] != null && profesionalElegido[0] != null && fechaElegida[0] != null) {
+                turnoNuevo.setEspecialidad(especialidadElegida[0]);
+                System.out.println(especialidadElegida[0]);
+                turnoNuevo.setProfesional(profesionalElegido[0]);
+                System.out.println(profesionalElegido[0]);
+                turnoNuevo.setDia(fechaElegida[0]);
+                System.out.println(fechaElegida[0]);
+                this.sistema.getTurnos().add(turnoNuevo);
+                // Mostrar un mensaje de confirmación o realizar alguna acción adicional
+                JOptionPane.showMessageDialog(frame, "Turno confirmado con éxito!");
+            } else {
+                JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
+            }
+        });
+
 
         volverAlInicio.addActionListener(e -> {
             //System.exit(0);
@@ -304,7 +330,7 @@ public class Interfaz  {
         // Agregar el panel principal al marco
         frame.add(mainPanel);
         frame.setVisible(true);
-
+        return turnoNuevo;
     }
     public void menuVerTurnos(ArrayList<Turno> turnos){
         // Crear la ventana principal
@@ -316,7 +342,7 @@ public class Interfaz  {
 
             // Crear los componentes para mostrar la información del turno
             JLabel diaLabel = new JLabel("Dia: " + turno.getDia());
-            JLabel horaLabel= new JLabel("Hora: " +turno.getHoraInicio());
+            //JLabel horaLabel= new JLabel("Hora: " +turno.getHoraInicio());
             JLabel especialidadLabel = new JLabel("Especialidad: " +Especialidad.CARDIOLOGIA);
             JLabel profesionalLabel = new JLabel("Nombre Profesional: "+ turno.getProfesional());
             JLabel consultorioLabel = new JLabel("Consultorio: " + turno.getConsultorio());
@@ -324,7 +350,7 @@ public class Interfaz  {
 
             // Agregar los JLabel al panel del turno
             panelTurno.add(diaLabel);
-            panelTurno.add(horaLabel);
+            //panelTurno.add(horaLabel);
             panelTurno.add(especialidadLabel);
             panelTurno.add(profesionalLabel);
             panelTurno.add(consultorioLabel);
