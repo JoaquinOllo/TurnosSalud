@@ -1,6 +1,7 @@
 package Utilidades;
 
 import Citas.Turno;
+import Enumeradores.Especialidad;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
 import Excepciones.UsuarioInvalidoException;
@@ -131,9 +132,16 @@ public class  GestionSistema {
         Profesional profesional = new Profesional("rosa", "rosa");
         profesional.setNombre("Rosa");
         profesional.setApellido("Atlante");
+        profesional.setEspecialidad(Especialidad.ALERGISTA);
         usuarios.add(profesional);
 
         sede.setResponsable(profesional);
+
+        Profesional profesional2 = new Profesional("amalia", "rosa");
+        profesional2.setNombre("Amalía");
+        profesional2.setApellido("Sémola");
+        profesional2.setEspecialidad(Especialidad.ALERGISTA);
+        usuarios.add(profesional2);
 
         this.usuarioConectado=administrador;
 
@@ -170,5 +178,13 @@ public class  GestionSistema {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public Set<Especialidad> getEspecialidadesDisponibles(){
+        Set<Especialidad> especialidades = new HashSet<>();
+
+        for (Profesional profesional: this.getProfesionales()){
+            especialidades.add(profesional.getEspecialidad());
+        }
+        return especialidades;
+    }
 
 }

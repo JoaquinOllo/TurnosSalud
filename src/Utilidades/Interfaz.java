@@ -1,20 +1,14 @@
 package Utilidades;
 import Citas.Turno;
-import Excepciones.HorarioNoDisponibleException;
-import Excepciones.OperacionNoPermitidaException;
+import Enumeradores.Especialidad;
 import Excepciones.UsuarioInvalidoException;
-import Interfaces.I_GestionTurnos;
 import Usuarios.Consultante;
 
 import javax.swing.*;
 import java.awt.*;
 import java.text.NumberFormat;
-import java.util.Scanner;
-import javax.swing.*;
+import java.util.ArrayList;
 import javax.swing.text.NumberFormatter;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Interfaz  {
     private GestionSistema sistema;
@@ -167,6 +161,9 @@ public class Interfaz  {
     }
 
     public void menuCita(Turno turnoNuevo){
+        // DATOS A RECOPILAR
+        Especialidad especialidadElegida;
+
         JFrame frame = new JFrame("Turnos");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);
@@ -189,7 +186,9 @@ public class Interfaz  {
         menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
 
         // Crear los elementos del menú de opciones
-        JButton elegirEspecialidad = new JButton("1- Elegir Especialidad");
+        ComboBoxModel<Especialidad> especialidadesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getEspecialidadesDisponibles()).toArray(new Especialidad[0]));
+        System.out.println(especialidadesModel);
+        JComboBox<Especialidad> elegirEspecialidad = new JComboBox<>(especialidadesModel);
         JButton elegirProfesional = new JButton("2- Elegir Profesional");
         JButton elegirConsultorio = new JButton("3- Elegir consultorio");
         JButton elegirDiaYHorario = new JButton("4- Elegir dia y horario");
@@ -212,7 +211,6 @@ public class Interfaz  {
 
         // Eventos para los botones
         elegirEspecialidad.addActionListener(e -> {
-            menuElegirEspecialidad(frame, turnoNuevo);
             // Habilitar el botón "Elegir Profesional" después de seleccionar la especialidad
             elegirProfesional.setEnabled(true);
         });
@@ -453,28 +451,6 @@ public class Interfaz  {
         frame.add(mainPanel);
         frame.setVisible(true);
         return consultante;*/
-
-    public void menuElegirEspecialidad(JFrame frame, Turno turno) {
-        JDialog dialog = new JDialog(frame, "Elegir Especialidad", true);
-        dialog.setSize(300, 200);
-        dialog.setLocationRelativeTo(frame);
-
-        // Panel con información y opciones
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Selecciona la especialidad...");
-        JButton confirmarButton = new JButton("Confirmar");
-
-        confirmarButton.addActionListener(e -> {
-            // Aquí puedes procesar la especialidad seleccionada y actualizar el objeto turno
-            dialog.dispose();
-        });
-
-        panel.add(label);
-        panel.add(confirmarButton);
-
-        dialog.getContentPane().add(panel);
-        dialog.setVisible(true);
-    }
 
     public void menuElegirProfesional(JFrame frame, Turno turno) {
         JDialog dialog = new JDialog(frame, "Elegir Profesional", true);

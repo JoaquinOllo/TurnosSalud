@@ -60,7 +60,6 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
                 && turnoHabilitado.queryFrom(horaFinTurno);
     }
 
-
     public LocalTime getHoraInicio() {
         return this.horaInicio;
     }
