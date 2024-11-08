@@ -3,9 +3,12 @@ import Citas.Turno;
 import Enumeradores.Especialidad;
 import Excepciones.UsuarioInvalidoException;
 import Usuarios.Consultante;
+import Usuarios.ListaUsuarios;
+import Usuarios.Profesional;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.text.NumberFormatter;
@@ -162,7 +165,7 @@ public class Interfaz  {
 
     public void menuCita(Turno turnoNuevo){
         // DATOS A RECOPILAR
-        Especialidad especialidadElegida;
+        final Especialidad[] especialidadElegida = {null};
 
         JFrame frame = new JFrame("Turnos");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -187,23 +190,24 @@ public class Interfaz  {
 
         // Crear los elementos del menú de opciones
         ComboBoxModel<Especialidad> especialidadesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getEspecialidadesDisponibles()).toArray(new Especialidad[0]));
-        System.out.println(especialidadesModel);
         JComboBox<Especialidad> elegirEspecialidad = new JComboBox<>(especialidadesModel);
-        JButton elegirProfesional = new JButton("2- Elegir Profesional");
-        JButton elegirConsultorio = new JButton("3- Elegir consultorio");
+
+        JComboBox<Profesional> elegirProfesional = new JComboBox<>();
+
         JButton elegirDiaYHorario = new JButton("4- Elegir dia y horario");
+        JButton confirmar = new JButton("Confirmar");
         JButton volverAlInicio = new JButton("Volver al inicio");
 
         // Inicialmente deshabilitar los botones de las opciones posteriores
         elegirProfesional.setEnabled(false);
-        elegirConsultorio.setEnabled(false);
         elegirDiaYHorario.setEnabled(false);
+        confirmar.setEnabled(false);
 
         // Agregar botones al panel del menú
         menuPanel.add(elegirEspecialidad);
         menuPanel.add(elegirProfesional);
-        menuPanel.add(elegirConsultorio);
         menuPanel.add(elegirDiaYHorario);
+        menuPanel.add(confirmar);
         menuPanel.add(volverAlInicio);
 
         // Agregar el panel del menú al panel principal
@@ -212,16 +216,16 @@ public class Interfaz  {
         // Eventos para los botones
         elegirEspecialidad.addActionListener(e -> {
             // Habilitar el botón "Elegir Profesional" después de seleccionar la especialidad
+            elegirProfesional.removeAllItems();
+            especialidadElegida[0] = (Especialidad) elegirEspecialidad.getSelectedItem();
+            ComboBoxModel<Profesional> profesionalesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getProfesionales()
+                    .filtrarPorEspecialidad(especialidadElegida[0])).toArray(new Profesional[0]));
+            elegirProfesional.setModel(profesionalesModel);
             elegirProfesional.setEnabled(true);
+
         });
 
         elegirProfesional.addActionListener(e -> {
-            menuElegirProfesional(frame, turnoNuevo);
-            elegirConsultorio.setEnabled(true);
-
-        });
-        elegirConsultorio.addActionListener(e -> {
-            menuElegirConsultorio(frame, turnoNuevo);
             elegirDiaYHorario.setEnabled(true);
 
         });

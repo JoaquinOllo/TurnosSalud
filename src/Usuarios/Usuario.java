@@ -117,4 +117,8 @@ public abstract class Usuario {
 
     public Usuario() {
     }
+
+    public String getNombreCompleto() {
+        return this.nombre + " " + this.apellido;
+    }
 }

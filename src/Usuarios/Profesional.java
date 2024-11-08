@@ -69,4 +69,9 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
     public void setHorarioDeTrabajo(Set<FranjaHoraria> horarioDeTrabajo) {
         this.horarioDeTrabajo = horarioDeTrabajo;
     }
+
+    @Override
+    public String toString() {
+        return this.getNombreCompleto();
+    }
 }

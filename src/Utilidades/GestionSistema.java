@@ -11,17 +11,15 @@ import Locaciones.Sede;
 import Usuarios.*;
 
 import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class  GestionSistema {
 
     private ArrayList<Consultorio> consultorios;
     private ArrayList<Sede> sedes;
-    private ArrayList<Usuario> usuarios;
+    private ListaUsuarios<Usuario> usuarios;
     private Usuario usuarioConectado;
     private Interfaz menu;
 
@@ -58,7 +56,7 @@ public class  GestionSistema {
         this.sedes = sedes;
     }
 
-    public void setUsuarios(ArrayList<Usuario> usuarios) {
+    public void setUsuarios(ListaUsuarios<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
 
@@ -76,7 +74,7 @@ public class  GestionSistema {
         this.turnos = new Agenda<>();
         this.consultorios = new ArrayList<>();
         this.sedes = new ArrayList<>();
-        this.usuarios = new ArrayList<>();
+        this.usuarios = new ListaUsuarios<>();
         this.menu = new Interfaz(this);
     }
 
@@ -166,16 +164,26 @@ public class  GestionSistema {
         return credencialesCorrectas;
     }
 
-    public ArrayList<Profesional> getProfesionales (){
-        return this.usuarios.stream().filter(us -> us instanceof Profesional)
-                .map(us -> (Profesional) us) //
-                .collect(Collectors.toCollection(ArrayList::new));
+    public ListaUsuarios<Profesional> getProfesionales (){
+        ListaUsuarios<Profesional> profesionales = new ListaUsuarios<>();
+
+        for (Usuario usuario: this.usuarios){
+            if (usuario instanceof Profesional){
+                profesionales.add((Profesional) usuario);
+            }
+        }
+        return profesionales;
     }
 
-    public ArrayList<Administrativo> getAdministrativos (){
-        return this.usuarios.stream().filter(us -> us instanceof Administrativo)
-                .map(us -> (Administrativo) us) //
-                .collect(Collectors.toCollection(ArrayList::new));
+    public ListaUsuarios<Administrativo> getAdministrativos (){
+        ListaUsuarios<Administrativo> administrativos = new ListaUsuarios<>();
+
+        for (Usuario usuario: this.usuarios){
+            if (usuario instanceof Administrativo){
+                administrativos.add((Administrativo) usuario);
+            }
+        }
+        return administrativos;
     }
 
     public Set<Especialidad> getEspecialidadesDisponibles(){
