@@ -1,5 +1,6 @@
 package Utilidades;
 import Citas.Turno;
+
 import Enumeradores.Especialidad;
 import Excepciones.UsuarioInvalidoException;
 import Usuarios.Consultante;
@@ -143,7 +144,7 @@ public class Interfaz  {
         });
 
         verPacientes.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Ver Pacientes...");
+            menuVerPacientes(this.sistema.getPacientes());
         });
 
         agregarCita.addActionListener(e -> {
@@ -164,6 +165,53 @@ public class Interfaz  {
         frame.add(mainPanel);
         frame.setVisible(true);
     }
+
+
+    private void menuVerPacientes(ArrayList<Consultante> pacientes) {
+        //armar la ventana y recorrer la lista de pacientes y mostrarlos
+        //armar un panel para que me muestre los datos de c/paciente por separado
+
+        // Crear la ventana principal
+            JFrame ventana = new JFrame("Lista de Pacientes");
+            ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
+
+            // Recorremos la lista de pacientes y creamos un panel para cada uno
+            for (Consultante paciente : pacientes) {
+                // Crear un panel para cada paciente
+                JPanel panelPaciente = new JPanel();
+                panelPaciente.setLayout(new BoxLayout(panelPaciente, BoxLayout.Y_AXIS));
+
+                // Crear los componentes para mostrar la información del paciente
+                JLabel nombreLabel = new JLabel("Nombre: " + paciente.getNombre());
+                JLabel apellidoLabel= new JLabel("Apellido: " +paciente.getApellido());
+                JLabel edadLabel = new JLabel("Edad: " + paciente.getEdad());
+                JLabel correoLabel = new JLabel("Correo: "+ paciente.getCorreo());
+                JLabel telefonoLabel = new JLabel("Teléfono: " + paciente.getNroTelefono());
+                JLabel direccionLabel= new JLabel("Direccion: " +paciente.getDireccion());
+
+
+                // Agregar los JLabel al panel del paciente
+                panelPaciente.add(nombreLabel);
+                panelPaciente.add(apellidoLabel);
+                panelPaciente.add(edadLabel);
+                panelPaciente.add(correoLabel);
+                panelPaciente.add(telefonoLabel);
+                panelPaciente.add(direccionLabel);
+                // Añadir un borde al panel del paciente para separarlo de los demás
+                panelPaciente.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
+
+
+                // Agregar el panel del paciente al panel principal de la ventana
+
+                ventana.add(panelPaciente);
+            }
+
+            // Configurar la ventana
+            ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
+            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            ventana.setVisible(true);
+        }
+
 
     public void menuCita(Turno turnoNuevo){
         // DATOS A RECOPILAR
@@ -363,5 +411,4 @@ public class Interfaz  {
                 frame.setVisible(true);
                 return consultante;  // Retorna el objeto consultante con los datos ingresados
             }
-
 }

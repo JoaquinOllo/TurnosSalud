@@ -197,4 +197,15 @@ public class  GestionSistema {
         return especialidades;
     }
 
+    //filtro para que de la lista de usuarios me guarde en el array solo los pacientes
+
+    public ArrayList<Consultante> getPacientes() {
+        ArrayList<Consultante> pacientes= new ArrayList<>();
+        for (Usuario usuario:usuarios){
+            if (usuario instanceof Consultante){
+                pacientes.add((Consultante) usuario);
+            }
+        }
+        return pacientes;
+    }
 }
