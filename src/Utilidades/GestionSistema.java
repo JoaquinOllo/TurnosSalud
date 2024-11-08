@@ -11,6 +11,7 @@ import Locaciones.Sede;
 import Usuarios.*;
 
 import javax.swing.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -146,6 +147,10 @@ public class  GestionSistema {
         this.usuarioConectado=administrador;
 
         menu.menuConexion();
+
+        Turno turno=new Turno();
+        turnos.add(turno);
+
     }
 
     public void arranque(){
