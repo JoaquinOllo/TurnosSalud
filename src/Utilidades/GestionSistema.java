@@ -23,6 +23,8 @@ public class  GestionSistema {
     private Usuario usuarioConectado;
     private Interfaz menu;
 
+    public final int maximoDiasTurnos = 45;
+
     private Agenda<Turno> turnos;
 
     public ArrayList<Consultorio> getConsultorios() {

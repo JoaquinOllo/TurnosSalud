@@ -11,6 +11,8 @@ import java.awt.*;
 import java.sql.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.text.NumberFormatter;
 
 public class Interfaz  {
@@ -191,8 +193,22 @@ public class Interfaz  {
         // Crear los elementos del menú de opciones
         ComboBoxModel<Especialidad> especialidadesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getEspecialidadesDisponibles()).toArray(new Especialidad[0]));
         JComboBox<Especialidad> elegirEspecialidad = new JComboBox<>(especialidadesModel);
-
         JComboBox<Profesional> elegirProfesional = new JComboBox<>();
+
+        // Definir las fechas mínima y máxima
+        Calendar calendar = Calendar.getInstance();
+        Date startDate = calendar.getTime();
+
+        calendar.add(Calendar.DAY_OF_MONTH, this.sistema.maximoDiasTurnos);
+        Date endDate = calendar.getTime();
+
+        // Crear el modelo de fecha con rango
+        SpinnerDateModel dateModel = new SpinnerDateModel(startDate, startDate, endDate, Calendar.DAY_OF_MONTH);
+        JSpinner elegirDia = new JSpinner(dateModel);
+
+        // Formato de fecha para mostrar en el JSpinner
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(elegirDia, "dd/MM/yyyy");
+        elegirDia.setEditor(editor);
 
         JButton elegirDiaYHorario = new JButton("4- Elegir dia y horario");
         JButton confirmar = new JButton("Confirmar");
@@ -200,13 +216,13 @@ public class Interfaz  {
 
         // Inicialmente deshabilitar los botones de las opciones posteriores
         elegirProfesional.setEnabled(false);
-        elegirDiaYHorario.setEnabled(false);
+        elegirDia.setEnabled(false);
         confirmar.setEnabled(false);
 
         // Agregar botones al panel del menú
         menuPanel.add(elegirEspecialidad);
         menuPanel.add(elegirProfesional);
-        menuPanel.add(elegirDiaYHorario);
+        menuPanel.add(elegirDia);
         menuPanel.add(confirmar);
         menuPanel.add(volverAlInicio);
 
@@ -226,14 +242,10 @@ public class Interfaz  {
         });
 
         elegirProfesional.addActionListener(e -> {
-            elegirDiaYHorario.setEnabled(true);
-
+            elegirDia.setEnabled(true);
         });
 
-        elegirDiaYHorario.addActionListener(e -> {
-            menuElegirDia(frame, turnoNuevo);
-            menuElegirHorario(frame, turnoNuevo);
-
+        elegirDia.addChangeListener(e -> {
         });
 
         volverAlInicio.addActionListener(e -> {
@@ -351,193 +363,5 @@ public class Interfaz  {
                 frame.setVisible(true);
                 return consultante;  // Retorna el objeto consultante con los datos ingresados
             }
-
-
-
-
-        /*JFrame frame = new JFrame("Agregar Paciente");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 250);
-
-        // Crear un panel principal
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
-
-        // Crear un JLabel para el título
-        JLabel titleLabel = new JLabel("Nuevo Paciente", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
-        titleLabel.setForeground(Color.BLACK); // Color del texto del título
-        mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
-
-        // Crear un panel para los campos de entrada y los botones
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(8, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
-
-        // Crear los campos de texto para ingresar datos del paciente
-        JTextField nombreField = new JTextField();
-        JTextField apellidoField = new JTextField();
-        JTextField edadField = new JTextField();
-        JTextField direccionField = new JTextField();
-        JTextField telefonoField = new JTextField();
-        JTextField correoField = new JTextField();
-
-        // Crear un panel para el menú de opciones
-        JPanel menuPanel = new JPanel();
-        menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
-
-        // Crear los elementos del menú de opciones
-        JButton nombrePaciente = new JButton("Nombre");
-        JButton apellidoPaciente = new JButton("Apellido");
-        JButton edadPaciente = new JButton("Edad");
-        JButton direccionPaciente = new JButton("Direccion");
-        JButton telefonoPaciente = new JButton("Telefono");
-        JButton correoPaciente = new JButton("Correo");
-        JButton volverAlInicio = new JButton("Volver al inicio");
-
-
-
-        // Agregar botones al panel del menú
-        menuPanel.add(nombrePaciente);
-        menuPanel.add(apellidoPaciente);
-        menuPanel.add(edadPaciente);
-        menuPanel.add(direccionPaciente);
-        menuPanel.add(telefonoPaciente);
-        menuPanel.add(correoPaciente);
-        menuPanel.add(volverAlInicio);
-
-        inputPanel.add(nombrePaciente);
-        inputPanel.add(nombreField);
-        inputPanel.add(apellidoPaciente);
-        inputPanel.add(apellidoField);
-        inputPanel.add(edadPaciente);
-        inputPanel.add(edadField);
-        inputPanel.add(direccionPaciente);
-        inputPanel.add(direccionField);
-        inputPanel.add(telefonoPaciente);
-        inputPanel.add(telefonoField);
-        inputPanel.add(correoPaciente);
-        inputPanel.add(correoField);
-        inputPanel.add(volverAlInicio);
-
-        // Agregar el panel del menú al panel principal
-        mainPanel.add(menuPanel, BorderLayout.CENTER); // Agregar el panel del menú en el centro del panel principal
-        // Eventos para los botones
-        nombrePaciente.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir nombre...");
-            consultante.setNombre(nombreField.getText());
-            JOptionPane.showMessageDialog(frame, "Nombre ingresado: " + consultante.getNombre());
-        });
-
-        apellidoPaciente.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir apellido...");
-        });
-        edadPaciente.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir edad...");
-        });
-
-        direccionPaciente.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir direccion...");
-        });
-        telefonoPaciente.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir telefono...");
-        });
-        correoPaciente.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Elegir correo...");
-        });
-
-        volverAlInicio.addActionListener(e -> {
-            //System.exit(0);
-            frame.setVisible(false); // Solo oculta la ventana
-        });
-
-        // Agregar el panel principal al marco
-        frame.add(mainPanel);
-        frame.setVisible(true);
-        return consultante;*/
-
-    public void menuElegirProfesional(JFrame frame, Turno turno) {
-        JDialog dialog = new JDialog(frame, "Elegir Profesional", true);
-        dialog.setSize(300, 200);
-        dialog.setLocationRelativeTo(frame);
-
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Selecciona el profesional...");
-        JButton confirmarButton = new JButton("Confirmar");
-
-        confirmarButton.addActionListener(e -> {
-            // Procesa la selección de profesional y actualiza el turno
-            dialog.dispose();
-        });
-
-        panel.add(label);
-        panel.add(confirmarButton);
-
-        dialog.getContentPane().add(panel);
-        dialog.setVisible(true);
-    }
-
-    public void menuElegirConsultorio(JFrame frame, Turno turno) {
-        JDialog dialog = new JDialog(frame, "Elegir Consultorio", true);
-        dialog.setSize(300, 200);
-        dialog.setLocationRelativeTo(frame);
-
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Selecciona el consultorio...");
-        JButton confirmarButton = new JButton("Confirmar");
-
-        confirmarButton.addActionListener(e -> {
-            // Procesa la selección de consultorio y actualiza el turno
-            dialog.dispose();
-        });
-
-        panel.add(label);
-        panel.add(confirmarButton);
-
-        dialog.getContentPane().add(panel);
-        dialog.setVisible(true);
-    }
-
-    public void menuElegirDia(JFrame frame, Turno turno) {
-        JDialog dialog = new JDialog(frame, "Elegir Día", true);
-        dialog.setSize(300, 200);
-        dialog.setLocationRelativeTo(frame);
-
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Selecciona el día...");
-        JButton confirmarButton = new JButton("Confirmar");
-
-        confirmarButton.addActionListener(e -> {
-            // Procesa la selección de día y actualiza el turno
-            dialog.dispose();
-        });
-
-        panel.add(label);
-        panel.add(confirmarButton);
-
-        dialog.getContentPane().add(panel);
-        dialog.setVisible(true);
-    }
-
-    public void menuElegirHorario(JFrame frame, Turno turno) {
-        JDialog dialog = new JDialog(frame, "Elegir Horario", true);
-        dialog.setSize(300, 200);
-        dialog.setLocationRelativeTo(frame);
-
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Selecciona el horario...");
-        JButton confirmarButton = new JButton("Confirmar");
-
-        confirmarButton.addActionListener(e -> {
-            // Procesa la selección de horario y actualiza el turno
-            dialog.dispose();
-        });
-
-        panel.add(label);
-        panel.add(confirmarButton);
-
-        dialog.getContentPane().add(panel);
-        dialog.setVisible(true);
-    }
 
 }
