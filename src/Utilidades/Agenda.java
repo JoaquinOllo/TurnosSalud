@@ -1,11 +1,11 @@
 package Utilidades;
 
 import Citas.Turno;
+import Enumeradores.Especialidad;
 import Locaciones.Consultorio;
 import Locaciones.Sede;
 import Usuarios.Profesional;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -26,6 +26,16 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
             }
         }
         return turnosPorConsultorio;
+    }
+
+    private Agenda<T> filtrarPorEspecialidad(Especialidad especialidad) {
+        Agenda <T> turnosPorEspecialidad=new Agenda<>();
+        for (T turno:this){
+            if(turno.getProfesional().getEspecialidad().equals(especialidad)){
+                turnosPorEspecialidad.add(turno);
+            }
+        }
+        return turnosPorEspecialidad;
     }
 
     private Agenda<T> filtrarPorProfesional(Profesional profesional) {

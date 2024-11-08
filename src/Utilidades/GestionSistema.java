@@ -10,9 +10,11 @@ import Locaciones.Sede;
 import Usuarios.*;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class  GestionSistema {
 
@@ -139,7 +141,7 @@ public class  GestionSistema {
     }
 
     public void arranque(){
-
+        // acá va el arranque estándar del programa, sin usuarios inventados, tomando todo del json
     }
 
     public boolean conectarse (String nombreUsuario, JPasswordField contrasenha){
@@ -155,5 +157,18 @@ public class  GestionSistema {
         }
         return credencialesCorrectas;
     }
+
+    public ArrayList<Profesional> getProfesionales (){
+        return this.usuarios.stream().filter(us -> us instanceof Profesional)
+                .map(us -> (Profesional) us) //
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public ArrayList<Administrativo> getAdministrativos (){
+        return this.usuarios.stream().filter(us -> us instanceof Administrativo)
+                .map(us -> (Administrativo) us) //
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
 
 }
