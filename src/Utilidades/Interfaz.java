@@ -246,6 +246,15 @@ public class Interfaz  {
         JPanel menuPanel = new JPanel();
         menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
 
+        // Etiquetas informativas
+        JLabel lblSeleccionarEspecialidad = new JLabel("Selecciona una especialidad:");
+        JLabel lblSeleccionarProfesional = new JLabel("Selecciona un profesional:");
+        JLabel lblSeleccionarSede = new JLabel("Selecciona una sede:");
+        JLabel lblSeleccionarDia = new JLabel("Selecciona el día:");
+        JLabel lblSeleccionarHorario = new JLabel("Selecciona el horario:");
+        JLabel lblSeleccionarConsultorio = new JLabel("Selecciona un consultorio:");
+
+
         // Crear los elementos del menú de opciones
         ComboBoxModel<Especialidad> especialidadesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getEspecialidadesDisponibles()).toArray(new Especialidad[0]));
         ComboBoxModel<Sede> sedesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getSedesDisponibles()).toArray(new Sede[0]));
@@ -268,11 +277,18 @@ public class Interfaz  {
         confirmar.setEnabled(false);
         elegirSede.setEnabled(false);
 
+
+
         // Agregar botones al panel del menú
+        menuPanel.add(lblSeleccionarEspecialidad);
         menuPanel.add(elegirEspecialidad);
+        menuPanel.add(lblSeleccionarSede);
         menuPanel.add(elegirSede);
+        menuPanel.add(lblSeleccionarProfesional);
         menuPanel.add(elegirProfesional);
+        menuPanel.add(lblSeleccionarDia);
         menuPanel.add(elegirDia);
+        menuPanel.add(lblSeleccionarHorario);
         menuPanel.add(elegirHorario);
         menuPanel.add(confirmar);
         menuPanel.add(volverAlInicio);
@@ -323,6 +339,11 @@ public class Interfaz  {
             FranjaHoraria franja = new FranjaHoraria((LocalTime) elegirHorario.getSelectedItem(), duracionTurno );
             turnoNuevo.setHorario(franja);
             turnoNuevo.setConsultorio(sedeElegida[0].buscarConsultorioDisponible(turnoNuevo.getDia(), turnoNuevo.getFranjaHoraria()));
+            System.out.println("Consultorio asignado: " + turnoNuevo.getConsultorio());
+            if (turnoNuevo.getConsultorio() == null) {
+                JOptionPane.showMessageDialog(frame, "No hay consultorios disponibles para la fecha y hora seleccionadas.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             confirmar.setEnabled(true);
         });
 
