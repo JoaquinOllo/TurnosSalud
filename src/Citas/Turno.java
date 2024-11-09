@@ -23,7 +23,6 @@ public class Turno  {
     private Usuario agendadoPor;
     private Consultorio consultorio;
     private String razon;
-    private Especialidad especialidad=Especialidad.CARDIOLOGIA;
 
     public Turno(Usuario gestor) {
         this.agendadoPor = gestor;
@@ -106,11 +105,7 @@ public class Turno  {
     }
 
     public Especialidad getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(Especialidad especialidad) {
-        this.especialidad = especialidad;
+        return this.profesional.getEspecialidad();
     }
 
     public LocalTime getHoraFin(){

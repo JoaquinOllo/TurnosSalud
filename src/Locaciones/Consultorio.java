@@ -2,8 +2,12 @@ package Locaciones;
 
 import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
+import Utilidades.Agenda;
+import Utilidades.FranjaHoraria;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Consultorio implements I_CompatibilidadHorarios {
     private Sede sede;
@@ -27,5 +31,16 @@ public class Consultorio implements I_CompatibilidadHorarios {
 
     public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
         return this.sede.citaCompatibleConFranjaHoraria(turno);
+    }
+
+    @Override
+    public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
+        HashSet<LocalTime> horariosHabilitados = new HashSet<>();
+
+        for (FranjaHoraria franja : this.sede.getHorarios()){
+            horariosHabilitados.addAll(franja.getHorariosHabilitados(turnos, duracionTurnoEnMinutos));
+        }
+
+        return horariosHabilitados;
     }
 }

@@ -2,6 +2,8 @@ package Utilidades;
 import Citas.Turno;
 
 import Enumeradores.Especialidad;
+import Excepciones.HorarioNoDisponibleException;
+import Excepciones.OperacionNoPermitidaException;
 import Excepciones.UsuarioInvalidoException;
 import Locaciones.Sede;
 import Usuarios.Consultante;
@@ -151,7 +153,7 @@ public class Interfaz  {
         });
 
         agregarCita.addActionListener(e -> {
-            Turno t1=new Turno();
+            Turno t1=new Turno(this.sistema.getUsuarioConectado());
             menuCita(t1);
 
         });
@@ -312,6 +314,7 @@ public class Interfaz  {
             ComboBoxModel<LocalTime> horarioModelo = new DefaultComboBoxModel<>(
                     new ArrayList<>(horariosHabilitados).toArray(new LocalTime[0])
             );
+            elegirHorario.setModel(horarioModelo);
             elegirHorario.setEnabled(true);
         });
 
@@ -319,23 +322,26 @@ public class Interfaz  {
             Duration duracionTurno = Duration.of(turnoNuevo.getProfesional().getDuracionTurnoMinutos(), ChronoUnit.MINUTES);
             FranjaHoraria franja = new FranjaHoraria((LocalTime) elegirHorario.getSelectedItem(), duracionTurno );
             turnoNuevo.setHorario(franja);
+            turnoNuevo.setConsultorio(sedeElegida[0].buscarConsultorioDisponible(turnoNuevo.getDia(), turnoNuevo.getFranjaHoraria()));
             confirmar.setEnabled(true);
         });
 
         confirmar.addActionListener(e -> {
-            // Aquí setearíamos los valores en turnoNuevo
-            if (especialidadElegida[0] != null && profesionalElegido[0] != null && fechaElegida[0] != null) {
-                turnoNuevo.setEspecialidad(especialidadElegida[0]);
-                System.out.println(especialidadElegida[0]);
-                turnoNuevo.setProfesional(profesionalElegido[0]);
-                System.out.println(profesionalElegido[0]);
-                turnoNuevo.setDia(fechaElegida[0].toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                System.out.println(fechaElegida[0]);
-                this.sistema.getTurnos().add(turnoNuevo);
-                // Mostrar un mensaje de confirmación o realizar alguna acción adicional
-                JOptionPane.showMessageDialog(frame, "Turno confirmado con éxito!");
-            } else {
-                JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
+            try {
+                System.out.println(turnoNuevo);
+                // Aquí setearíamos los valores en turnoNuevo
+                if (turnoNuevo.getDia() != null & turnoNuevo.getFranjaHoraria() != null &
+                turnoNuevo.getProfesional() != null & turnoNuevo.getConsultorio() != null) {
+                    this.sistema.agendarTurno(turnoNuevo);
+                    // Mostrar un mensaje de confirmación o realizar alguna acción adicional
+                    JOptionPane.showMessageDialog(frame, "Turno confirmado con éxito!");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
+                }
+            } catch (HorarioNoDisponibleException ex) {
+                JOptionPane.showMessageDialog(frame, "El turno no puede ser cargado: " + ex.getMessage());
+            } catch (OperacionNoPermitidaException ex) {
+                JOptionPane.showMessageDialog(frame, "Operación no permitida para este perfil de usuario: " + ex.getMessage());
             }
         });
 

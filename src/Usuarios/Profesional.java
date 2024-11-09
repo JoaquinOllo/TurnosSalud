@@ -9,28 +9,18 @@ import Locaciones.Sede;
 import Utilidades.Agenda;
 import Utilidades.FranjaHoraria;
 
-import java.awt.*;
-import java.awt.List;
-import java.lang.reflect.Array;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Profesional extends Usuario implements I_GestionTurnos, I_CompatibilidadHorarios {
     private Especialidad especialidad;
     private Set<FranjaHoraria> horarioDeTrabajo = new HashSet<>();
-    int duracionTurnoMinutos;
+    private final int duracionTurnoMinutos = 60;
 
     public int getDuracionTurnoMinutos() {
         return duracionTurnoMinutos;
-    }
-
-    public void setDuracionTurnoMinutos(int duracionTurnoMinutos) {
-        this.duracionTurnoMinutos = duracionTurnoMinutos;
     }
 
     public Profesional(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
@@ -72,6 +62,17 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         return compatible;
     }
 
+    @Override
+    public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
+        HashSet<LocalTime> horariosHabilitados = new HashSet<>();
+
+        for (FranjaHoraria franja : this.horarioDeTrabajo){
+            horariosHabilitados.addAll(franja.getHorariosHabilitados(turnos, duracionTurnoEnMinutos));
+        }
+
+        return horariosHabilitados;
+    }
+
     public Especialidad getEspecialidad() {
         return especialidad;
     }
@@ -99,7 +100,7 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         for (int i = 0; i < limiteEnDias; i++) {
             LocalDate fecha = LocalDate.now().plusDays(i);
             System.out.println(fecha);
-            HashSet<FranjaHoraria> turnosDelDia = turnos.filtrarPorDia(fecha).stream().map(t -> t.getFranjaHoraria()).collect(Collectors.toCollection(HashSet::new));
+            HashSet<FranjaHoraria> turnosDelDia = turnos.filtrarPorDia(fecha).stream().map(Turno::getFranjaHoraria).collect(Collectors.toCollection(HashSet::new));
             System.out.println(this.horarioDeTrabajo);
             for (FranjaHoraria franja: this.horarioDeTrabajo){
                 System.out.println(franja);
@@ -111,10 +112,5 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         }
 
         return fechasHabilitadas;
-    }
-    public Set<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, Sede sede){
-        HashSet<LocalTime> horariosHabilitados = new HashSet<>();
-
-        return horariosHabilitados;
     }
 }

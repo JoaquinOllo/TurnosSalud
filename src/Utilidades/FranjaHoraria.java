@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalQuery;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class FranjaHoraria implements I_CompatibilidadHorarios {
     LocalTime horaInicio;
@@ -52,6 +53,17 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
 
         return turnoHabilitado.queryFrom(horaInicioTurno)
                 && turnoHabilitado.queryFrom(horaFinTurno);
+    }
+
+    @Override
+    public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
+        HashSet<LocalTime> horariosDisponibles = this.dividirSegunDuracion(duracionTurnoEnMinutos).stream().map(e -> e.horaInicio).collect(Collectors.toCollection(HashSet::new));
+
+        HashSet<LocalTime> horariosTomados = turnos.stream().map(e -> e.getHoraInicio()).collect(Collectors.toCollection(HashSet::new));
+
+        horariosDisponibles.removeAll(horariosTomados);
+
+        return horariosDisponibles;
     }
 
     public boolean quedanEspaciosEnFranja(HashSet<FranjaHoraria> turnosDelDia, int duracionTurnoMinutos) {

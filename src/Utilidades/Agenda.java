@@ -63,8 +63,10 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
     public Agenda<T> filtrarPorDia(LocalDate dia) {
         Agenda<T> turnosPorDia =new Agenda<>();
         for(T turno:this){
-            if(turno.getDia().equals(dia)){
-                turnosPorDia.add(turno);
+            if (turno.getDia() != null){
+                if(turno.getDia().equals(dia)){
+                    turnosPorDia.add(turno);
+                }
             }
         }
         return turnosPorDia;

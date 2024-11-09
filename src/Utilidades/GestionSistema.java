@@ -123,7 +123,9 @@ public class  GestionSistema {
         sede.setHorarios(horarios);
 
         Consultorio consultorio = new Consultorio();
+        consultorio.setSede(sede);
         consultorios.add(consultorio);
+        sede.addConsultorio(consultorio);
 
         Consultante consultante = new Consultante("pipo", "pipo");
         consultante.setNombre("Pipo");
@@ -139,9 +141,8 @@ public class  GestionSistema {
         profesional.setNombre("Rosa");
         profesional.setApellido("Atlante");
         profesional.setEspecialidad(Especialidad.ALERGISTA);
-        profesional.setDuracionTurnoMinutos(60);
         HashSet<FranjaHoraria> horario = new HashSet<>();
-        horario.add(new FranjaHoraria(8, 480));
+        horario.add(new FranjaHoraria(8, 400));
         profesional.setHorarioDeTrabajo(horario);
         usuarios.add(profesional);
 
@@ -151,9 +152,8 @@ public class  GestionSistema {
         profesional2.setNombre("Amalía");
         profesional2.setApellido("Sémola");
         profesional2.setEspecialidad(Especialidad.ALERGISTA);
-        profesional2.setDuracionTurnoMinutos(60);
         HashSet<FranjaHoraria> horario2 = new HashSet<>();
-        horario2.add(new FranjaHoraria(8, 540));
+        horario2.add(new FranjaHoraria(8, 320));
         profesional2.setHorarioDeTrabajo(horario2);
         usuarios.add(profesional2);
 
@@ -161,8 +161,8 @@ public class  GestionSistema {
 
         menu.menuConexion();
 
-        Turno turno=new Turno();
-        turnos.add(turno);
+//        Turno turno=new Turno();
+//        turnos.add(turno);
 
     }
 
@@ -230,15 +230,23 @@ public class  GestionSistema {
     public HashSet<LocalDate> getFechasHabilitadas(Profesional profesional) {
         HashSet<LocalDate> fechasHabilitadas = new HashSet<>(profesional.getFechasHabilitadas(this.turnos.filtrarPorProfesional(profesional),
                 this.maximoDiasTurnos));
-        System.out.println(fechasHabilitadas);
         return fechasHabilitadas;
     }
 
     public HashSet<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {
-        HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.turnos.filtrarPorProfesional(profesional).filtrarPorDia(dia), sede));
+        HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.turnos.filtrarPorProfesional(profesional)
+                .filtrarPorDia(dia), profesional.getDuracionTurnoMinutos()));
 
+        System.out.println(horariosDisponibles);
 
+        HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(this.turnos
+                .filtrarPorDia(dia).filtrarPorSede(sede), profesional.getDuracionTurnoMinutos()));
 
+        System.out.println(horariosDispSede);
+
+        horariosDisponibles.retainAll(horariosDispSede);
+
+        System.out.println(horariosDisponibles);
         return horariosDisponibles;
     }
 

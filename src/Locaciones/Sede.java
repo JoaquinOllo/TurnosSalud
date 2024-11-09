@@ -2,17 +2,22 @@ package Locaciones;
 
 import Citas.Turno;
 import Interfaces.I_CompatibilidadHorarios;
+import Usuarios.Consultante;
 import Usuarios.Usuario;
+import Utilidades.Agenda;
 import Utilidades.FranjaHoraria;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class Sede implements I_CompatibilidadHorarios {
-    private Set<FranjaHoraria> horarios;
+    private Set<FranjaHoraria> horarios = new HashSet<>();
     private Usuario responsable;
-    private ArrayList<Consultorio> consultorios;
+    private ArrayList<Consultorio> consultorios = new ArrayList<>();
     private String direccion;
     private String nombre;
 
@@ -43,6 +48,15 @@ public class Sede implements I_CompatibilidadHorarios {
         return compatible;
     }
 
+    @Override
+    public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
+        HashSet<LocalTime> horariosHabilitados = new HashSet<>();
+        for (Consultorio consultorio : this.consultorios){
+            horariosHabilitados.addAll(consultorio.getHorariosHabilitados(turnos.filtrarPorConsultorio(consultorio), duracionTurnoEnMinutos));
+        }
+        return horariosHabilitados;
+    }
+
     public ArrayList<Consultorio> getConsultorios() {
         return consultorios;
     }
@@ -70,5 +84,13 @@ public class Sede implements I_CompatibilidadHorarios {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public void addConsultorio(Consultorio consultorio) {
+        this.consultorios.add(consultorio);
+    }
+
+    public Consultorio buscarConsultorioDisponible(LocalDate dia, FranjaHoraria franjaHoraria) {
+        return null;
     }
 }
