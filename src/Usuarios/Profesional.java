@@ -5,6 +5,7 @@ import Enumeradores.Especialidad;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_CompatibilidadHorarios;
 import Interfaces.I_GestionTurnos;
+import Locaciones.Sede;
 import Utilidades.Agenda;
 import Utilidades.FranjaHoraria;
 
@@ -110,5 +111,10 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         }
 
         return fechasHabilitadas;
+    }
+    public Set<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, Sede sede){
+        HashSet<LocalTime> horariosHabilitados = new HashSet<>();
+
+        return horariosHabilitados;
     }
 }

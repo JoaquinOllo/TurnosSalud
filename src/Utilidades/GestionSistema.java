@@ -11,7 +11,9 @@ import Locaciones.Sede;
 import Usuarios.*;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -113,6 +115,7 @@ public class  GestionSistema {
         Sede sede = new Sede();
         sedes.add(sede);
         sede.setDireccion("Maipú 3532");
+        sede.setNombre("Aurora");
 
         Set<FranjaHoraria> horarios = new HashSet<>();
         horarios.add(new FranjaHoraria(8, 480));
@@ -229,5 +232,17 @@ public class  GestionSistema {
                 this.maximoDiasTurnos));
         System.out.println(fechasHabilitadas);
         return fechasHabilitadas;
+    }
+
+    public HashSet<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {
+        HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.turnos.filtrarPorProfesional(profesional).filtrarPorDia(dia), sede));
+
+
+
+        return horariosDisponibles;
+    }
+
+    public ArrayList<Sede> getSedesDisponibles() {
+        return this.sedes;
     }
 }

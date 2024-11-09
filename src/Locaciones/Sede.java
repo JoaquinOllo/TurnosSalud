@@ -14,6 +14,7 @@ public class Sede implements I_CompatibilidadHorarios {
     private Usuario responsable;
     private ArrayList<Consultorio> consultorios;
     private String direccion;
+    private String nombre;
 
     public Set<FranjaHoraria> getHorarios() {
         return horarios;
@@ -56,5 +57,18 @@ public class Sede implements I_CompatibilidadHorarios {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    @Override
+    public String toString() {
+        return this.nombre + ": " + this.direccion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

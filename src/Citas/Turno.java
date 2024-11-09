@@ -15,7 +15,7 @@ import java.time.LocalTime;
 import java.util.Date;
 
 public class Turno  {
-    protected Date dia;
+    protected LocalDate dia;
     protected FranjaHoraria horario;
     private EstadoCita estado = EstadoCita.PENDIENTE_CONFIRMACION;
     private Consultante consultante;
@@ -49,11 +49,11 @@ public class Turno  {
         this.razon = motivo;
     }
 
-    public Date getDia() {
+    public LocalDate getDia() {
         return dia;
     }
 
-    public void setDia(Date dia){
+    public void setDia(LocalDate dia){
         this.dia = dia;
     }
 

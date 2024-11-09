@@ -3,6 +3,7 @@ import Citas.Turno;
 
 import Enumeradores.Especialidad;
 import Excepciones.UsuarioInvalidoException;
+import Locaciones.Sede;
 import Usuarios.Consultante;
 import Usuarios.ListaUsuarios;
 import Usuarios.Profesional;
@@ -11,8 +12,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.Array;
 import java.text.NumberFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.swing.text.NumberFormatter;
 
@@ -216,6 +220,7 @@ public class Interfaz  {
         // DATOS A RECOPILAR
         final Especialidad[] especialidadElegida = {null};
         final Profesional[] profesionalElegido = {null};
+        final Sede[] sedeElegida = {null};
         final Date[] fechaElegida = {null}; // Para almacenar la fecha seleccionada
 
         JFrame frame = new JFrame("Turnos");
@@ -241,8 +246,10 @@ public class Interfaz  {
 
         // Crear los elementos del menú de opciones
         ComboBoxModel<Especialidad> especialidadesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getEspecialidadesDisponibles()).toArray(new Especialidad[0]));
+        ComboBoxModel<Sede> sedesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getSedesDisponibles()).toArray(new Sede[0]));
         JComboBox<Especialidad> elegirEspecialidad = new JComboBox<>(especialidadesModel);
         JComboBox<Profesional> elegirProfesional = new JComboBox<>();
+        JComboBox<Sede> elegirSede = new JComboBox<>(sedesModel);
         ComboBoxModel<LocalDate> fechasDisponiblesModel = new DefaultComboBoxModel<>();
         ComboBoxModel<LocalTime> horariosDisponiblesModel = new DefaultComboBoxModel<>();
 
@@ -257,9 +264,11 @@ public class Interfaz  {
         elegirDia.setEnabled(false);
         elegirHorario.setEnabled(false);
         confirmar.setEnabled(false);
+        elegirSede.setEnabled(false);
 
         // Agregar botones al panel del menú
         menuPanel.add(elegirEspecialidad);
+        menuPanel.add(elegirSede);
         menuPanel.add(elegirProfesional);
         menuPanel.add(elegirDia);
         menuPanel.add(elegirHorario);
@@ -277,6 +286,11 @@ public class Interfaz  {
             ComboBoxModel<Profesional> profesionalesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getProfesionales()
                     .filtrarPorEspecialidad(especialidadElegida[0])).toArray(new Profesional[0]));
             elegirProfesional.setModel(profesionalesModel);
+            elegirSede.setEnabled(true);
+        });
+
+        elegirSede.addActionListener(e-> {
+            sedeElegida[0] = (Sede) elegirSede.getSelectedItem();
             elegirProfesional.setEnabled(true);
         });
 
@@ -289,13 +303,25 @@ public class Interfaz  {
             ComboBoxModel<LocalDate> fechasHabilitadasModel = new DefaultComboBoxModel<>(new ArrayList<>(fechasHabilitadas).toArray(new LocalDate[0]));
             elegirDia.setModel(fechasHabilitadasModel);
             elegirDia.setEnabled(true);
-            confirmar.setEnabled(true);
         });
 
         elegirDia.addActionListener(e -> {
-            turnoNuevo.setDia((Date) elegirDia.getSelectedItem());
+            turnoNuevo.setDia((LocalDate) elegirDia.getSelectedItem());
+            elegirHorario.removeAllItems();
+            HashSet<LocalTime> horariosHabilitados = this.sistema.getHorariosDisponibles(turnoNuevo.getProfesional(), sedeElegida[0], turnoNuevo.getDia()) ;
+            ComboBoxModel<LocalTime> horarioModelo = new DefaultComboBoxModel<>(
+                    new ArrayList<>(horariosHabilitados).toArray(new LocalTime[0])
+            );
             elegirHorario.setEnabled(true);
         });
+
+        elegirHorario.addActionListener(e ->{
+            Duration duracionTurno = Duration.of(turnoNuevo.getProfesional().getDuracionTurnoMinutos(), ChronoUnit.MINUTES);
+            FranjaHoraria franja = new FranjaHoraria((LocalTime) elegirHorario.getSelectedItem(), duracionTurno );
+            turnoNuevo.setHorario(franja);
+            confirmar.setEnabled(true);
+        });
+
         confirmar.addActionListener(e -> {
             // Aquí setearíamos los valores en turnoNuevo
             if (especialidadElegida[0] != null && profesionalElegido[0] != null && fechaElegida[0] != null) {
@@ -303,7 +329,7 @@ public class Interfaz  {
                 System.out.println(especialidadElegida[0]);
                 turnoNuevo.setProfesional(profesionalElegido[0]);
                 System.out.println(profesionalElegido[0]);
-                turnoNuevo.setDia(fechaElegida[0]);
+                turnoNuevo.setDia(fechaElegida[0].toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 System.out.println(fechaElegida[0]);
                 this.sistema.getTurnos().add(turnoNuevo);
                 // Mostrar un mensaje de confirmación o realizar alguna acción adicional
