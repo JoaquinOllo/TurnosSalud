@@ -12,9 +12,8 @@ import java.awt.*;
 import java.sql.Array;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalTime;
+import java.util.*;
 import javax.swing.text.NumberFormatter;
 
 public class Interfaz  {
@@ -23,7 +22,6 @@ public class Interfaz  {
     public Interfaz(GestionSistema sistema) {
         this.sistema=sistema;
     }
-
 
     public void menuConexion(){
         JFrame frame = new JFrame("Bienvenido a SuperDoctors - Conexión");
@@ -220,7 +218,6 @@ public class Interfaz  {
         final Profesional[] profesionalElegido = {null};
         final Date[] fechaElegida = {null}; // Para almacenar la fecha seleccionada
 
-
         JFrame frame = new JFrame("Turnos");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);
@@ -246,35 +243,26 @@ public class Interfaz  {
         ComboBoxModel<Especialidad> especialidadesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getEspecialidadesDisponibles()).toArray(new Especialidad[0]));
         JComboBox<Especialidad> elegirEspecialidad = new JComboBox<>(especialidadesModel);
         JComboBox<Profesional> elegirProfesional = new JComboBox<>();
+        ComboBoxModel<LocalDate> fechasDisponiblesModel = new DefaultComboBoxModel<>();
+        ComboBoxModel<LocalTime> horariosDisponiblesModel = new DefaultComboBoxModel<>();
 
-        // Definir las fechas mínima y máxima
-        Calendar calendar = Calendar.getInstance();
-        Date startDate = calendar.getTime();
+        JComboBox<LocalDate> elegirDia = new JComboBox(fechasDisponiblesModel);
+        JComboBox<LocalTime> elegirHorario = new JComboBox<>(horariosDisponiblesModel);
 
-        calendar.add(Calendar.DAY_OF_MONTH, this.sistema.maximoDiasTurnos);
-        Date endDate = calendar.getTime();
-
-        // Crear el modelo de fecha con rango
-        SpinnerDateModel dateModel = new SpinnerDateModel(startDate, startDate, endDate, Calendar.DAY_OF_MONTH);
-        JSpinner elegirDia = new JSpinner(dateModel);
-
-        // Formato de fecha para mostrar en el JSpinner
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(elegirDia, "dd/MM/yyyy");
-        elegirDia.setEditor(editor);
-
-        JButton elegirDiaYHorario = new JButton("4- Elegir dia y horario");
         JButton confirmar = new JButton("Confirmar");
         JButton volverAlInicio = new JButton("Volver al inicio");
 
         // Inicialmente deshabilitar los botones de las opciones posteriores
         elegirProfesional.setEnabled(false);
         elegirDia.setEnabled(false);
+        elegirHorario.setEnabled(false);
         confirmar.setEnabled(false);
 
         // Agregar botones al panel del menú
         menuPanel.add(elegirEspecialidad);
         menuPanel.add(elegirProfesional);
         menuPanel.add(elegirDia);
+        menuPanel.add(elegirHorario);
         menuPanel.add(confirmar);
         menuPanel.add(volverAlInicio);
 
@@ -290,19 +278,23 @@ public class Interfaz  {
                     .filtrarPorEspecialidad(especialidadElegida[0])).toArray(new Profesional[0]));
             elegirProfesional.setModel(profesionalesModel);
             elegirProfesional.setEnabled(true);
-
         });
 
         elegirProfesional.addActionListener(e -> {
-            // Guardar el profesional seleccionado
-            profesionalElegido[0] = (Profesional) elegirProfesional.getSelectedItem();
+            turnoNuevo.setProfesional(this.sistema.getProfesionales()
+                            .filtrarPorEspecialidad(especialidadElegida[0])
+                    .get(elegirProfesional.getSelectedIndex()));
+            HashSet<LocalDate> fechasHabilitadas = this.sistema.getFechasHabilitadas(turnoNuevo.getProfesional());
+            System.out.println(fechasHabilitadas);
+            ComboBoxModel<LocalDate> fechasHabilitadasModel = new DefaultComboBoxModel<>(new ArrayList<>(fechasHabilitadas).toArray(new LocalDate[0]));
+            elegirDia.setModel(fechasHabilitadasModel);
             elegirDia.setEnabled(true);
             confirmar.setEnabled(true);
         });
 
-        elegirDia.addChangeListener(e -> {
-            // Guardar la fecha seleccionada
-            fechaElegida[0] = (Date) elegirDia.getValue();
+        elegirDia.addActionListener(e -> {
+            turnoNuevo.setDia((Date) elegirDia.getSelectedItem());
+            elegirHorario.setEnabled(true);
         });
         confirmar.addActionListener(e -> {
             // Aquí setearíamos los valores en turnoNuevo

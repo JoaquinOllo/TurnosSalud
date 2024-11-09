@@ -13,8 +13,10 @@ import Usuarios.*;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class  GestionSistema {
 
@@ -134,6 +136,10 @@ public class  GestionSistema {
         profesional.setNombre("Rosa");
         profesional.setApellido("Atlante");
         profesional.setEspecialidad(Especialidad.ALERGISTA);
+        profesional.setDuracionTurnoMinutos(60);
+        HashSet<FranjaHoraria> horario = new HashSet<>();
+        horario.add(new FranjaHoraria(8, 480));
+        profesional.setHorarioDeTrabajo(horario);
         usuarios.add(profesional);
 
         sede.setResponsable(profesional);
@@ -142,6 +148,10 @@ public class  GestionSistema {
         profesional2.setNombre("Amalía");
         profesional2.setApellido("Sémola");
         profesional2.setEspecialidad(Especialidad.ALERGISTA);
+        profesional2.setDuracionTurnoMinutos(60);
+        HashSet<FranjaHoraria> horario2 = new HashSet<>();
+        horario2.add(new FranjaHoraria(8, 540));
+        profesional2.setHorarioDeTrabajo(horario2);
         usuarios.add(profesional2);
 
         this.usuarioConectado=administrador;
@@ -205,12 +215,19 @@ public class  GestionSistema {
     //filtro para que de la lista de usuarios me guarde en el array solo los pacientes
 
     public ArrayList<Consultante> getPacientes() {
-        ArrayList<Consultante> pacientes= new ArrayList<>();
-        for (Usuario usuario:usuarios){
-            if (usuario instanceof Consultante){
+        ArrayList<Consultante> pacientes = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            if (usuario instanceof Consultante) {
                 pacientes.add((Consultante) usuario);
             }
         }
         return pacientes;
+    }
+
+    public HashSet<LocalDate> getFechasHabilitadas(Profesional profesional) {
+        HashSet<LocalDate> fechasHabilitadas = new HashSet<>(profesional.getFechasHabilitadas(this.turnos.filtrarPorProfesional(profesional),
+                this.maximoDiasTurnos));
+        System.out.println(fechasHabilitadas);
+        return fechasHabilitadas;
     }
 }

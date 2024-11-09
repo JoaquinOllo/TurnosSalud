@@ -18,7 +18,7 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return agendaFiltrada.stream().anyMatch(t -> t.colisiona(turno));//recorre el array de agenda filtrada
     }
 
-    private Agenda<T> filtrarPorConsultorio(Consultorio consultorio) {
+    public Agenda<T> filtrarPorConsultorio(Consultorio consultorio) {
         Agenda <T> turnosPorConsultorio=new Agenda<>();
         for (T turno:this){
             if(turno.getConsultorio().equals(consultorio)){
@@ -28,7 +28,7 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorConsultorio;
     }
 
-    private Agenda<T> filtrarPorEspecialidad(Especialidad especialidad) {
+    public Agenda<T> filtrarPorEspecialidad(Especialidad especialidad) {
         Agenda <T> turnosPorEspecialidad=new Agenda<>();
         for (T turno:this){
             if(turno.getProfesional().getEspecialidad().equals(especialidad)){
@@ -38,17 +38,19 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorEspecialidad;
     }
 
-    private Agenda<T> filtrarPorProfesional(Profesional profesional) {
+    public Agenda<T> filtrarPorProfesional(Profesional profesional) {
         Agenda<T> turnosPorProfesional=new Agenda<>();
         for(T turno:this){
-            if(turno.getProfesional().equals(profesional)){
-                turnosPorProfesional.add(turno);
+            if(turno.getProfesional() != null){
+                if (turno.getProfesional().equals(profesional)) {
+                    turnosPorProfesional.add(turno);
+                }
             }
         }
         return turnosPorProfesional;
     }
 
-    private Agenda<T> filtrarPorSede(Sede sede) {
+    public Agenda<T> filtrarPorSede(Sede sede) {
         Agenda<T> turnosPorSede=new Agenda<>();
         for(T turno:this){
             if(turno.getSede().equals(sede)){
@@ -58,7 +60,7 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorSede;
     }
 
-    private Agenda<T> filtrarPorDia(LocalDate dia) {
+    public Agenda<T> filtrarPorDia(LocalDate dia) {
         Agenda<T> turnosPorDia =new Agenda<>();
         for(T turno:this){
             if(turno.getDia().equals(dia)){
@@ -68,7 +70,7 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorDia;
     }
 
-    private Agenda<T> filtrarPorHoraInicio(LocalTime horario) {
+    public Agenda<T> filtrarPorHoraInicio(LocalTime horario) {
         Agenda<T> turnosPorHorario =new Agenda<>();
         for(T turno:this){
             if(turno.getHoraInicio().equals(horario)){
@@ -78,7 +80,7 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorHorario;
     }
 
-    private Agenda<T> filtrarPorHoraFin(LocalTime horario) {
+    public Agenda<T> filtrarPorHoraFin(LocalTime horario) {
         Agenda<T> turnosPorHorario =new Agenda<>();
         for(T turno:this){
             if(turno.getHoraInicio().equals(horario)){
@@ -88,7 +90,7 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorHorario;
     }
 
-    private Agenda<T> filtrarPorPeriodo(FranjaHoraria franja) {
+    public Agenda<T> filtrarPorPeriodo(FranjaHoraria franja) {
         Agenda<T> turnosPorPeriodo =new Agenda<>();
         for(T turno:this){
             if(turno.getFranjaHoraria().citaCompatibleConFranjaHoraria(franja)){

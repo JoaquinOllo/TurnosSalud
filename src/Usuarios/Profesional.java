@@ -5,15 +5,32 @@ import Enumeradores.Especialidad;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_CompatibilidadHorarios;
 import Interfaces.I_GestionTurnos;
+import Utilidades.Agenda;
 import Utilidades.FranjaHoraria;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.awt.*;
+import java.awt.List;
+import java.lang.reflect.Array;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Profesional extends Usuario implements I_GestionTurnos, I_CompatibilidadHorarios {
     private Especialidad especialidad;
-    Set<FranjaHoraria> horarioDeTrabajo = new HashSet<>();
+    private Set<FranjaHoraria> horarioDeTrabajo = new HashSet<>();
+    int duracionTurnoMinutos;
+
+    public int getDuracionTurnoMinutos() {
+        return duracionTurnoMinutos;
+    }
+
+    public void setDuracionTurnoMinutos(int duracionTurnoMinutos) {
+        this.duracionTurnoMinutos = duracionTurnoMinutos;
+    }
 
     public Profesional(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
         super(nombreUsuario, contrasenha);
@@ -73,5 +90,25 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
     @Override
     public String toString() {
         return this.getNombreCompleto();
+    }
+
+    public Set<LocalDate> getFechasHabilitadas(Agenda<Turno> turnos, int limiteEnDias) {
+        Set<LocalDate> fechasHabilitadas = new HashSet<>();
+
+        for (int i = 0; i < limiteEnDias; i++) {
+            LocalDate fecha = LocalDate.now().plusDays(i);
+            System.out.println(fecha);
+            HashSet<FranjaHoraria> turnosDelDia = turnos.filtrarPorDia(fecha).stream().map(t -> t.getFranjaHoraria()).collect(Collectors.toCollection(HashSet::new));
+            System.out.println(this.horarioDeTrabajo);
+            for (FranjaHoraria franja: this.horarioDeTrabajo){
+                System.out.println(franja);
+                if (franja.quedanEspaciosEnFranja(turnosDelDia, this.duracionTurnoMinutos)){
+                    System.out.println();
+                    fechasHabilitadas.add(fecha);
+                }
+            }
+        }
+
+        return fechasHabilitadas;
     }
 }

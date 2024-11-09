@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalQuery;
+import java.util.HashSet;
 
 public class FranjaHoraria implements I_CompatibilidadHorarios {
     LocalTime horaInicio;
@@ -34,11 +35,13 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
     public FranjaHoraria(int horaInicio, int duracionMinutos){
         this.horaInicio = LocalTime.of(horaInicio, 0);
         this.duracion = Duration.of(duracionMinutos, ChronoUnit.MINUTES);
+        this.horaCierre = this.horaInicio.plus(this.duracion);
     }
 
     public FranjaHoraria(int horaInicio, int minutosInicio, int duracionMinutos){
         this.horaInicio = LocalTime.of(horaInicio, minutosInicio);
         this.duracion = Duration.of(duracionMinutos, ChronoUnit.MINUTES);
+        this.horaCierre = this.horaInicio.plus(this.duracion);
     }
 
 
@@ -49,6 +52,15 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
 
         return turnoHabilitado.queryFrom(horaInicioTurno)
                 && turnoHabilitado.queryFrom(horaFinTurno);
+    }
+
+    public boolean quedanEspaciosEnFranja(HashSet<FranjaHoraria> turnosDelDia, int duracionTurnoMinutos) {
+        HashSet<FranjaHoraria> horariosDisponibles = this.dividirSegunDuracion(duracionTurnoMinutos);
+        System.out.println(horariosDisponibles);
+        System.out.println(turnosDelDia);
+        horariosDisponibles.removeAll(turnosDelDia);
+        System.out.println(horariosDisponibles);
+        return ! horariosDisponibles.isEmpty();
     }
 
     public <T extends Turno> boolean citaCompatibleConFranjaHoraria(FranjaHoraria franja) {
@@ -76,5 +88,36 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         if (this.getHoraInicio().isBefore(franja.getHoraInicio()))
             if (this.getHoraCierre().compareTo(franja.horaInicio) < 1) return true;
         return this.getHoraInicio().compareTo(franja.horaCierre) > -1;
+    }
+
+    public HashSet<FranjaHoraria> dividirSegunDuracion (int duracionMinutos){
+        HashSet<FranjaHoraria> listaHorarios = new HashSet<>();
+        LocalTime tiempoInicio = this.horaInicio;
+        LocalTime tiempoCierre = this.horaInicio.plus(duracionMinutos, ChronoUnit.MINUTES);
+        while (tiempoCierre.isBefore(this.horaCierre)){
+            listaHorarios.add(new FranjaHoraria(tiempoInicio, tiempoCierre));
+            tiempoInicio = tiempoCierre;
+            tiempoCierre = tiempoInicio.plus(duracionMinutos, ChronoUnit.MINUTES);
+
+        }
+        return listaHorarios;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FranjaHoraria franja = (FranjaHoraria) o;
+        return this.horaInicio == franja.horaInicio
+                && this.horaCierre == franja.horaCierre;
+    }
+
+    @Override
+    public String toString() {
+        return "FranjaHoraria{" +
+                "horaInicio=" + horaInicio +
+                ", horaCierre=" + horaCierre +
+                ", duracion=" + duracion +
+                '}';
     }
 }
