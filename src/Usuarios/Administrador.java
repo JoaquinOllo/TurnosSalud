@@ -11,6 +11,10 @@ public class Administrador extends Usuario implements I_GestionTurnos, I_Gestion
         super(nombreUsuario, contrasenha);
     }
 
+    public Administrador(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+        super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
+    }
+
     @Override
     public boolean agendaTurnos() {
         return true;

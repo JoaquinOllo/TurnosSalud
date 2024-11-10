@@ -14,6 +14,14 @@ public class Consultorio implements I_CompatibilidadHorarios {
     private Agenda<Turno> turnos = new Agenda<>();
     private int numero;
 
+    public Consultorio(int numero, Sede sede) {
+        this.numero = numero;
+        this.sede = sede;
+    }
+
+    public Consultorio() {
+    }
+
     public int getNumero() {
         return numero;
     }
@@ -62,5 +70,9 @@ public class Consultorio implements I_CompatibilidadHorarios {
         return "Consultorio: " +
                 "sede " + sede +
                 ", numero " + numero;
+    }
+
+    public void setTurnos(ArrayList<Turno> turnos) {
+        this.turnos = new Agenda<>(turnos);
     }
 }

@@ -4,11 +4,13 @@ import Citas.Turno;
 import Enumeradores.Especialidad;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
+import Excepciones.UsuarioInexistenteException;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_GestionTurnos;
 import Locaciones.Consultorio;
 import Locaciones.Sede;
 import Usuarios.*;
+import UtilidadesJSON.mapeoJSON;
 
 import javax.swing.*;
 import java.lang.reflect.Array;
@@ -176,22 +178,17 @@ public class  GestionSistema {
     }
 
     public void arranque(){
-
-
+        mapeoJSON.mapeoSistema(this);
+        menu.menuConexion();
     }
 
-    public boolean conectarse (String nombreUsuario, JPasswordField contrasenha){
+    public boolean conectarse (String nombreUsuario, JPasswordField contrasenha) throws UsuarioInexistenteException {
         boolean credencialesCorrectas = false;
-        Usuario usuarioEnConexion = null;
+        Usuario usuarioEnConexion = getUsuarioPorNombreUsuario(nombreUsuario);
+        String str_contrasenha = new String(contrasenha.getPassword());
 
-        for (Usuario usuario : usuarios){
-            if (usuario.getNombreUsuario().equals(nombreUsuario)){
-                usuarioEnConexion = usuario;
-                String str_contrasenha = new String(contrasenha.getPassword());
+        credencialesCorrectas = usuarioEnConexion.getContrasenha().equals(str_contrasenha);
 
-                credencialesCorrectas = usuarioEnConexion.getContrasenha().equals(str_contrasenha);
-            }
-        }
         if (credencialesCorrectas){
             this.usuarioConectado = usuarioEnConexion;
         }
@@ -269,5 +266,9 @@ public class  GestionSistema {
 
     public ArrayList<Sede> getSedesDisponibles() {
         return this.sedes;
+    }
+
+    public Usuario getUsuarioPorNombreUsuario(String nombreUsuario) throws UsuarioInexistenteException {
+        return this.usuarios.get(nombreUsuario);
     }
 }

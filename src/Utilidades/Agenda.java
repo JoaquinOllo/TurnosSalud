@@ -12,6 +12,13 @@ import java.util.ArrayList;
 
 public class Agenda<T extends Turno> extends ArrayList<T> {
 
+    public Agenda(ArrayList<T> turnos) {
+        super(turnos);
+    }
+
+    public Agenda() {
+    }
+
     public boolean franjaDisponible(T turno) {
         Agenda<T> agendaFiltrada = this.filtrarPorProfesional(turno.getProfesional()).filtrarPorConsultorio(turno.getConsultorio());
         //completar

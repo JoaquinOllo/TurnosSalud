@@ -13,6 +13,11 @@ public class Consultante extends Usuario implements I_GestionTurnos {
         super();
     }
 
+    public Consultante(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+        super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
+    }
+
+
     @Override
     public boolean agendaTurnos() {
         return true;

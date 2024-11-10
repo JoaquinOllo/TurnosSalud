@@ -1,6 +1,7 @@
 package Usuarios;
 
 import Enumeradores.Especialidad;
+import Excepciones.UsuarioInexistenteException;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -18,4 +19,11 @@ public class ListaUsuarios<T extends Usuario> extends ArrayList<T> {
         return this.stream().map(Usuario::getNombreCompleto).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public T get(String nombreUsuario) throws UsuarioInexistenteException {
+        for (T usuario : this){
+            if (usuario.getNombreUsuario().equals(nombreUsuario)){
+                return usuario;
+            }
+        }
+        throw new UsuarioInexistenteException(nombreUsuario);    }
 }

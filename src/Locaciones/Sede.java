@@ -21,6 +21,16 @@ public class Sede implements I_CompatibilidadHorarios {
     private String direccion;
     private String nombre;
 
+    public Sede(String nombre, String direccion, ArrayList<FranjaHoraria> horariosSede) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.horarios = new HashSet<>(horariosSede);
+    }
+
+    public Sede() {
+
+    }
+
     public Set<FranjaHoraria> getHorarios() {
         return horarios;
     }

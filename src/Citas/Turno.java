@@ -32,6 +32,19 @@ public class Turno  {
 
     }
 
+    public Turno(String dia, FranjaHoraria franjaHoraria, String consultante, String profesional, String agendadoPor, String estado, String razon) {
+    }
+
+    public Turno(LocalDate dia, FranjaHoraria franjaHoraria, Usuario consultante, Usuario profesional, Usuario agendadoPor, EstadoCita estado, String razon) {
+        this.dia = dia;
+        this.horario = franjaHoraria;
+        this.consultante = (Consultante) consultante;
+        this.profesional = (Profesional) profesional;
+        this.agendadoPor = agendadoPor;
+        this.estado = estado;
+        this.razon = razon;
+    }
+
     /**
      * Este método confirma un turno, cambiando su estado.
      */

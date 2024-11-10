@@ -10,6 +10,11 @@ public class Administrativo extends Usuario implements I_GestionTurnos, I_Gestio
         super(nombreUsuario, contrasenha);
     }
 
+    public Administrativo(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+        super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
+    }
+
+
     public Administrativo() {
     }
 

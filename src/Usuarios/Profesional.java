@@ -19,6 +19,12 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
     private Set<FranjaHoraria> horarioDeTrabajo = new HashSet<>();
     private final int duracionTurnoMinutos = 60;
 
+    public Profesional(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion, String especialidad, HashSet<FranjaHoraria> horarios) throws UsuarioInvalidoException {
+        super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
+        this.setEspecialidad(Especialidad.valueOf(especialidad));
+        this.setHorarioDeTrabajo(horarios);
+    }
+
     public int getDuracionTurnoMinutos() {
         return duracionTurnoMinutos;
     }

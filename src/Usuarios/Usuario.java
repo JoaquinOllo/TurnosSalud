@@ -18,6 +18,19 @@ public abstract class Usuario {
 
     private String direccion;
 
+    public Usuario(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
+        this.correo = correo;
+        this.nroTelefono = telefono;
+        if (this.validarNombreUsuario(nombreUsuario)){
+            this.nombreUsuario = nombreUsuario;
+        }
+        this.contrasenha = contrasena;
+        this.direccion = direccion;
+    }
+
     public String getNombre() {
         return nombre;
     }

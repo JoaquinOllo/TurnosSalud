@@ -2,17 +2,13 @@ package Utilidades;
 import Citas.Turno;
 
 import Enumeradores.Especialidad;
-import Excepciones.HorarioNoDisponibleException;
-import Excepciones.LugarNoDisponibleException;
-import Excepciones.OperacionNoPermitidaException;
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.*;
 import Locaciones.Sede;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -64,10 +60,14 @@ public class Interfaz  {
         // Botón de inicio de sesión
         botonIniciarSesion = new JButton("Iniciar Sesión");
         botonIniciarSesion.addActionListener(e -> {
-            if (this.sistema.conectarse(campoUsuario.getText(), campoContrasena)){
-                frame.dispose(); // Destruye la ventana (la cierra completamente)
-                menuInicial();
-            } else {
+            try {
+                if (this.sistema.conectarse(campoUsuario.getText(), campoContrasena)){
+                    frame.dispose();
+                    menuInicial();
+                } else {
+                    throw new UsuarioInexistenteException();
+                }
+            } catch (UsuarioInexistenteException ex) {
                 JDialog modalError = new JDialog(frame, "Credenciales incorrectas", true);
                 JLabel mensaje = new JLabel("El usuario o la contraseña ingresados " +
                         "son incorrectos. " +
@@ -91,6 +91,7 @@ public class Interfaz  {
                 modalError.setLocationRelativeTo(modalError.getParent());
                 modalError.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 modalError.setVisible(true);
+
             }
         });
 
@@ -212,7 +213,7 @@ public class Interfaz  {
 
             // Configurar la ventana
             ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
-            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             ventana.setVisible(true);
         }
 
@@ -225,7 +226,7 @@ public class Interfaz  {
         final Date[] fechaElegida = {null}; // Para almacenar la fecha seleccionada
 
         JFrame frame = new JFrame("Turnos");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 250);
 
         // Crear un panel principal
@@ -394,6 +395,7 @@ public class Interfaz  {
         return turnoNuevo;
     }
     public void menuVerTurnos(ArrayList<Turno> turnos){
+        System.out.println(turnos);
         // Crear la ventana principal
         JFrame ventana = new JFrame("Lista de Turnos");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
@@ -423,7 +425,6 @@ public class Interfaz  {
             // Añadir un borde al panel del turno para separarlo de los demás
             panelTurno.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
 
-
             // Agregar el panel del paciente al panel principal de la ventana
 
             ventana.add(panelTurno);
@@ -431,7 +432,7 @@ public class Interfaz  {
 
         // Configurar la ventana
         ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ventana.setVisible(true);
     }
 
@@ -442,7 +443,7 @@ public class Interfaz  {
 
                 // Crear el marco de la ventana
                 JFrame frame = new JFrame("Agregar Paciente");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setSize(300, 350);  // Aumentamos el tamaño para los campos de texto
 
                 // Crear un panel principal
