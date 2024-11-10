@@ -26,4 +26,17 @@ public class ListaUsuarios<T extends Usuario> extends ArrayList<T> {
             }
         }
         throw new UsuarioInexistenteException(nombreUsuario);    }
+
+    public void set(String nombreUsuario, T usuario) throws UsuarioInexistenteException {
+        this.set(this.getIndice(nombreUsuario), usuario);
+    }
+
+    public int getIndice(String nombreUsuario) throws UsuarioInexistenteException{
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i).getNombreUsuario().equals(nombreUsuario)){
+                return i;
+            }
+        }
+        throw new UsuarioInexistenteException(nombreUsuario);
+    }
 }

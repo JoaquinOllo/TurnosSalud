@@ -35,14 +35,13 @@ public class Turno  {
     public Turno(String dia, FranjaHoraria franjaHoraria, String consultante, String profesional, String agendadoPor, String estado, String razon) {
     }
 
-    public Turno(LocalDate dia, FranjaHoraria franjaHoraria, Usuario consultante, Usuario profesional, Usuario agendadoPor, EstadoCita estado, String razon) {
+    public Turno(LocalDate dia, FranjaHoraria franjaHoraria, Usuario consultante, Usuario profesional, Usuario agendadoPor, EstadoCita estado) {
         this.dia = dia;
         this.horario = franjaHoraria;
         this.consultante = (Consultante) consultante;
         this.profesional = (Profesional) profesional;
         this.agendadoPor = agendadoPor;
         this.estado = estado;
-        this.razon = razon;
     }
 
     /**
@@ -167,5 +166,9 @@ public class Turno  {
                 ", agendadoPor=" + agendadoPor +
                 ", consultorio=" + consultorio +
                 '}';
+    }
+
+    public void setRazon(String razon) {
+        this.razon = razon;
     }
 }

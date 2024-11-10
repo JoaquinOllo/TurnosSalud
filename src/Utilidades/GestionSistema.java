@@ -2,10 +2,7 @@ package Utilidades;
 
 import Citas.Turno;
 import Enumeradores.Especialidad;
-import Excepciones.HorarioNoDisponibleException;
-import Excepciones.OperacionNoPermitidaException;
-import Excepciones.UsuarioInexistenteException;
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.*;
 import Interfaces.I_GestionTurnos;
 import Locaciones.Consultorio;
 import Locaciones.Sede;
@@ -70,6 +67,7 @@ public class  GestionSistema {
 
     public void addSede(Sede sede){
         this.sedes.add(sede);
+        guardarDatosSedesYTurnos();
     }
 
     public void setUsuarios(ListaUsuarios<Usuario> usuarios) {
@@ -105,8 +103,8 @@ public class  GestionSistema {
                 }
             }
             turno.getConsultorio().getTurnos().add(turno);
-//            this.turnos.add(turno);
             System.out.println(this.getTurnos());
+            guardarDatosSedesYTurnos();
         } else {
             throw new HorarioNoDisponibleException(turno.getHorarioCompleto(), "No hay disponibilidad para este turno");
         }
@@ -172,9 +170,6 @@ public class  GestionSistema {
         this.usuarioConectado=administrador;
 
         menu.menuConexion();
-
-//        Turno turno=new Turno();
-//        turnos.add(turno);
 
     }
 
@@ -288,5 +283,36 @@ public class  GestionSistema {
 
     public Usuario getUsuarioPorNombreUsuario(String nombreUsuario) throws UsuarioInexistenteException {
         return this.usuarios.get(nombreUsuario);
+    }
+
+    public void guardarDatosUsuarios(){
+        mapeoJSON.guardadoUsuarios(this.usuarios);
+    }
+
+    public  void guardarDatosSedesYTurnos(){
+        mapeoJSON.guardadoSedesYTurnos(this.sedes);
+    }
+
+    public <T extends Usuario> void agendarUsuario(T usuario){
+        this.usuarios.add(usuario);
+        guardarDatosUsuarios();
+    }
+
+    public <T extends Usuario> void editarDatosUsuario(T usuario) throws UsuarioInexistenteException {
+        this.usuarios.set(usuario.getNombreUsuario(), usuario);
+        guardarDatosUsuarios();
+    }
+
+    public void agregarConsultorio(Consultorio consultorio) throws LugarNoDisponibleException {
+        this.getSede(consultorio.getSede()).addConsultorio(consultorio);
+    }
+
+    public Sede getSede (Sede sede) throws LugarNoDisponibleException {
+        for (Sede sedeEnArreglo : this.getSedes()){
+            if (sedeEnArreglo.equals(sede)){
+                return sede;
+            }
+        }
+        throw new LugarNoDisponibleException(sede);
     }
 }

@@ -648,7 +648,7 @@ public class Interfaz  {
                         JOptionPane.showMessageDialog(frame, "Usuario "+consultante.getNombreUsuario()+" guardado correctamente. " +
                                 "Su contrasenha es "+consultante.getContrasenha());
 
-                        this.sistema.getUsuarios().add(consultante);
+                        this.sistema.agendarUsuario(consultante);
                         System.out.println(this.sistema.getUsuarios().toString());
                     } catch (UsuarioInvalidoException ex) {
                         JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");

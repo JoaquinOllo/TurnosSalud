@@ -6,13 +6,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public class JSONUtiles {
 
-    public static void grabar(JSONArray array) {
+    public static void grabar(JSONObject array, String nombreArchivo) {
         try {
-            FileWriter file = new FileWriter("");
+            FileWriter file = new FileWriter(nombreArchivo);
             file.write(array.toString());
             file.flush();
             file.close();

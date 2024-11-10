@@ -22,10 +22,12 @@ import java.util.HashSet;
 
 
 public class mapeoJSON {
+    public static String nombreArchivo = "./turnos.json";
+
     public static void mapeoSistema(GestionSistema sistema){
         try {
             // Leer el archivo JSON
-            JSONObject turnosSaludJson = new JSONObject(JSONUtiles.leer("./turnos.json"));
+            JSONObject turnosSaludJson = new JSONObject(JSONUtiles.leer(nombreArchivo));
 
             // Procesar Usuarios
             ListaUsuarios<Usuario> usuarios = new ListaUsuarios<>();
@@ -160,9 +162,11 @@ public class mapeoJSON {
                                     sistema.getUsuarioPorNombreUsuario(turnoJson.getString("consultante")),
                                     sistema.getUsuarioPorNombreUsuario(turnoJson.getString("profesional")),
                                     sistema.getUsuarioPorNombreUsuario(turnoJson.getString("agendadoPor")),
-                                    EstadoCita.valueOf(turnoJson.getString("estado")),
-                                    turnoJson.getString("razon")
+                                    EstadoCita.valueOf(turnoJson.getString("estado"))
                             );
+                            if(turnoJson.has("razon")){
+                                turno.setRazon(turnoJson.getString("razon"));
+                            }
                             turno.setConsultorio(consultorio);
                             turnos.add(turno);
                             System.out.println(turno);
@@ -195,4 +199,131 @@ public class mapeoJSON {
         }
     }
 
+    public static void guardadoUsuarios(ListaUsuarios<Usuario> usuarios){
+        try {
+            // Leer el archivo JSON
+            JSONObject turnosSaludJson = new JSONObject(JSONUtiles.leer(nombreArchivo));
+
+            turnosSaludJson.remove("Usuarios");
+
+            // Guardar Usuarios
+            JSONArray usuariosArray = new JSONArray();
+            for (Usuario usuario : usuarios) {
+                JSONObject usuarioJson = new JSONObject();
+
+                // Datos comunes a todos los usuarios
+                usuarioJson.put("nombre", usuario.getNombre());
+                usuarioJson.put("apellido", usuario.getApellido());
+                usuarioJson.put("edad", usuario.getEdad());
+                usuarioJson.put("correo", usuario.getCorreo());
+                usuarioJson.put("telefono", usuario.getNroTelefono());
+                usuarioJson.put("nombreUsuario", usuario.getNombreUsuario());
+                usuarioJson.put("contrasena", usuario.getContrasenha());
+                usuarioJson.put("direccion", usuario.getDireccion());
+
+                // Determinar el rol y datos específicos
+                if (usuario instanceof Profesional) {
+                    usuarioJson.put("rol", "profesional");
+                    Profesional profesional = (Profesional) usuario;
+                    usuarioJson.put("especialidad", profesional.getEspecialidad());
+
+                    // Guardar horarios del profesional
+                    JSONArray horariosArray = new JSONArray();
+                    for (FranjaHoraria franja : profesional.getHorarioDeTrabajo()) {
+                        JSONObject horarioJson = new JSONObject();
+                        horarioJson.put("inicio", franja.getHoraInicio().toString());
+                        horarioJson.put("fin", franja.getHoraCierre().toString());
+                        horariosArray.put(horarioJson);
+                    }
+                    usuarioJson.put("horarios", horariosArray);
+                } else if (usuario instanceof Consultante) {
+                    usuarioJson.put("rol", "consultante");
+                } else if (usuario instanceof Administrador) {
+                    usuarioJson.put("rol", "administrador");
+                } else if (usuario instanceof Administrativo) {
+                    usuarioJson.put("rol", "administrativo");
+                }
+                usuariosArray.put(usuarioJson);
+            }
+            turnosSaludJson.put("Usuarios", usuariosArray);
+
+            // Guardar en archivo usando JSONUtiles
+            JSONUtiles.grabar(turnosSaludJson, nombreArchivo);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static void guardadoSedesYTurnos(ArrayList<Sede> sedes) {
+        try {
+            // Leer el archivo JSON
+            JSONObject turnosSaludJson = new JSONObject(JSONUtiles.leer("./turnos.json"));
+
+            turnosSaludJson.remove("Usuarios");
+
+            // Guardar Sedes
+            JSONArray sedesArray = new JSONArray();
+            for (Sede sede : sedes) {
+                JSONObject sedeJson = new JSONObject();
+                sedeJson.put("nombre", sede.getNombre());
+                sedeJson.put("direccion", sede.getDireccion());
+                sedeJson.put("responsable", sede.getResponsable().getNombreUsuario());
+
+                // Guardar horarios de la sede
+                JSONArray horariosSedeArray = new JSONArray();
+                for (FranjaHoraria franja : sede.getHorarios()) {
+                    JSONObject horarioJson = new JSONObject();
+                    horarioJson.put("inicio", franja.getHoraInicio().toString());
+                    horarioJson.put("fin", franja.getHoraCierre().toString());
+                    horariosSedeArray.put(horarioJson);
+                }
+                sedeJson.put("horarios", horariosSedeArray);
+
+                // Guardar consultorios
+                JSONArray consultoriosArray = new JSONArray();
+                for (Consultorio consultorio : sede.getConsultorios()) {
+                    JSONObject consultorioJson = new JSONObject();
+                    consultorioJson.put("numero", consultorio.getNumero());
+
+                    // Guardar turnos del consultorio
+                    JSONArray turnosArray = new JSONArray();
+                    for (Turno turno : consultorio.getTurnos()) {
+                        JSONObject turnoJson = new JSONObject();
+
+                        // Formatear la fecha al formato requerido (dd-MM-yyyy)
+                        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        turnoJson.put("dia", turno.getDia().format(formatoFecha));
+
+                        // Guardar horario del turno
+                        JSONObject horarioTurnoJson = new JSONObject();
+                        horarioTurnoJson.put("inicio", turno.getHoraInicio().toString());
+                        horarioTurnoJson.put("fin", turno.getHoraInicio().toString());
+                        turnoJson.put("horario", horarioTurnoJson);
+
+                        // Guardar referencias a usuarios por nombreUsuario
+                        turnoJson.put("consultante", turno.getConsultante().getNombreUsuario());
+                        turnoJson.put("profesional", turno.getProfesional().getNombreUsuario());
+                        turnoJson.put("agendadoPor", turno.getAgendadoPor().getNombreUsuario());
+
+                        turnoJson.put("estado", turno.getEstado().toString());
+                        turnoJson.put("razon", turno.getRazon());
+
+                        turnosArray.put(turnoJson);
+                    }
+                    consultorioJson.put("turnos", turnosArray);
+                    consultoriosArray.put(consultorioJson);
+                }
+                sedeJson.put("consultorios", consultoriosArray);
+                sedesArray.put(sedeJson);
+            }
+            turnosSaludJson.put("Sedes", sedesArray);
+
+            // Guardar en archivo usando JSONUtiles
+            JSONUtiles.grabar(turnosSaludJson, nombreArchivo);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
