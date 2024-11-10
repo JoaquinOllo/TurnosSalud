@@ -124,17 +124,14 @@ public class Turno  {
         return this.horario.noColisiona(turno.horario);
     }
 
-    public void tomarTurno (){
-        this.estado = EstadoCita.TOMADO;
-    }
 
     public void pacienteAusente (){
-        this.estado = EstadoCita.AUSENTE;
+        this.estado = EstadoCita.CANCELADO;
         this.razon = "Paciente ausente";
     }
 
     public void profesionalAusente(){
-        this.estado = EstadoCita.AUSENTE;
+        this.estado = EstadoCita.CANCELADO;
         this.razon = "Profesional ausente";
     }
 
