@@ -269,8 +269,6 @@ public class Interfaz  {
         JLabel lblSeleccionarSede = new JLabel("Selecciona una sede:");
         JLabel lblSeleccionarDia = new JLabel("Selecciona el día:");
         JLabel lblSeleccionarHorario = new JLabel("Selecciona el horario:");
-        JLabel lblSeleccionarConsultorio = new JLabel("Selecciona un consultorio:");
-
 
         // Crear los elementos del menú de opciones
         ComboBoxModel<Especialidad> especialidadesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getEspecialidadesDisponibles()).toArray(new Especialidad[0]));

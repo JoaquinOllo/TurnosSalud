@@ -180,14 +180,18 @@ public class  GestionSistema {
 
     public boolean conectarse (String nombreUsuario, JPasswordField contrasenha){
         boolean credencialesCorrectas = false;
+        Usuario usuarioEnConexion = null;
 
         for (Usuario usuario : usuarios){
             if (usuario.getNombreUsuario().equals(nombreUsuario)){
-                Usuario usuarioEnConexion = usuario;
+                usuarioEnConexion = usuario;
                 String str_contrasenha = new String(contrasenha.getPassword());
 
                 credencialesCorrectas = usuarioEnConexion.getContrasenha().equals(str_contrasenha);
             }
+        }
+        if (credencialesCorrectas){
+            this.usuarioConectado = usuarioEnConexion;
         }
         return credencialesCorrectas;
     }

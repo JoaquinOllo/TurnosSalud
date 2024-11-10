@@ -15,7 +15,7 @@ public class Consultante extends Usuario implements I_GestionTurnos {
 
     @Override
     public boolean agendaTurnos() {
-        return false;
+        return true;
     }
 
     @Override
