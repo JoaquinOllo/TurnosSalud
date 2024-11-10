@@ -2,24 +2,20 @@ package Utilidades;
 import Citas.Turno;
 
 import Enumeradores.Especialidad;
-import Enumeradores.EstadoCita;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.LugarNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
 import Excepciones.UsuarioInvalidoException;
 import Locaciones.Sede;
 import Usuarios.Consultante;
-import Usuarios.ListaUsuarios;
 import Usuarios.Profesional;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Array;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.swing.text.NumberFormatter;
