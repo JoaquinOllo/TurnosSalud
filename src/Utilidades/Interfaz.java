@@ -129,6 +129,8 @@ public class Interfaz  {
         JButton verPacientes = new JButton("Ver Pacientes");
         JButton agregarCita = new JButton("Agregar Cita");
         JButton verCitas = new JButton("Ver Citas");
+        //JButton cargarProfesional= new JButton("Cargar Nuevo Profesional");
+        //JButton cargarAdministrativo = new JButton("Cargar Nuevo Administrativo");
         JButton salir = new JButton("Salir");
 
         // Agregar botones al panel del menú
@@ -136,6 +138,8 @@ public class Interfaz  {
         menuPanel.add(verPacientes);
         menuPanel.add(agregarCita);
         menuPanel.add(verCitas);
+        //menuPanel.add(cargarProfesional);
+        //menuPanel.add(cargarAdministrativo);
         menuPanel.add(salir);
 
         // Agregar el panel del menú al panel principal
@@ -161,6 +165,9 @@ public class Interfaz  {
         verCitas.addActionListener(e -> {
             menuVerTurnos(this.sistema.getTurnos());
         });
+        /*cargarProfesional.addActionListener(e -> {
+            Profesional profesional= new Profesional();
+        });*/
 
         salir.addActionListener(e -> {
             System.exit(0);

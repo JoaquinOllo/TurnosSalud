@@ -11,7 +11,7 @@ public abstract class Usuario {
     private int edad;
     private String correo;
     private String nroTelefono;
-    private static Set<String> usuarios = new HashSet<>();
+    private static Set<String> usuarios = new HashSet<>();//garantiza que ningun usuario se repita
 
     private String nombreUsuario;
     private String contrasenha;
