@@ -6,6 +6,7 @@ import Excepciones.*;
 import Locaciones.Sede;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
+import Usuarios.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +20,10 @@ import javax.swing.text.NumberFormatter;
 
 public class Interfaz {
     private GestionSistema sistema;
+
+    private Usuario getUsuarioConectado(){
+        return this.sistema.getUsuarioConectado();
+    }
 
     public Interfaz(GestionSistema sistema) {
         this.sistema = sistema;
@@ -124,51 +129,47 @@ public class Interfaz {
         JPanel menuPanel = new JPanel();
         menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
 
-        // Crear los elementos del menú de opciones
         JButton agregarPaciente = new JButton("Agregar Paciente");
-        JButton verPacientes = new JButton("Ver Pacientes");
-        JButton agregarCita = new JButton("Agregar Cita");
-        JButton verCitas = new JButton("Ver Citas");
-        JButton cargarProfesional = new JButton("Cargar Nuevo Profesional");
-        JButton cargarAdministrativo = new JButton("Cargar Nuevo Administrativo");
-        JButton salir = new JButton("Salir");
-
-        // Agregar botones al panel del menú
         menuPanel.add(agregarPaciente);
-        menuPanel.add(verPacientes);
-        menuPanel.add(agregarCita);
-        menuPanel.add(verCitas);
-        menuPanel.add(cargarProfesional);
-        menuPanel.add(cargarAdministrativo);
-        menuPanel.add(salir);
-
-        // Agregar el panel del menú al panel principal
-        mainPanel.add(menuPanel, BorderLayout.CENTER); // Agregar el panel del menú en el centro del panel principal
-
-        // Eventos para los botones
         agregarPaciente.addActionListener(e -> {
-
             Consultante consultante = new Consultante();
             menuAgregarPaciente(consultante);
         });
 
+        JButton verPacientes = new JButton("Ver Pacientes");
+        menuPanel.add(verPacientes);
         verPacientes.addActionListener(e -> {
             menuVerPacientes(this.sistema.getPacientes());
         });
 
+        JButton agregarCita = new JButton("Agregar Cita");
+        menuPanel.add(agregarCita);
         agregarCita.addActionListener(e -> {
             Turno t1 = new Turno(this.sistema.getUsuarioConectado());
             menuCita(t1);
-
         });
 
+        JButton verCitas = new JButton("Ver Citas");
+        menuPanel.add(verCitas);
         verCitas.addActionListener(e -> {
             menuVerTurnos(this.sistema.getTurnos());
         });
+
+        JButton cargarProfesional = new JButton("Cargar Nuevo Profesional");
+        menuPanel.add(cargarProfesional);
         cargarProfesional.addActionListener(e -> {
             Profesional profesional = new Profesional();
             menuNuevoProfesional(profesional);
         });
+
+        JButton cargarAdministrativo = new JButton("Cargar Nuevo Administrativo");
+        menuPanel.add(cargarAdministrativo);
+
+        JButton salir = new JButton("Salir");
+        menuPanel.add(salir);
+
+        // Agregar el panel del menú al panel principal
+        mainPanel.add(menuPanel, BorderLayout.CENTER); // Agregar el panel del menú en el centro del panel principal
 
         salir.addActionListener(e -> {
             System.exit(0);
