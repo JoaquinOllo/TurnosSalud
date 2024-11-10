@@ -8,6 +8,7 @@ import Utilidades.FranjaHoraria;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class Consultorio implements I_CompatibilidadHorarios {
     private Sede sede;
@@ -54,14 +55,11 @@ public class Consultorio implements I_CompatibilidadHorarios {
         this.turnos.add(turno);
     }
 
-    @Override
-    public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
+    public HashSet<LocalTime> getHorariosHabilitados(int duracionTurnoEnMinutos) {
         HashSet<LocalTime> horariosHabilitados = new HashSet<>();
-
         for (FranjaHoraria franja : this.sede.getHorarios()){
-            horariosHabilitados.addAll(franja.getHorariosHabilitados(turnos, duracionTurnoEnMinutos));
+            horariosHabilitados.addAll(franja.getHorariosHabilitados(this.turnos, duracionTurnoEnMinutos));
         }
-
         return horariosHabilitados;
     }
 

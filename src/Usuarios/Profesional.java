@@ -73,7 +73,6 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         return compatible;
     }
 
-    @Override
     public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
         HashSet<LocalTime> horariosHabilitados = new HashSet<>();
 

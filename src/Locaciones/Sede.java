@@ -58,11 +58,11 @@ public class Sede implements I_CompatibilidadHorarios {
         return compatible;
     }
 
-    @Override
-    public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
+    public HashSet<LocalTime> getHorariosHabilitados(int duracionTurnoEnMinutos) {
+        System.out.println("entramos a gethorarioshabilitados de la sede");
         HashSet<LocalTime> horariosHabilitados = new HashSet<>();
         for (Consultorio consultorio : this.consultorios){
-            horariosHabilitados.addAll(consultorio.getHorariosHabilitados(turnos.filtrarPorConsultorio(consultorio), duracionTurnoEnMinutos));
+            horariosHabilitados.addAll(consultorio.getHorariosHabilitados(duracionTurnoEnMinutos));
         }
         return horariosHabilitados;
     }

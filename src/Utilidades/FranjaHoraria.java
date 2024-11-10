@@ -55,11 +55,10 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
                 && turnoHabilitado.queryFrom(horaFinTurno);
     }
 
-    @Override
     public HashSet<LocalTime> getHorariosHabilitados(Agenda<Turno> turnos, int duracionTurnoEnMinutos) {
         HashSet<LocalTime> horariosDisponibles = this.dividirSegunDuracion(duracionTurnoEnMinutos).stream().map(e -> e.horaInicio).collect(Collectors.toCollection(HashSet::new));
 
-        HashSet<LocalTime> horariosTomados = turnos.stream().map(e -> e.getHoraInicio()).collect(Collectors.toCollection(HashSet::new));
+        HashSet<LocalTime> horariosTomados = turnos.stream().map(Turno::getHoraInicio).collect(Collectors.toCollection(HashSet::new));
 
         horariosDisponibles.removeAll(horariosTomados);
 
@@ -106,7 +105,7 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         HashSet<FranjaHoraria> listaHorarios = new HashSet<>();
         LocalTime tiempoInicio = this.horaInicio;
         LocalTime tiempoCierre = this.horaInicio.plus(duracionMinutos, ChronoUnit.MINUTES);
-        while (tiempoCierre.isBefore(this.horaCierre)){
+        while (!tiempoInicio.equals(this.horaCierre) && tiempoCierre.isBefore(this.horaCierre) || tiempoCierre.equals(this.horaCierre)){
             listaHorarios.add(new FranjaHoraria(tiempoInicio, tiempoCierre));
             tiempoInicio = tiempoCierre;
             tiempoCierre = tiempoInicio.plus(duracionMinutos, ChronoUnit.MINUTES);

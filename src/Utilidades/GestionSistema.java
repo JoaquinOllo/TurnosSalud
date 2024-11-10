@@ -253,10 +253,17 @@ public class  GestionSistema {
         HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.getTurnos().filtrarPorProfesional(profesional)
                 .filtrarPorDia(dia), profesional.getDuracionTurnoMinutos()));
 
-        HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(this.getTurnos()
-                .filtrarPorDia(dia).filtrarPorSede(sede), profesional.getDuracionTurnoMinutos()));
+        System.out.println(horariosDisponibles);
+        System.out.println("todavía no pasó lo peor!");
+
+        HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(profesional.getDuracionTurnoMinutos()));
+
+        System.out.println(horariosDispSede);
+        System.out.println("acáa");
 
         horariosDisponibles.retainAll(horariosDispSede);
+
+        System.out.println(horariosDisponibles);
 
         ArrayList<LocalTime> horarios = new ArrayList<>(horariosDisponibles);
         horarios.sort(Comparator.comparing(e -> e));
