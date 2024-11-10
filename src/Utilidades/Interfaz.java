@@ -9,8 +9,6 @@ import Usuarios.Profesional;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -19,14 +17,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.swing.text.NumberFormatter;
 
-public class Interfaz  {
+public class Interfaz {
     private GestionSistema sistema;
 
     public Interfaz(GestionSistema sistema) {
-        this.sistema=sistema;
+        this.sistema = sistema;
     }
 
-    public void menuConexion(){
+    public void menuConexion() {
         JFrame frame = new JFrame("Bienvenido a SuperDoctors - Conexión");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);
@@ -63,7 +61,7 @@ public class Interfaz  {
         botonIniciarSesion = new JButton("Iniciar Sesión");
         botonIniciarSesion.addActionListener(e -> {
             try {
-                if (this.sistema.conectarse(campoUsuario.getText(), campoContrasena)){
+                if (this.sistema.conectarse(campoUsuario.getText(), campoContrasena)) {
                     frame.dispose();
                     menuInicial();
                 } else {
@@ -102,7 +100,7 @@ public class Interfaz  {
         frame.add(panelPrincipal);
         frame.setVisible(true);
 
-        }
+    }
 
     public void menuInicial() {
         JFrame frame = new JFrame("SuperDoctors - " + sistema.getUsuarioConectado().getNombreUsuario() + " - "
@@ -131,7 +129,7 @@ public class Interfaz  {
         JButton verPacientes = new JButton("Ver Pacientes");
         JButton agregarCita = new JButton("Agregar Cita");
         JButton verCitas = new JButton("Ver Citas");
-        JButton cargarProfesional= new JButton("Cargar Nuevo Profesional");
+        JButton cargarProfesional = new JButton("Cargar Nuevo Profesional");
         JButton cargarAdministrativo = new JButton("Cargar Nuevo Administrativo");
         JButton salir = new JButton("Salir");
 
@@ -150,7 +148,7 @@ public class Interfaz  {
         // Eventos para los botones
         agregarPaciente.addActionListener(e -> {
 
-            Consultante consultante=new Consultante();
+            Consultante consultante = new Consultante();
             menuAgregarPaciente(consultante);
         });
 
@@ -159,7 +157,7 @@ public class Interfaz  {
         });
 
         agregarCita.addActionListener(e -> {
-            Turno t1=new Turno(this.sistema.getUsuarioConectado());
+            Turno t1 = new Turno(this.sistema.getUsuarioConectado());
             menuCita(t1);
 
         });
@@ -168,7 +166,7 @@ public class Interfaz  {
             menuVerTurnos(this.sistema.getTurnos());
         });
         cargarProfesional.addActionListener(e -> {
-            Profesional profesional= new Profesional();
+            Profesional profesional = new Profesional();
             menuNuevoProfesional(profesional);
         });
 
@@ -180,170 +178,190 @@ public class Interfaz  {
         frame.add(mainPanel);
         frame.setVisible(true);
     }
+
     //este metodo carga un nuevo profesional:
     public Profesional menuNuevoProfesional(Profesional profesional) {
-            // Crear el marco de la ventana
-            JFrame frame = new JFrame("Agregar Profesional");
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setSize(300, 400);  // Aumentamos el tamaño para los campos de texto
+        // Crear el marco de la ventana
+        JFrame frame = new JFrame("Agregar Profesional");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(300, 400);  // Aumentamos el tamaño para los campos de texto
 
-            // Crear un panel principal
-            JPanel mainPanel = new JPanel();
-            mainPanel.setLayout(new BorderLayout());
-            mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
+        // Crear un panel principal
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
 
-            // Crear un JLabel para el título
-            JLabel titleLabel = new JLabel("Nuevo Profesional", SwingConstants.CENTER);
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
-            titleLabel.setForeground(Color.BLACK); // Color del texto del título
-            mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
+        // Crear un JLabel para el título
+        JLabel titleLabel = new JLabel("Nuevo Profesional", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
+        titleLabel.setForeground(Color.BLACK); // Color del texto del título
+        mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
 
-            // Crear un panel para los campos de entrada y los botones
-            JPanel inputPanel = new JPanel();
-            inputPanel.setLayout(new GridLayout(9, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
+        // Crear un panel para los campos de entrada y los botones
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(9, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
 
-            NumberFormat integerFormat = NumberFormat.getIntegerInstance();
-            NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
-            numberFormatter.setValueClass(Integer.class); // Establece la clase de valor como Integer
-            numberFormatter.setAllowsInvalid(false); // No permite valores inválidos
-            numberFormatter.setMinimum(0); // Límite inferior (opcional)
-            numberFormatter.setMaximum(Integer.MAX_VALUE); // Límite superior (opcional)
+        NumberFormat integerFormat = NumberFormat.getIntegerInstance();
+        NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
+        numberFormatter.setValueClass(Integer.class); // Establece la clase de valor como Integer
+        numberFormatter.setAllowsInvalid(false); // No permite valores inválidos
+        numberFormatter.setMinimum(0); // Límite inferior (opcional)
+        numberFormatter.setMaximum(Integer.MAX_VALUE); // Límite superior (opcional)
+        NumberFormat hourFormat = NumberFormat.getIntegerInstance();
+        NumberFormatter hourFormatter = new NumberFormatter(hourFormat);
+        hourFormatter.setValueClass(Integer.class); // Establece la clase de valor como Integer
+        hourFormatter.setAllowsInvalid(false); // No permite valores inválidos
+        hourFormatter.setMinimum(0); // Límite inferior (opcional)
+        hourFormatter.setMaximum(24); // Límite superior (opcional)
 
-            // Campos de texto para ingresar datos del profesional
-            JTextField nombreField = new JTextField();
-            JTextField apellidoField = new JTextField();
-            JFormattedTextField telefonoField = new JFormattedTextField(numberFormatter);
-            JTextField correoField = new JTextField();
-            JTextField especialidadField = new JTextField();
-            //JFormattedTextField duracionTurnoField = new JFormattedTextField(numberFormatter);
+        // Campos de texto para ingresar datos del profesional
+        JTextField nombreField = new JTextField();
+        JTextField apellidoField = new JTextField();
+        JTextField edadField = new JTextField();
+        JTextField direccionField = new JTextField();
+        JFormattedTextField telefonoField = new JFormattedTextField(numberFormatter);
+        JTextField correoField = new JTextField();
+        ComboBoxModel<Especialidad> especialidadModel = new DefaultComboBoxModel<>(Especialidad.values());
+        JComboBox<Especialidad> especialidadField = new JComboBox<>(especialidadModel);
+        // Campos para los horarios de inicio y fin
+        JFormattedTextField inicioHorarioField = new JFormattedTextField(hourFormatter);
+        JFormattedTextField finHorarioField = new JFormattedTextField(hourFormatter);
 
-            // Crear los botones para ingresar información
-            JButton nombreProfesional = new JButton("Nombre");
-            JButton apellidoProfesional = new JButton("Apellido");
-            JButton telefonoProfesional = new JButton("Teléfono");
-            JButton correoProfesional = new JButton("Correo");
-            JButton especialidadProfesional = new JButton("Especialidad");
-            JButton duracionTurno = new JButton("Duración (min)");
-            JButton guardarProfesional = new JButton("Guardar Profesional");
-            JButton volverAlInicio = new JButton("Volver al inicio");
 
-            // Agregar los botones y campos de texto al panel de entrada
-            inputPanel.add(nombreProfesional);
-            inputPanel.add(nombreField);
-            inputPanel.add(apellidoProfesional);
-            inputPanel.add(apellidoField);
-            inputPanel.add(telefonoProfesional);
-            inputPanel.add(telefonoField);
-            inputPanel.add(correoProfesional);
-            inputPanel.add(correoField);
-            inputPanel.add(especialidadProfesional);
-            inputPanel.add(especialidadField);
-            //inputPanel.add(duracionTurno);
-            //inputPanel.add(duracionTurnoField);
-            inputPanel.add(guardarProfesional);
-            inputPanel.add(volverAlInicio);
+        // Crear los botones para ingresar información
+        JButton nombreProfesional = new JButton("Nombre");
+        JButton apellidoProfesional = new JButton("Apellido");
+        JButton edadProfesional = new JButton("Edad");
+        JButton direccionProfesional = new JButton("Direccion");
+        JButton telefonoProfesional = new JButton("Teléfono");
+        JButton correoProfesional = new JButton("Correo");
+        JButton especialidadProfesional = new JButton("Especialidad");
+        JButton horarioInicioLabel = new JButton("Horario Inicio");
+        JButton horarioFinLabel = new JButton("Horario Fin");
+        JButton guardarProfesional = new JButton("Guardar Profesional");
+        JButton volverAlInicio = new JButton("Volver al inicio");
 
-            // Agregar el panel de entrada al panel principal
-            mainPanel.add(inputPanel, BorderLayout.CENTER);
+        // Agregar los botones y campos de texto al panel de entrada
+        inputPanel.add(nombreProfesional);
+        inputPanel.add(nombreField);
+        inputPanel.add(apellidoProfesional);
+        inputPanel.add(apellidoField);
+        inputPanel.add(edadProfesional);
+        inputPanel.add(edadField);
+        inputPanel.add(direccionProfesional);
+        inputPanel.add(direccionField);
+        inputPanel.add(telefonoProfesional);
+        inputPanel.add(telefonoField);
+        inputPanel.add(correoProfesional);
+        inputPanel.add(correoField);
+        inputPanel.add(especialidadProfesional);
+        inputPanel.add(especialidadField);
+        inputPanel.add(horarioInicioLabel);
+        inputPanel.add(inicioHorarioField);
+        inputPanel.add(horarioFinLabel);
+        inputPanel.add(finHorarioField);
+        inputPanel.add(guardarProfesional);
+        inputPanel.add(volverAlInicio);
 
-            // Evento para el botón "Guardar Profesional"
-            guardarProfesional.addActionListener(e -> {
-                // Validación de los campos antes de asignar los valores
-                if (nombreField.getText().isEmpty() || apellidoField.getText().isEmpty() || telefonoField.getText().isEmpty() ||
-                        correoField.getText().isEmpty() || especialidadField.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    try {
-                        // Asignar los valores al profesional
-                        profesional.setNombre(nombreField.getText());
-                        profesional.setApellido(apellidoField.getText());
-                        profesional.setNroTelefono(telefonoField.getText());
-                        profesional.setCorreo(correoField.getText());
-                        profesional.setEspecialidad(Especialidad.valueOf(especialidadField.getText()));
-                        //profesional.setDuracionTurno(Integer.parseInt(duracionTurnoField.getText())); // Validar si es un número
+        // Agregar el panel de entrada al panel principal
+        mainPanel.add(inputPanel, BorderLayout.CENTER);
 
-                        // Intentar agregar al sistema
-                        this.sistema.getProfesionales().add(profesional); // Suponiendo que sistema.getProfesionales() es una lista
-                        JOptionPane.showMessageDialog(frame, "Profesional guardado correctamente.\nNombre: " + profesional.getNombre() +
-                                " " + profesional.getApellido());
-                        System.out.println("Profesionales en el sistema: " + this.sistema.getProfesionales().toString());
+        // Evento para el botón "Guardar Profesional"
+        guardarProfesional.addActionListener(e -> {
+            // Validación de los campos antes de asignar los valores
+            if (nombreField.getText().isEmpty() || apellidoField.getText().isEmpty() || telefonoField.getText().isEmpty() ||
+                    correoField.getText().isEmpty()  ||
+                    inicioHorarioField.getText().isEmpty() || finHorarioField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                try {
+                    profesional.setNombre(nombreField.getText());
+                    profesional.setApellido(apellidoField.getText());
+                    profesional.setEdad(Integer.parseInt(edadField.getText()));
+                    profesional.setEspecialidad((Especialidad) especialidadField.getSelectedItem());
+                    profesional.setDireccion(direccionField.getText());
+                    profesional.setNroTelefono(telefonoField.getText());
+                    profesional.setCorreo(correoField.getText());
+                    Set<FranjaHoraria> horarios = new HashSet<>();
+                    horarios.add(new FranjaHoraria(Integer.parseInt(inicioHorarioField.getText()),0,
+                            Integer.parseInt(finHorarioField.getText()),0));
+                    profesional.setHorarioDeTrabajo(horarios);
+                    profesional.setContrasenha(profesional.getNombre() + "." + profesional.getApellido());
 
-                        // Limpiar los campos después de guardar
-                        nombreField.setText("");
-                        apellidoField.setText("");
-                        telefonoField.setText("");
-                        correoField.setText("");
-                        especialidadField.setText("");
-                        //duracionTurnoField.setText("");
+                    profesional.setNombreUsuario(profesional.getNombre() + "." + profesional.getApellido());
+                    JOptionPane.showMessageDialog(frame, "Usuario " + profesional.getNombreUsuario() + " guardado correctamente. " +
+                            "Su contrasenha es " + profesional.getContrasenha());
 
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(frame, "Duración del turno debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(frame, "Hubo un error al guardar al profesional: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+                    this.sistema.agendarUsuario(profesional);
+                    System.out.println(this.sistema.getUsuarios().toString());
+                } catch (UsuarioInvalidoException ex) {
+                    JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
                 }
-            });
+            }
+            // Confirmación de que se guardó el profesional
+        });
 
-            // Evento para el botón "Volver al inicio"
-            volverAlInicio.addActionListener(e -> {
-                // Cerrar la ventana actual
-                frame.dispose();
-            });
+        // Evento para el botón "Volver al inicio"
+        volverAlInicio.addActionListener(e -> {
+            // Cerrar la ventana actual
+            frame.dispose();
+        });
 
-            // Agregar el panel principal al marco
-            frame.add(mainPanel);
-            frame.setVisible(true);
+        // Agregar el panel principal al marco
+        frame.add(mainPanel);
+        frame.setVisible(true);
 
-            return profesional;  // Retorna el objeto profesional con los datos ingresados
-        }
+
+        return profesional;  // Retorna el objeto profesional con los datos ingresados
+    }
 
     private void menuVerPacientes(ArrayList<Consultante> pacientes) {
         //armar la ventana y recorrer la lista de pacientes y mostrarlos
         //armar un panel para que me muestre los datos de c/paciente por separado
 
         // Crear la ventana principal
-            JFrame ventana = new JFrame("Lista de Pacientes");
-            ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
+        JFrame ventana = new JFrame("Lista de Pacientes");
+        ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
 
-            // Recorremos la lista de pacientes y creamos un panel para cada uno
-            for (Consultante paciente : pacientes) {
-                // Crear un panel para cada paciente
-                JPanel panelPaciente = new JPanel();
-                panelPaciente.setLayout(new BoxLayout(panelPaciente, BoxLayout.Y_AXIS));
+        // Recorremos la lista de pacientes y creamos un panel para cada uno
+        for (Consultante paciente : pacientes) {
+            // Crear un panel para cada paciente
+            JPanel panelPaciente = new JPanel();
+            panelPaciente.setLayout(new BoxLayout(panelPaciente, BoxLayout.Y_AXIS));
 
-                // Crear los componentes para mostrar la información del paciente
-                JLabel nombreLabel = new JLabel("Nombre: " + paciente.getNombre());
-                JLabel apellidoLabel= new JLabel("Apellido: " +paciente.getApellido());
-                JLabel edadLabel = new JLabel("Edad: " + paciente.getEdad());
-                JLabel correoLabel = new JLabel("Correo: "+ paciente.getCorreo());
-                JLabel telefonoLabel = new JLabel("Teléfono: " + paciente.getNroTelefono());
-                JLabel direccionLabel= new JLabel("Direccion: " +paciente.getDireccion());
-
-
-                // Agregar los JLabel al panel del paciente
-                panelPaciente.add(nombreLabel);
-                panelPaciente.add(apellidoLabel);
-                panelPaciente.add(edadLabel);
-                panelPaciente.add(correoLabel);
-                panelPaciente.add(telefonoLabel);
-                panelPaciente.add(direccionLabel);
-                // Añadir un borde al panel del paciente para separarlo de los demás
-                panelPaciente.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
+            // Crear los componentes para mostrar la información del paciente
+            JLabel nombreLabel = new JLabel("Nombre: " + paciente.getNombre());
+            JLabel apellidoLabel = new JLabel("Apellido: " + paciente.getApellido());
+            JLabel edadLabel = new JLabel("Edad: " + paciente.getEdad());
+            JLabel correoLabel = new JLabel("Correo: " + paciente.getCorreo());
+            JLabel telefonoLabel = new JLabel("Teléfono: " + paciente.getNroTelefono());
+            JLabel direccionLabel = new JLabel("Direccion: " + paciente.getDireccion());
 
 
-                // Agregar el panel del paciente al panel principal de la ventana
+            // Agregar los JLabel al panel del paciente
+            panelPaciente.add(nombreLabel);
+            panelPaciente.add(apellidoLabel);
+            panelPaciente.add(edadLabel);
+            panelPaciente.add(correoLabel);
+            panelPaciente.add(telefonoLabel);
+            panelPaciente.add(direccionLabel);
+            // Añadir un borde al panel del paciente para separarlo de los demás
+            panelPaciente.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
 
-                ventana.add(panelPaciente);
-            }
 
-            // Configurar la ventana
-            ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
-            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            ventana.setVisible(true);
+            // Agregar el panel del paciente al panel principal de la ventana
+
+            ventana.add(panelPaciente);
         }
 
+        // Configurar la ventana
+        ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
+        ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ventana.setVisible(true);
+    }
 
-    public Turno menuCita(Turno turnoNuevo){
+
+    public Turno menuCita(Turno turnoNuevo) {
         // DATOS A RECOPILAR
         final Especialidad[] especialidadElegida = {null};
         final Profesional[] profesionalElegido = {null};
@@ -374,9 +392,9 @@ public class Interfaz  {
 
         JLabel lblPaciente;
         JComboBox<Consultante> elegirPaciente = new JComboBox<>();
-        if (this.sistema.getUsuarioConectado() instanceof Consultante){
+        if (this.sistema.getUsuarioConectado() instanceof Consultante) {
             lblPaciente = new JLabel("Creación de turno para usuario conectado.");
-            turnoNuevo.setConsultante((Consultante)  this.sistema.getUsuarioConectado());
+            turnoNuevo.setConsultante((Consultante) this.sistema.getUsuarioConectado());
         } else {
             lblPaciente = new JLabel("Seleccione un paciente: ");
             ComboBoxModel<Consultante> pacientesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getPacientes()).toArray(new Consultante[0]));
@@ -418,7 +436,7 @@ public class Interfaz  {
 
         // Agregar botones al panel del menú
         menuPanel.add(lblPaciente);
-        if (! (this.sistema.getUsuarioConectado() instanceof Consultante)){
+        if (!(this.sistema.getUsuarioConectado() instanceof Consultante)) {
             menuPanel.add(elegirPaciente);
         }
         menuPanel.add(lblSeleccionarEspecialidad);
@@ -448,14 +466,14 @@ public class Interfaz  {
             elegirSede.setEnabled(true);
         });
 
-        elegirSede.addActionListener(e-> {
+        elegirSede.addActionListener(e -> {
             sedeElegida[0] = (Sede) elegirSede.getSelectedItem();
             elegirProfesional.setEnabled(true);
         });
 
         elegirProfesional.addActionListener(e -> {
             turnoNuevo.setProfesional(this.sistema.getProfesionales()
-                            .filtrarPorEspecialidad(especialidadElegida[0])
+                    .filtrarPorEspecialidad(especialidadElegida[0])
                     .get(elegirProfesional.getSelectedIndex()));
             ArrayList<LocalDate> fechasHabilitadas = this.sistema.getFechasHabilitadas(turnoNuevo.getProfesional());
             ComboBoxModel<LocalDate> fechasHabilitadasModel = new DefaultComboBoxModel<>(fechasHabilitadas.toArray(new LocalDate[0]));
@@ -466,7 +484,7 @@ public class Interfaz  {
         elegirDia.addActionListener(e -> {
             turnoNuevo.setDia((LocalDate) elegirDia.getSelectedItem());
             elegirHorario.removeAllItems();
-            ArrayList<LocalTime> horariosHabilitados = this.sistema.getHorariosDisponibles(turnoNuevo.getProfesional(), sedeElegida[0], turnoNuevo.getDia()) ;
+            ArrayList<LocalTime> horariosHabilitados = this.sistema.getHorariosDisponibles(turnoNuevo.getProfesional(), sedeElegida[0], turnoNuevo.getDia());
             ComboBoxModel<LocalTime> horarioModelo = new DefaultComboBoxModel<>(
                     horariosHabilitados.toArray(new LocalTime[0])
             );
@@ -474,10 +492,10 @@ public class Interfaz  {
             elegirHorario.setEnabled(true);
         });
 
-        elegirHorario.addActionListener(e ->{
+        elegirHorario.addActionListener(e -> {
             try {
                 Duration duracionTurno = Duration.of(turnoNuevo.getProfesional().getDuracionTurnoMinutos(), ChronoUnit.MINUTES);
-                FranjaHoraria franja = new FranjaHoraria((LocalTime) elegirHorario.getSelectedItem(), duracionTurno );
+                FranjaHoraria franja = new FranjaHoraria((LocalTime) elegirHorario.getSelectedItem(), duracionTurno);
                 turnoNuevo.setHorario(franja);
                 turnoNuevo.setConsultorio(sedeElegida[0].buscarConsultorioDisponible(this.sistema.getTurnos(), turnoNuevo.getDia(), turnoNuevo.getFranjaHoraria()));
                 System.out.println("Consultorio asignado: " + turnoNuevo.getConsultorio());
@@ -492,8 +510,8 @@ public class Interfaz  {
                 System.out.println(turnoNuevo);
                 // Aquí setearíamos los valores en turnoNuevo
                 if (turnoNuevo.getDia() != null & turnoNuevo.getFranjaHoraria() != null &
-                turnoNuevo.getProfesional() != null & turnoNuevo.getConsultorio() != null
-                & turnoNuevo.getConsultante() != null) {
+                        turnoNuevo.getProfesional() != null & turnoNuevo.getConsultorio() != null
+                        & turnoNuevo.getConsultante() != null) {
                     this.sistema.agendarTurno(turnoNuevo);
                     // Mostrar un mensaje de confirmación o realizar alguna acción adicional
                     JOptionPane.showMessageDialog(frame, "Turno agendado con éxito!");
@@ -519,23 +537,24 @@ public class Interfaz  {
         frame.setVisible(true);
         return turnoNuevo;
     }
-    public void menuVerTurnos(ArrayList<Turno> turnos){
+
+    public void menuVerTurnos(ArrayList<Turno> turnos) {
         System.out.println(turnos);
         // Crear la ventana principal
         JFrame ventana = new JFrame("Lista de Turnos");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
-        for (Turno turno:turnos){
+        for (Turno turno : turnos) {
             JPanel panelTurno = new JPanel();
             panelTurno.setLayout(new BoxLayout(panelTurno, BoxLayout.Y_AXIS));
 
             // Crear los componentes para mostrar la información del turno
-            JLabel pacienteLabel=new JLabel("Nombre del paciente: "+turno.getConsultante());
+            JLabel pacienteLabel = new JLabel("Nombre del paciente: " + turno.getConsultante());
             JLabel diaLabel = new JLabel("Dia: " + turno.getDia());
-            JLabel horaLabel= new JLabel("Hora: " +turno.getHoraInicio());
-            JLabel especialidadLabel = new JLabel("Especialidad: " +Especialidad.CARDIOLOGIA);
-            JLabel profesionalLabel = new JLabel("Nombre Profesional: "+ turno.getProfesional());
+            JLabel horaLabel = new JLabel("Hora: " + turno.getHoraInicio());
+            JLabel especialidadLabel = new JLabel("Especialidad: " + Especialidad.CARDIOLOGIA);
+            JLabel profesionalLabel = new JLabel("Nombre Profesional: " + turno.getProfesional());
             JLabel consultorioLabel = new JLabel("Consultorio: " + turno.getConsultorio());
-            JLabel estadoLabel= new JLabel("Estado: "+turno.getEstado());
+            JLabel estadoLabel = new JLabel("Estado: " + turno.getEstado());
 
             // Agregar los JLabel al panel del turno
             panelTurno.add(pacienteLabel);
@@ -562,108 +581,109 @@ public class Interfaz  {
     }
 
 
-    public Consultante menuAgregarPaciente(Consultante consultante){
+    public Consultante menuAgregarPaciente(Consultante consultante) {
 
-            // Método para mostrar la ventana y recoger los datos del paciente
+        // Método para mostrar la ventana y recoger los datos del paciente
 
-                // Crear el marco de la ventana
-                JFrame frame = new JFrame("Agregar Paciente");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.setSize(300, 350);  // Aumentamos el tamaño para los campos de texto
+        // Crear el marco de la ventana
+        JFrame frame = new JFrame("Agregar Paciente");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(300, 350);  // Aumentamos el tamaño para los campos de texto
 
-                // Crear un panel principal
-                JPanel mainPanel = new JPanel();
-                mainPanel.setLayout(new BorderLayout());
-                mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
+        // Crear un panel principal
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
 
-                // Crear un JLabel para el título
-                JLabel titleLabel = new JLabel("Nuevo Paciente", SwingConstants.CENTER);
-                titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
-                titleLabel.setForeground(Color.BLACK); // Color del texto del título
-                mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
+        // Crear un JLabel para el título
+        JLabel titleLabel = new JLabel("Nuevo Paciente", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
+        titleLabel.setForeground(Color.BLACK); // Color del texto del título
+        mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
 
-                // Crear un panel para los campos de entrada y los botones
-                JPanel inputPanel = new JPanel();
-                inputPanel.setLayout(new GridLayout(8, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
+        // Crear un panel para los campos de entrada y los botones
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(8, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
 
-                NumberFormat integerFormat = NumberFormat.getIntegerInstance();
-                NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
-                numberFormatter.setValueClass(Integer.class); // Establece la clase de valor como Integer
-                numberFormatter.setAllowsInvalid(false); // No permite valores inválidos
-                numberFormatter.setMinimum(0); // Límite inferior (opcional)
-                numberFormatter.setMaximum(Integer.MAX_VALUE); // Límite superior (opcional)
+        NumberFormat integerFormat = NumberFormat.getIntegerInstance();
+        NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
+        numberFormatter.setValueClass(Integer.class); // Establece la clase de valor como Integer
+        numberFormatter.setAllowsInvalid(false); // No permite valores inválidos
+        numberFormatter.setMinimum(0); // Límite inferior (opcional)
+        numberFormatter.setMaximum(Integer.MAX_VALUE); // Límite superior (opcional)
 
-                // Campo de texto formateado
+        // Campo de texto formateado
                 /*JFormattedTextField integerField = new JFormattedTextField(numberFormatter);
                 integerField.setColumns(10);*/
-                // Crear los campos de texto para ingresar datos del paciente
-                JTextField nombreField = new JTextField();
-                JTextField apellidoField = new JTextField();
-                JFormattedTextField edadField = new JFormattedTextField(numberFormatter);
-                JTextField direccionField = new JTextField();
-                JFormattedTextField telefonoField = new JFormattedTextField(numberFormatter);
-                JTextField correoField = new JTextField();
+        // Crear los campos de texto para ingresar datos del paciente
+        JTextField nombreField = new JTextField();
+        JTextField apellidoField = new JTextField();
+        JFormattedTextField edadField = new JFormattedTextField(numberFormatter);
+        JTextField direccionField = new JTextField();
+        JFormattedTextField telefonoField = new JFormattedTextField(numberFormatter);
+        JTextField correoField = new JTextField();
 
-                // Crear los botones para ingresar información
-                JButton nombrePaciente = new JButton("Nombre");
-                JButton apellidoPaciente = new JButton("Apellido");
-                JButton edadPaciente = new JButton("Edad");
-                JButton direccionPaciente = new JButton("Direccion");
-                JButton telefonoPaciente = new JButton("Telefono");
-                JButton correoPaciente = new JButton("Correo");
-                JButton guardarPaciente = new JButton("Guardar Paciente");  // Nuevo botón para guardar el paciente
-                JButton volverAlInicio = new JButton("Volver al inicio");
+        // Crear los botones para ingresar información
+        JButton nombrePaciente = new JButton("Nombre");
+        JButton apellidoPaciente = new JButton("Apellido");
+        JButton edadPaciente = new JButton("Edad");
+        JButton direccionPaciente = new JButton("Direccion");
+        JButton telefonoPaciente = new JButton("Telefono");
+        JButton correoPaciente = new JButton("Correo");
+        JButton guardarPaciente = new JButton("Guardar Paciente");  // Nuevo botón para guardar el paciente
+        JButton volverAlInicio = new JButton("Volver al inicio");
 
-                // Agregar los botones y campos de texto al panel de entrada
-                inputPanel.add(nombrePaciente);
-                inputPanel.add(nombreField);
-                inputPanel.add(apellidoPaciente);
-                inputPanel.add(apellidoField);
-                inputPanel.add(edadPaciente);
-                inputPanel.add(edadField);
-                inputPanel.add(direccionPaciente);
-                inputPanel.add(direccionField);
-                inputPanel.add(telefonoPaciente);
-                inputPanel.add(telefonoField);
-                inputPanel.add(correoPaciente);
-                inputPanel.add(correoField);
-                inputPanel.add(guardarPaciente);  // Agregar el botón para guardar el paciente
-                inputPanel.add(volverAlInicio);
+        // Agregar los botones y campos de texto al panel de entrada
+        inputPanel.add(nombrePaciente);
+        inputPanel.add(nombreField);
+        inputPanel.add(apellidoPaciente);
+        inputPanel.add(apellidoField);
+        inputPanel.add(edadPaciente);
+        inputPanel.add(edadField);
+        inputPanel.add(direccionPaciente);
+        inputPanel.add(direccionField);
+        inputPanel.add(telefonoPaciente);
+        inputPanel.add(telefonoField);
+        inputPanel.add(correoPaciente);
+        inputPanel.add(correoField);
+        inputPanel.add(guardarPaciente);  // Agregar el botón para guardar el paciente
+        inputPanel.add(volverAlInicio);
 
-                // Agregar el panel de entrada al panel principal
-                mainPanel.add(inputPanel, BorderLayout.CENTER);
+        // Agregar el panel de entrada al panel principal
+        mainPanel.add(inputPanel, BorderLayout.CENTER);
 
 
-                // Evento para el botón "Guardar Paciente"
-                guardarPaciente.addActionListener(e -> {
-                    consultante.setNombre(nombreField.getText());
-                    consultante.setApellido(apellidoField.getText());
-                    consultante.setEdad(Integer.parseInt(edadField.getText()));
-                    consultante.setDireccion(direccionField.getText());
-                    consultante.setNroTelefono(telefonoField.getText());
-                    consultante.setCorreo(correoField.getText());
-                    consultante.setContrasenha(consultante.getNombre()+"."+consultante.getApellido());
-                    try {
-                        consultante.setNombreUsuario(consultante.getNombre()+"."+consultante.getApellido());
-                        JOptionPane.showMessageDialog(frame, "Usuario "+consultante.getNombreUsuario()+" guardado correctamente. " +
-                                "Su contrasenha es "+consultante.getContrasenha());
+        // Evento para el botón "Guardar Paciente"
+        guardarPaciente.addActionListener(e -> {
+            consultante.setNombre(nombreField.getText());
+            consultante.setApellido(apellidoField.getText());
+            consultante.setEdad(Integer.parseInt(edadField.getText()));
+            consultante.setDireccion(direccionField.getText());
+            consultante.setNroTelefono(telefonoField.getText());
+            consultante.setCorreo(correoField.getText());
+            consultante.setContrasenha(consultante.getNombre() + "." + consultante.getApellido());
+            try {
+                consultante.setNombreUsuario(consultante.getNombre() + "." + consultante.getApellido());
+                JOptionPane.showMessageDialog(frame, "Usuario " + consultante.getNombreUsuario() + " guardado correctamente. " +
+                        "Su contrasenha es " + consultante.getContrasenha());
 
-                        this.sistema.agendarUsuario(consultante);
-                        System.out.println(this.sistema.getUsuarios().toString());
-                    } catch (UsuarioInvalidoException ex) {
-                        JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
-                    }
-                    // Confirmación de que se guardó el paciente
-                });
-
-                volverAlInicio.addActionListener(e -> {
-                    // Cierra la ventana actual
-                    frame.dispose();
-                });
-
-                // Agregar el panel principal al marco
-                frame.add(mainPanel);
-                frame.setVisible(true);
-                return consultante;  // Retorna el objeto consultante con los datos ingresados
+                this.sistema.agendarUsuario(consultante);
+                System.out.println(this.sistema.getUsuarios().toString());
+            } catch (UsuarioInvalidoException ex) {
+                JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
             }
+            // Confirmación de que se guardó el paciente
+        });
+
+        volverAlInicio.addActionListener(e -> {
+            // Cierra la ventana actual
+            frame.dispose();
+        });
+
+        // Agregar el panel principal al marco
+        frame.add(mainPanel);
+        frame.setVisible(true);
+        return consultante;  // Retorna el objeto consultante con los datos ingresados
+    }
+
 }

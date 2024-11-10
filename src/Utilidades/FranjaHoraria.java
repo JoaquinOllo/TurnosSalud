@@ -26,6 +26,11 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         this.horaCierre = horarioFin;
         this.duracion = Duration.between(horaInicio, horarioFin);
     }
+    public FranjaHoraria(int horaInicio, int minutosInicio, int horaFin, int minutosFin){
+        this.horaInicio = LocalTime.of(horaInicio,minutosInicio);
+        this.horaCierre = LocalTime.of(horaFin,minutosFin);
+        this.duracion = Duration.between(this.horaInicio,this.horaCierre);
+    }
 
     public FranjaHoraria(LocalTime horaInicio, Duration duracion) {
         this.horaInicio = horaInicio;
