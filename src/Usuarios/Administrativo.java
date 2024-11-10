@@ -34,6 +34,11 @@ public class Administrativo extends Usuario implements I_GestionTurnos, I_Gestio
     }
 
     @Override
+    public boolean soloAutoGestion() {
+        return false;
+    }
+
+    @Override
     public boolean administraUsuarios() {
         return true;
     }

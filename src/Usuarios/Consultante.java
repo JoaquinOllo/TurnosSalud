@@ -34,6 +34,11 @@ public class Consultante extends Usuario implements I_GestionTurnos {
     }
 
     @Override
+    public boolean soloAutoGestion() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return this.getNombreCompleto();
     }

@@ -97,6 +97,11 @@ public class  GestionSistema {
         if (!(usuarioConectado instanceof I_GestionTurnos) | ! ((I_GestionTurnos) usuarioConectado).agendaTurnos()){
             throw new OperacionNoPermitidaException(usuarioConectado.getClass().getSimpleName(), "agendar turno");
         }else if (citaDisponible(turno)){
+            if (usuarioConectado instanceof Consultante ){
+                if (((Consultante) usuarioConectado).soloAutoGestion()){
+                    turno.setConsultante((Consultante) usuarioConectado);
+                }
+            }
             this.turnos.add(turno);
             System.out.println(this.turnos);
         } else {

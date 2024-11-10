@@ -122,5 +122,4 @@ public abstract class Usuario {
         return this.nombre + " " + this.apellido;
     }
 
-
 }

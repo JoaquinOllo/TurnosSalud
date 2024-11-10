@@ -51,6 +51,11 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         return false;
     }
 
+    @Override
+    public boolean soloAutoGestion() {
+        return false;
+    }
+
     public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
         Iterator<FranjaHoraria> iter_horarios =  horarioDeTrabajo.iterator();
         boolean compatible = false;

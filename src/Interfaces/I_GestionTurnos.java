@@ -8,4 +8,6 @@ public interface I_GestionTurnos {
 
     public boolean cancelaTurnos();
     public boolean reprogramaTurnos();
+
+    public boolean soloAutoGestion();
 }
