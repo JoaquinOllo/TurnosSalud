@@ -264,12 +264,9 @@ public class  GestionSistema {
 
         HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(profesional.getDuracionTurnoMinutos()));
 
-        System.out.println(horariosDispSede);
-        System.out.println("acáa");
 
         horariosDisponibles.retainAll(horariosDispSede);
-
-        System.out.println(horariosDisponibles);
+        
 
         ArrayList<LocalTime> horarios = new ArrayList<>(horariosDisponibles);
         horarios.sort(Comparator.comparing(e -> e));
