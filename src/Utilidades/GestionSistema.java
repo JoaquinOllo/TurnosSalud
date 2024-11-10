@@ -11,6 +11,7 @@ import Locaciones.Sede;
 import Usuarios.*;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -242,10 +243,13 @@ public class  GestionSistema {
         return pacientes;
     }
 
-    public HashSet<LocalDate> getFechasHabilitadas(Profesional profesional) {
+    public ArrayList<LocalDate> getFechasHabilitadas(Profesional profesional) {
         HashSet<LocalDate> fechasHabilitadas = new HashSet<>(profesional.getFechasHabilitadas(this.getTurnos().filtrarPorProfesional(profesional),
                 this.maximoDiasTurnos));
-        return fechasHabilitadas;
+
+        ArrayList<LocalDate> fechas = new ArrayList<>(fechasHabilitadas);
+        fechas.sort(Comparator.comparing(e -> e));
+        return fechas;
     }
 
     public ArrayList<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {

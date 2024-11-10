@@ -331,9 +331,8 @@ public class Interfaz  {
             turnoNuevo.setProfesional(this.sistema.getProfesionales()
                             .filtrarPorEspecialidad(especialidadElegida[0])
                     .get(elegirProfesional.getSelectedIndex()));
-            HashSet<LocalDate> fechasHabilitadas = this.sistema.getFechasHabilitadas(turnoNuevo.getProfesional());
-            System.out.println(fechasHabilitadas);
-            ComboBoxModel<LocalDate> fechasHabilitadasModel = new DefaultComboBoxModel<>(new ArrayList<>(fechasHabilitadas).toArray(new LocalDate[0]));
+            ArrayList<LocalDate> fechasHabilitadas = this.sistema.getFechasHabilitadas(turnoNuevo.getProfesional());
+            ComboBoxModel<LocalDate> fechasHabilitadasModel = new DefaultComboBoxModel<>(fechasHabilitadas.toArray(new LocalDate[0]));
             elegirDia.setModel(fechasHabilitadasModel);
             elegirDia.setEnabled(true);
         });
@@ -343,7 +342,7 @@ public class Interfaz  {
             elegirHorario.removeAllItems();
             ArrayList<LocalTime> horariosHabilitados = this.sistema.getHorariosDisponibles(turnoNuevo.getProfesional(), sedeElegida[0], turnoNuevo.getDia()) ;
             ComboBoxModel<LocalTime> horarioModelo = new DefaultComboBoxModel<>(
-                    new ArrayList<>(horariosHabilitados).toArray(new LocalTime[0])
+                    horariosHabilitados.toArray(new LocalTime[0])
             );
             elegirHorario.setModel(horarioModelo);
             elegirHorario.setEnabled(true);
