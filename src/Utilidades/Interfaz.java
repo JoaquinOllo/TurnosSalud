@@ -2,6 +2,7 @@ package Utilidades;
 import Citas.Turno;
 
 import Enumeradores.Especialidad;
+import Enumeradores.EstadoCita;
 import Excepciones.HorarioNoDisponibleException;
 import Excepciones.LugarNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
@@ -373,7 +374,7 @@ public class Interfaz  {
                 & turnoNuevo.getConsultante() != null) {
                     this.sistema.agendarTurno(turnoNuevo);
                     // Mostrar un mensaje de confirmación o realizar alguna acción adicional
-                    JOptionPane.showMessageDialog(frame, "Turno confirmado con éxito!");
+                    JOptionPane.showMessageDialog(frame, "Turno agendado con éxito!");
                     System.out.println(this.sistema.getTurnos());
                 } else {
                     JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
@@ -405,19 +406,23 @@ public class Interfaz  {
             panelTurno.setLayout(new BoxLayout(panelTurno, BoxLayout.Y_AXIS));
 
             // Crear los componentes para mostrar la información del turno
+            JLabel pacienteLabel=new JLabel("Nombre del paciente: "+turno.getConsultante());
             JLabel diaLabel = new JLabel("Dia: " + turno.getDia());
-            //JLabel horaLabel= new JLabel("Hora: " +turno.getHoraInicio());
+            JLabel horaLabel= new JLabel("Hora: " +turno.getHoraInicio());
             JLabel especialidadLabel = new JLabel("Especialidad: " +Especialidad.CARDIOLOGIA);
             JLabel profesionalLabel = new JLabel("Nombre Profesional: "+ turno.getProfesional());
             JLabel consultorioLabel = new JLabel("Consultorio: " + turno.getConsultorio());
-
+            JLabel estadoLabel= new JLabel("Estado: "+turno.getEstado());
 
             // Agregar los JLabel al panel del turno
+            panelTurno.add(pacienteLabel);
             panelTurno.add(diaLabel);
-            //panelTurno.add(horaLabel);
+            panelTurno.add(horaLabel);
             panelTurno.add(especialidadLabel);
             panelTurno.add(profesionalLabel);
             panelTurno.add(consultorioLabel);
+            panelTurno.add(estadoLabel);
+
 
             // Añadir un borde al panel del turno para separarlo de los demás
             panelTurno.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
