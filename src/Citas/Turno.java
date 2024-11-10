@@ -134,7 +134,7 @@ public class Turno  {
         this.razon = motivo;
     }*/
     public boolean colisiona(Turno turno) {
-        return this.horario.noColisiona(turno.horario);
+        return ! this.horario.noColisiona(turno.horario);
     }
 
 
