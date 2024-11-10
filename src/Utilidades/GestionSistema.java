@@ -14,8 +14,10 @@ import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class  GestionSistema {
 
@@ -226,10 +228,12 @@ public class  GestionSistema {
         return especialidades;
     }
 
-    //filtro para que de la lista de usuarios me guarde en el array solo los pacientes
 
-    public ArrayList<Consultante> getPacientes() {
-        ArrayList<Consultante> pacientes = new ArrayList<>();
+    /** Método para filtrar la lista de usuarios y devolver sólo los pacientes.
+     * @return
+     */
+    public ListaUsuarios<Consultante> getPacientes() {
+        ListaUsuarios<Consultante> pacientes = new ListaUsuarios<>();
         for (Usuario usuario : usuarios) {
             if (usuario instanceof Consultante) {
                 pacientes.add((Consultante) usuario);
@@ -244,21 +248,19 @@ public class  GestionSistema {
         return fechasHabilitadas;
     }
 
-    public HashSet<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {
+    public ArrayList<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {
         HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.getTurnos().filtrarPorProfesional(profesional)
                 .filtrarPorDia(dia), profesional.getDuracionTurnoMinutos()));
-
-        System.out.println(horariosDisponibles);
 
         HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(this.getTurnos()
                 .filtrarPorDia(dia).filtrarPorSede(sede), profesional.getDuracionTurnoMinutos()));
 
-        System.out.println(horariosDispSede);
-
         horariosDisponibles.retainAll(horariosDispSede);
 
-        System.out.println(horariosDisponibles);
-        return horariosDisponibles;
+        ArrayList<LocalTime> horarios = new ArrayList<>(horariosDisponibles);
+        horarios.sort(Comparator.comparing(e -> e));
+
+        return horarios;
     }
 
     public ArrayList<Sede> getSedesDisponibles() {

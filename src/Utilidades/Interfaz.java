@@ -12,6 +12,7 @@ import Usuarios.Profesional;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -340,7 +341,7 @@ public class Interfaz  {
         elegirDia.addActionListener(e -> {
             turnoNuevo.setDia((LocalDate) elegirDia.getSelectedItem());
             elegirHorario.removeAllItems();
-            HashSet<LocalTime> horariosHabilitados = this.sistema.getHorariosDisponibles(turnoNuevo.getProfesional(), sedeElegida[0], turnoNuevo.getDia()) ;
+            ArrayList<LocalTime> horariosHabilitados = this.sistema.getHorariosDisponibles(turnoNuevo.getProfesional(), sedeElegida[0], turnoNuevo.getDia()) ;
             ComboBoxModel<LocalTime> horarioModelo = new DefaultComboBoxModel<>(
                     new ArrayList<>(horariosHabilitados).toArray(new LocalTime[0])
             );
