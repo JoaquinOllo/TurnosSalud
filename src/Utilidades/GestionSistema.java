@@ -199,6 +199,7 @@ public class  GestionSistema {
                 profesionales.add((Profesional) usuario);
             }
         }
+        System.out.println(profesionales);
         return profesionales;
     }
 
@@ -258,9 +259,6 @@ public class  GestionSistema {
     public ArrayList<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {
         HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.getTurnos().filtrarPorProfesional(profesional)
                 .filtrarPorDia(dia), profesional.getDuracionTurnoMinutos()));
-
-        System.out.println(horariosDisponibles);
-        System.out.println("todavía no pasó lo peor!");
 
         HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(profesional.getDuracionTurnoMinutos()));
 

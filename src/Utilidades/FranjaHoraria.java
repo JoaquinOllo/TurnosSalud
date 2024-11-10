@@ -72,10 +72,7 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
 
     public boolean quedanEspaciosEnFranja(HashSet<FranjaHoraria> turnosDelDia, int duracionTurnoMinutos) {
         HashSet<FranjaHoraria> horariosDisponibles = this.dividirSegunDuracion(duracionTurnoMinutos);
-        System.out.println(horariosDisponibles);
-        System.out.println(turnosDelDia);
         horariosDisponibles.removeAll(turnosDelDia);
-        System.out.println(horariosDisponibles);
         return ! horariosDisponibles.isEmpty();
     }
 

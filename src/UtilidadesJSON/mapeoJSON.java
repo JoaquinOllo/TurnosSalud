@@ -103,7 +103,7 @@ public class mapeoJSON {
                     }
                     usuarios.add(usuario);
                 } catch (UsuarioInvalidoException e) {
-                    throw new RuntimeException("No se pudo cargar el usuario: " + e.getMessage());
+                    System.out.println("No se pudo cargar el usuario: " + e.getMessage());
                 }
             }
             sistema.setUsuarios(usuarios);
@@ -172,7 +172,6 @@ public class mapeoJSON {
                             System.out.println(turno);
                         } catch (UsuarioInexistenteException e) {
                             System.out.println("error en carga de turno " + e.getMessage());
-                            throw new RuntimeException(e.getMessage());
                         }
                     }
                     consultorio.setTurnos(turnos);
@@ -204,49 +203,55 @@ public class mapeoJSON {
             // Leer el archivo JSON
             JSONObject turnosSaludJson = new JSONObject(JSONUtiles.leer(nombreArchivo));
 
-            turnosSaludJson.remove("Usuarios");
-
             // Guardar Usuarios
             JSONArray usuariosArray = new JSONArray();
             for (Usuario usuario : usuarios) {
                 JSONObject usuarioJson = new JSONObject();
 
-                // Datos comunes a todos los usuarios
-                usuarioJson.put("nombre", usuario.getNombre());
-                usuarioJson.put("apellido", usuario.getApellido());
-                usuarioJson.put("edad", usuario.getEdad());
-                usuarioJson.put("correo", usuario.getCorreo());
-                usuarioJson.put("telefono", usuario.getNroTelefono());
-                usuarioJson.put("nombreUsuario", usuario.getNombreUsuario());
-                usuarioJson.put("contrasena", usuario.getContrasenha());
-                usuarioJson.put("direccion", usuario.getDireccion());
+                try {
+                    // Datos comunes a todos los usuarios
+                    usuarioJson.put("nombre", usuario.getNombre());
+                    usuarioJson.put("apellido", usuario.getApellido());
+                    usuarioJson.put("edad", usuario.getEdad());
+                    usuarioJson.put("correo", usuario.getCorreo());
+                    usuarioJson.put("telefono", usuario.getNroTelefono());
+                    usuarioJson.put("nombreUsuario", usuario.getNombreUsuario());
+                    usuarioJson.put("contrasena", usuario.getContrasenha());
+                    usuarioJson.put("direccion", usuario.getDireccion());
 
-                // Determinar el rol y datos específicos
-                if (usuario instanceof Profesional) {
-                    usuarioJson.put("rol", "profesional");
-                    Profesional profesional = (Profesional) usuario;
-                    usuarioJson.put("especialidad", profesional.getEspecialidad());
+                    // Determinar el rol y datos específicos
+                    if (usuario instanceof Profesional) {
+                        usuarioJson.put("rol", "profesional");
+                        Profesional profesional = (Profesional) usuario;
+                        usuarioJson.put("especialidad", profesional.getEspecialidad());
 
-                    // Guardar horarios del profesional
-                    JSONArray horariosArray = new JSONArray();
-                    for (FranjaHoraria franja : profesional.getHorarioDeTrabajo()) {
-                        JSONObject horarioJson = new JSONObject();
-                        horarioJson.put("inicio", franja.getHoraInicio().toString());
-                        horarioJson.put("fin", franja.getHoraCierre().toString());
-                        horariosArray.put(horarioJson);
+                        // Guardar horarios del profesional
+                        JSONArray horariosArray = new JSONArray();
+                        for (FranjaHoraria franja : profesional.getHorarioDeTrabajo()) {
+                            JSONObject horarioJson = new JSONObject();
+                            horarioJson.put("inicio", franja.getHoraInicio().toString());
+                            horarioJson.put("fin", franja.getHoraCierre().toString());
+                            horariosArray.put(horarioJson);
+                        }
+                        usuarioJson.put("horarios", horariosArray);
+                    } else if (usuario instanceof Consultante) {
+                        usuarioJson.put("rol", "consultante");
+                    } else if (usuario instanceof Administrador) {
+                        usuarioJson.put("rol", "administrador");
+                    } else if (usuario instanceof Administrativo) {
+                        usuarioJson.put("rol", "administrativo");
                     }
-                    usuarioJson.put("horarios", horariosArray);
-                } else if (usuario instanceof Consultante) {
-                    usuarioJson.put("rol", "consultante");
-                } else if (usuario instanceof Administrador) {
-                    usuarioJson.put("rol", "administrador");
-                } else if (usuario instanceof Administrativo) {
-                    usuarioJson.put("rol", "administrativo");
+                    usuariosArray.put(usuarioJson);
+                } catch (JSONException e) {
+                    System.out.println("Error en el guardado del usuario. ");
                 }
-                usuariosArray.put(usuarioJson);
             }
-            turnosSaludJson.put("Usuarios", usuariosArray);
-
+            if (usuariosArray.length() != 0){
+                turnosSaludJson.remove("Usuarios");
+                turnosSaludJson.put("Usuarios", usuariosArray);
+            } else{
+                throw new JSONException("No se guardan usuarios debido a que se borraría el listado completo.");
+            }
             // Guardar en archivo usando JSONUtiles
             JSONUtiles.grabar(turnosSaludJson, nombreArchivo);
         } catch (JSONException e) {

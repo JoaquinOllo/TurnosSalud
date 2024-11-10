@@ -59,7 +59,6 @@ public class Sede implements I_CompatibilidadHorarios {
     }
 
     public HashSet<LocalTime> getHorariosHabilitados(int duracionTurnoEnMinutos) {
-        System.out.println("entramos a gethorarioshabilitados de la sede");
         HashSet<LocalTime> horariosHabilitados = new HashSet<>();
         for (Consultorio consultorio : this.consultorios){
             horariosHabilitados.addAll(consultorio.getHorariosHabilitados(duracionTurnoEnMinutos));

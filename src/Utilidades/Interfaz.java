@@ -293,7 +293,6 @@ public class Interfaz {
                             "Su contrasenha es " + profesional.getContrasenha());
 
                     this.sistema.agendarUsuario(profesional);
-                    System.out.println(this.sistema.getUsuarios().toString());
                 } catch (UsuarioInvalidoException ex) {
                     JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
                 }
@@ -513,9 +512,7 @@ public class Interfaz {
                         turnoNuevo.getProfesional() != null & turnoNuevo.getConsultorio() != null
                         & turnoNuevo.getConsultante() != null) {
                     this.sistema.agendarTurno(turnoNuevo);
-                    // Mostrar un mensaje de confirmación o realizar alguna acción adicional
                     JOptionPane.showMessageDialog(frame, "Turno agendado con éxito!");
-                    System.out.println(this.sistema.getTurnos());
                 } else {
                     JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
                 }
@@ -668,7 +665,6 @@ public class Interfaz {
                         "Su contrasenha es " + consultante.getContrasenha());
 
                 this.sistema.agendarUsuario(consultante);
-                System.out.println(this.sistema.getUsuarios().toString());
             } catch (UsuarioInvalidoException ex) {
                 JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
             }

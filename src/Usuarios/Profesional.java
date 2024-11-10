@@ -106,21 +106,15 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
 
     public Set<LocalDate> getFechasHabilitadas(Agenda<Turno> turnos, int limiteEnDias) {
         Set<LocalDate> fechasHabilitadas = new HashSet<>();
-
         for (int i = 0; i < limiteEnDias; i++) {
             LocalDate fecha = LocalDate.now().plusDays(i);
-            System.out.println(fecha);
             HashSet<FranjaHoraria> turnosDelDia = turnos.filtrarPorDia(fecha).stream().map(Turno::getFranjaHoraria).collect(Collectors.toCollection(HashSet::new));
-            System.out.println(this.horarioDeTrabajo);
             for (FranjaHoraria franja: this.horarioDeTrabajo){
-                System.out.println(franja);
                 if (franja.quedanEspaciosEnFranja(turnosDelDia, this.duracionTurnoMinutos)){
-                    System.out.println();
                     fechasHabilitadas.add(fecha);
                 }
             }
         }
-
         return fechasHabilitadas;
     }
 }

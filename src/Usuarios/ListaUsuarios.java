@@ -11,7 +11,7 @@ public class ListaUsuarios<T extends Usuario> extends ArrayList<T> {
     public ListaUsuarios<Profesional> filtrarPorEspecialidad(Especialidad especialidad){
         return this.stream().filter(us -> us instanceof Profesional)
                 .map(e-> (Profesional) e)
-                .filter(us -> ((Profesional) us).getEspecialidad().equals(especialidad))
+                .filter(us -> us.getEspecialidad().equals(especialidad))
                 .collect(Collectors.toCollection(ListaUsuarios::new));
     }
 
