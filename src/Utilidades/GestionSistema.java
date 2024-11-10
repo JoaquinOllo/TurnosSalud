@@ -29,6 +29,7 @@ public class  GestionSistema {
     private Usuario usuarioConectado;
     private Interfaz menu;
 
+
     public final int maximoDiasTurnos = 45;
 
     public ArrayList<Consultorio> getConsultorios() {
@@ -238,6 +239,16 @@ public class  GestionSistema {
             }
         }
         return pacientes;
+    }
+    //metodo para filtrar de la lista de usuarios y devolver solo los profesionales
+    public ListaUsuarios<Profesional> listaProfesionales(){
+        ListaUsuarios<Profesional> profesionales = new ListaUsuarios<>();
+        for (Usuario usuario : usuarios){
+            if (usuario instanceof Profesional){
+                profesionales.add((Profesional) usuario);
+            }
+        }
+        return profesionales;
     }
 
     public ArrayList<LocalDate> getFechasHabilitadas(Profesional profesional) {
