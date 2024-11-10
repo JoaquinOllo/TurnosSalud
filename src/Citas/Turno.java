@@ -56,6 +56,10 @@ public class Turno  {
         this.dia = dia;
     }
 
+    public LocalDateTime getHorarioCompleto(){
+        return LocalDateTime.of(this.dia, this.getFranjaHoraria().getHoraInicio());
+    }
+
     public LocalTime getHoraInicio() {
         return horario.getHoraInicio();
     }
@@ -140,5 +144,18 @@ public class Turno  {
 
     public FranjaHoraria getFranjaHoraria (){
         return this.horario;
+    }
+
+    @Override
+    public String toString() {
+        return "Turno{" +
+                "dia=" + dia +
+                ", horario=" + horario +
+                ", estado=" + estado +
+                ", consultante=" + consultante +
+                ", profesional=" + profesional +
+                ", agendadoPor=" + agendadoPor +
+                ", consultorio=" + consultorio +
+                '}';
     }
 }

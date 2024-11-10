@@ -1,6 +1,8 @@
 package Locaciones;
 
 import Citas.Turno;
+import Excepciones.HorarioNoDisponibleException;
+import Excepciones.LugarNoDisponibleException;
 import Interfaces.I_CompatibilidadHorarios;
 import Usuarios.Consultante;
 import Usuarios.Usuario;
@@ -90,7 +92,14 @@ public class Sede implements I_CompatibilidadHorarios {
         this.consultorios.add(consultorio);
     }
 
-    public Consultorio buscarConsultorioDisponible(LocalDate dia, FranjaHoraria franjaHoraria) {
-        return null;
+    public Consultorio buscarConsultorioDisponible(Agenda<Turno> turnos, LocalDate dia, FranjaHoraria franjaHoraria) throws LugarNoDisponibleException {
+
+        for (Consultorio consultorio : this.consultorios){
+            if (turnos.filtrarPorDia(dia).filtrarPorHoraInicio(franjaHoraria.getHoraInicio()).filtrarPorConsultorio(consultorio).isEmpty()){
+                return consultorio;
+            }
+        }
+        throw new LugarNoDisponibleException(this, "sede sin consultorios disponibles para el día "
+        + dia + " y para la franja horaria " + franjaHoraria);
     }
 }

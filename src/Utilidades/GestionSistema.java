@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 public class  GestionSistema {
 
-    private ArrayList<Consultorio> consultorios;
     private ArrayList<Sede> sedes;
     private ListaUsuarios<Usuario> usuarios;
     private Usuario usuarioConectado;
@@ -33,6 +32,10 @@ public class  GestionSistema {
     private Agenda<Turno> turnos;
 
     public ArrayList<Consultorio> getConsultorios() {
+        ArrayList<Consultorio> consultorios = new ArrayList<>();
+        for (Sede sede: this.sedes){
+            consultorios.addAll(sede.getConsultorios());
+        }
         return consultorios;
     }
 
@@ -48,12 +51,8 @@ public class  GestionSistema {
         return usuarioConectado;
     }
 
-    public ArrayList<Turno> getTurnos() {
+    public Agenda<Turno> getTurnos() {
         return turnos;
-    }
-
-    public void setConsultorios(ArrayList<Consultorio> consultorios) {
-        this.consultorios = consultorios;
     }
 
     /**
@@ -61,6 +60,10 @@ public class  GestionSistema {
      */
     public void setSedes(ArrayList<Sede> sedes) {
         this.sedes = sedes;
+    }
+
+    public void addSede(Sede sede){
+        this.sedes.add(sede);
     }
 
     public void setUsuarios(ListaUsuarios<Usuario> usuarios) {
@@ -79,7 +82,6 @@ public class  GestionSistema {
      */
     public GestionSistema() {
         this.turnos = new Agenda<>();
-        this.consultorios = new ArrayList<>();
         this.sedes = new ArrayList<>();
         this.usuarios = new ListaUsuarios<>();
         this.menu = new Interfaz(this);
@@ -96,12 +98,19 @@ public class  GestionSistema {
             throw new OperacionNoPermitidaException(usuarioConectado.getClass().getSimpleName(), "agendar turno");
         }else if (citaDisponible(turno)){
             this.turnos.add(turno);
+            System.out.println(this.turnos);
+        } else {
+            throw new HorarioNoDisponibleException(turno.getHorarioCompleto(), "No hay disponibilidad para este turno");
         }
     }
 
-    private <T extends Turno> boolean citaDisponible(T turno) throws HorarioNoDisponibleException {
+    private <T extends Turno> boolean citaDisponible(T turno) {
         boolean turnoDisponible = false;
 
+        System.out.println("Evaluando si la cita está disponible.");
+        System.out.println(turno.getProfesional().citaCompatibleConFranjaHoraria(turno));
+        System.out.println(turno.getConsultorio().citaCompatibleConFranjaHoraria(turno));
+        System.out.println(turnos.franjaDisponible(turno));
         if(turno.getProfesional().citaCompatibleConFranjaHoraria(turno)
         && turno.getConsultorio().citaCompatibleConFranjaHoraria(turno)
         &&  turnos.franjaDisponible(turno)) {
@@ -124,7 +133,6 @@ public class  GestionSistema {
 
         Consultorio consultorio = new Consultorio();
         consultorio.setSede(sede);
-        consultorios.add(consultorio);
         sede.addConsultorio(consultorio);
 
         Consultante consultante = new Consultante("pipo", "pipo");

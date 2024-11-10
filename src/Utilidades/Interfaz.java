@@ -3,6 +3,7 @@ import Citas.Turno;
 
 import Enumeradores.Especialidad;
 import Excepciones.HorarioNoDisponibleException;
+import Excepciones.LugarNoDisponibleException;
 import Excepciones.OperacionNoPermitidaException;
 import Excepciones.UsuarioInvalidoException;
 import Locaciones.Sede;
@@ -246,6 +247,22 @@ public class Interfaz  {
         JPanel menuPanel = new JPanel();
         menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
 
+
+        JLabel lblPaciente;
+        JComboBox<Consultante> elegirPaciente = new JComboBox<>();
+        if (this.sistema.getUsuarioConectado() instanceof Consultante){
+            lblPaciente = new JLabel("Creación de turno para usuario conectado.");
+            turnoNuevo.setConsultante((Consultante)  this.sistema.getUsuarioConectado());
+        } else {
+            lblPaciente = new JLabel("Seleccione un paciente: ");
+            ComboBoxModel<Consultante> pacientesModel = new DefaultComboBoxModel<>(new ArrayList<>(this.sistema.getPacientes()).toArray(new Consultante[0]));
+            elegirPaciente.setModel(pacientesModel);
+
+            elegirPaciente.addActionListener(e -> {
+                turnoNuevo.setConsultante((Consultante) elegirPaciente.getSelectedItem());
+            });
+        }
+
         // Etiquetas informativas
         JLabel lblSeleccionarEspecialidad = new JLabel("Selecciona una especialidad:");
         JLabel lblSeleccionarProfesional = new JLabel("Selecciona un profesional:");
@@ -277,9 +294,11 @@ public class Interfaz  {
         confirmar.setEnabled(false);
         elegirSede.setEnabled(false);
 
-
-
         // Agregar botones al panel del menú
+        menuPanel.add(lblPaciente);
+        if (! (this.sistema.getUsuarioConectado() instanceof Consultante)){
+            menuPanel.add(elegirPaciente);
+        }
         menuPanel.add(lblSeleccionarEspecialidad);
         menuPanel.add(elegirEspecialidad);
         menuPanel.add(lblSeleccionarSede);
@@ -335,16 +354,16 @@ public class Interfaz  {
         });
 
         elegirHorario.addActionListener(e ->{
-            Duration duracionTurno = Duration.of(turnoNuevo.getProfesional().getDuracionTurnoMinutos(), ChronoUnit.MINUTES);
-            FranjaHoraria franja = new FranjaHoraria((LocalTime) elegirHorario.getSelectedItem(), duracionTurno );
-            turnoNuevo.setHorario(franja);
-            turnoNuevo.setConsultorio(sedeElegida[0].buscarConsultorioDisponible(turnoNuevo.getDia(), turnoNuevo.getFranjaHoraria()));
-            System.out.println("Consultorio asignado: " + turnoNuevo.getConsultorio());
-            if (turnoNuevo.getConsultorio() == null) {
-                JOptionPane.showMessageDialog(frame, "No hay consultorios disponibles para la fecha y hora seleccionadas.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+            try {
+                Duration duracionTurno = Duration.of(turnoNuevo.getProfesional().getDuracionTurnoMinutos(), ChronoUnit.MINUTES);
+                FranjaHoraria franja = new FranjaHoraria((LocalTime) elegirHorario.getSelectedItem(), duracionTurno );
+                turnoNuevo.setHorario(franja);
+                turnoNuevo.setConsultorio(sedeElegida[0].buscarConsultorioDisponible(this.sistema.getTurnos(), turnoNuevo.getDia(), turnoNuevo.getFranjaHoraria()));
+                System.out.println("Consultorio asignado: " + turnoNuevo.getConsultorio());
+                confirmar.setEnabled(true);
+            } catch (LugarNoDisponibleException ex) {
+                JOptionPane.showMessageDialog(frame, "No hay consultorios disponibles para la fecha y hora seleccionadas. Elija otra hora.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            confirmar.setEnabled(true);
         });
 
         confirmar.addActionListener(e -> {
@@ -352,10 +371,12 @@ public class Interfaz  {
                 System.out.println(turnoNuevo);
                 // Aquí setearíamos los valores en turnoNuevo
                 if (turnoNuevo.getDia() != null & turnoNuevo.getFranjaHoraria() != null &
-                turnoNuevo.getProfesional() != null & turnoNuevo.getConsultorio() != null) {
+                turnoNuevo.getProfesional() != null & turnoNuevo.getConsultorio() != null
+                & turnoNuevo.getConsultante() != null) {
                     this.sistema.agendarTurno(turnoNuevo);
                     // Mostrar un mensaje de confirmación o realizar alguna acción adicional
                     JOptionPane.showMessageDialog(frame, "Turno confirmado con éxito!");
+                    System.out.println(this.sistema.getTurnos());
                 } else {
                     JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
                 }

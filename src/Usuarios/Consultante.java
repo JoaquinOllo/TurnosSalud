@@ -32,4 +32,10 @@ public class Consultante extends Usuario implements I_GestionTurnos {
     public boolean reprogramaTurnos() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return this.getNombreCompleto();
+    }
+
 }

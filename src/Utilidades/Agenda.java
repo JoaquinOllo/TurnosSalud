@@ -15,7 +15,7 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
     public boolean franjaDisponible(T turno) {
         Agenda<T> agendaFiltrada = this.filtrarPorProfesional(turno.getProfesional()).filtrarPorConsultorio(turno.getConsultorio());
         //completar
-        return agendaFiltrada.stream().anyMatch(t -> t.colisiona(turno));//recorre el array de agenda filtrada
+        return agendaFiltrada.stream().noneMatch(t -> t.colisiona(turno));//recorre el array de agenda filtrada
     }
 
     public Agenda<T> filtrarPorConsultorio(Consultorio consultorio) {
@@ -102,4 +102,8 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         return turnosPorPeriodo;
     }
 
+    @Override
+    public String toString() {
+        return "Agenda: " + super.toString();
+    }
 }

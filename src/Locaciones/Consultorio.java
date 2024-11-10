@@ -12,6 +12,15 @@ import java.util.HashSet;
 public class Consultorio implements I_CompatibilidadHorarios {
     private Sede sede;
     private ArrayList<Turno> turnos;
+    private int numero;
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
 
     public Sede getSede() {
         return sede;
@@ -42,5 +51,12 @@ public class Consultorio implements I_CompatibilidadHorarios {
         }
 
         return horariosHabilitados;
+    }
+
+    @Override
+    public String toString() {
+        return "Consultorio: " +
+                "sede " + sede +
+                ", numero " + numero;
     }
 }
