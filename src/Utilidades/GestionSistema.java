@@ -100,6 +100,7 @@ public class  GestionSistema {
             if (usuarioConectado instanceof Consultante ){
                 if (((Consultante) usuarioConectado).soloAutoGestion()){
                     turno.setConsultante((Consultante) usuarioConectado);
+                    turno.confirmar();
                 }
             }
             this.turnos.add(turno);
