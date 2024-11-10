@@ -1,11 +1,15 @@
 package Usuarios;
 
+import Enumeradores.TipoDeVisualizacion;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_GestionAdministrativa;
 import Interfaces.I_GestionConsultorios;
 import Interfaces.I_GestionTurnos;
+import Locaciones.Sede;
 
 public class Administrativo extends Usuario implements I_GestionTurnos, I_GestionAdministrativa, I_GestionConsultorios {
+    private Sede sede;
+
     public Administrativo(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
         super(nombreUsuario, contrasenha);
     }
@@ -16,6 +20,10 @@ public class Administrativo extends Usuario implements I_GestionTurnos, I_Gestio
 
 
     public Administrativo() {
+    }
+
+    public void setSede(Sede sede){
+        this.sede = sede;
     }
 
     @Override
@@ -44,8 +52,18 @@ public class Administrativo extends Usuario implements I_GestionTurnos, I_Gestio
     }
 
     @Override
+    public TipoDeVisualizacion modalidadVisualizacionDeTurnos() {
+        return TipoDeVisualizacion.POR_SEDE;
+    }
+
+    @Override
     public boolean administraUsuarios() {
         return true;
+    }
+
+    @Override
+    public TipoDeVisualizacion modalidadVisualizacionUsuarios() {
+        return TipoDeVisualizacion.TODOS;
     }
 
     @Override
@@ -56,5 +74,9 @@ public class Administrativo extends Usuario implements I_GestionTurnos, I_Gestio
     @Override
     public boolean administraConsultorios() {
         return true;
+    }
+
+    public Sede getSede() {
+        return this.sede;
     }
 }

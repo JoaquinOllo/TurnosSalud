@@ -1,9 +1,9 @@
 package Usuarios;
 
+import Enumeradores.TipoDeVisualizacion;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_GestionAdministrativa;
 import Interfaces.I_GestionConsultorios;
-import Interfaces.I_GestionHC;
 import Interfaces.I_GestionTurnos;
 
 public class Administrador extends Usuario implements I_GestionTurnos, I_GestionAdministrativa, I_GestionConsultorios {
@@ -41,8 +41,18 @@ public class Administrador extends Usuario implements I_GestionTurnos, I_Gestion
     }
 
     @Override
+    public TipoDeVisualizacion modalidadVisualizacionDeTurnos() {
+        return TipoDeVisualizacion.TODOS;
+    }
+
+    @Override
     public boolean administraUsuarios() {
         return true;
+    }
+
+    @Override
+    public TipoDeVisualizacion modalidadVisualizacionUsuarios() {
+        return TipoDeVisualizacion.TODOS;
     }
 
     @Override

@@ -4,7 +4,9 @@ import Citas.Turno;
 import Enumeradores.Especialidad;
 import Locaciones.Consultorio;
 import Locaciones.Sede;
+import Usuarios.Consultante;
 import Usuarios.Profesional;
+import Usuarios.Usuario;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -112,5 +114,16 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
     @Override
     public String toString() {
         return "Agenda: " + super.toString();
+    }
+
+    public Agenda<T> filtrarPorConsultante(Consultante consultante) {
+        Agenda<T> turnosPorConsultante =new Agenda<>();
+        for(T turno:this){
+            if(turno.getConsultante().equals(consultante)){
+                turnosPorConsultante.add(turno);
+            }
+        }
+        return turnosPorConsultante;
+
     }
 }

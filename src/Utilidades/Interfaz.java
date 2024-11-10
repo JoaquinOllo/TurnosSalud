@@ -2,8 +2,12 @@ package Utilidades;
 import Citas.Turno;
 
 import Enumeradores.Especialidad;
+import Enumeradores.TipoDeVisualizacion;
 import Excepciones.*;
+import Interfaces.I_GestionAdministrativa;
+import Interfaces.I_GestionTurnos;
 import Locaciones.Sede;
+import Usuarios.Administrativo;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
 import Usuarios.Usuario;
@@ -129,41 +133,66 @@ public class Interfaz {
         JPanel menuPanel = new JPanel();
         menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
 
-        JButton agregarPaciente = new JButton("Agregar Paciente");
-        menuPanel.add(agregarPaciente);
-        agregarPaciente.addActionListener(e -> {
-            Consultante consultante = new Consultante();
-            menuAgregarPaciente(consultante);
-        });
+        if (this.getUsuarioConectado() instanceof I_GestionAdministrativa) {
+            JButton agregarPaciente = new JButton("Agregar Paciente");
+            menuPanel.add(agregarPaciente);
+            agregarPaciente.addActionListener(e -> {
+                Consultante consultante = new Consultante();
+                menuAgregarPaciente(consultante);
+            });
+        }
 
-        JButton verPacientes = new JButton("Ver Pacientes");
-        menuPanel.add(verPacientes);
-        verPacientes.addActionListener(e -> {
-            menuVerPacientes(this.sistema.getPacientes());
-        });
+        if (this.getUsuarioConectado() instanceof I_GestionAdministrativa) {
+            JButton verPacientes = new JButton("Ver Pacientes");
+            menuPanel.add(verPacientes);
+            verPacientes.addActionListener(e -> {
+                menuVerPacientes(this.sistema.getPacientes());
+            });
+        }
 
-        JButton agregarCita = new JButton("Agregar Cita");
-        menuPanel.add(agregarCita);
-        agregarCita.addActionListener(e -> {
-            Turno t1 = new Turno(this.sistema.getUsuarioConectado());
-            menuCita(t1);
-        });
+        if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
+                ((I_GestionTurnos) this.getUsuarioConectado()).agendaTurnos()) {
+            JButton agregarCita = new JButton("Agregar Cita");
+            menuPanel.add(agregarCita);
+            agregarCita.addActionListener(e -> {
+                Turno t1 = new Turno(this.sistema.getUsuarioConectado());
+                menuCita(t1);
+            });
+        }
 
-        JButton verCitas = new JButton("Ver Citas");
-        menuPanel.add(verCitas);
-        verCitas.addActionListener(e -> {
-            menuVerTurnos(this.sistema.getTurnos());
-        });
+        if (this.getUsuarioConectado() instanceof I_GestionTurnos) {
+            JButton verCitas = new JButton("Ver Turnos");
+            menuPanel.add(verCitas);
+            verCitas.addActionListener(e -> {
 
-        JButton cargarProfesional = new JButton("Cargar Nuevo Profesional");
-        menuPanel.add(cargarProfesional);
-        cargarProfesional.addActionListener(e -> {
-            Profesional profesional = new Profesional();
-            menuNuevoProfesional(profesional);
-        });
+                if (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos().equals(TipoDeVisualizacion.TODOS)){
+                    menuVerTurnos(this.sistema.getTurnos());
+                } else if (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos().equals(TipoDeVisualizacion.POR_SEDE)){
+                    Sede sede = ((Administrativo) this.getUsuarioConectado()).getSede();
+                    menuVerTurnos(this.sistema.getTurnos().filtrarPorSede(sede));
+                } else if (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos().equals(TipoDeVisualizacion.PERSONAL)
+                && this.getUsuarioConectado() instanceof Profesional){
+                    menuVerTurnos(this.sistema.getTurnos().filtrarPorProfesional((Profesional) this.getUsuarioConectado()));
+                } else if (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos().equals(TipoDeVisualizacion.PERSONAL)
+                       && this.getUsuarioConectado() instanceof Consultante) {
+                    menuVerTurnos(this.sistema.getTurnos().filtrarPorConsultante((Consultante) this.getUsuarioConectado()));
 
-        JButton cargarAdministrativo = new JButton("Cargar Nuevo Administrativo");
-        menuPanel.add(cargarAdministrativo);
+                }
+            });
+        }
+
+        if (this.getUsuarioConectado() instanceof I_GestionAdministrativa &&
+                ((I_GestionAdministrativa)this.getUsuarioConectado()).administraUsuarios()) {
+            JButton cargarProfesional = new JButton("Cargar Nuevo Profesional");
+            menuPanel.add(cargarProfesional);
+            cargarProfesional.addActionListener(e -> {
+                Profesional profesional = new Profesional();
+                menuNuevoProfesional(profesional);
+            });
+
+            JButton cargarAdministrativo = new JButton("Cargar Nuevo Administrativo");
+            menuPanel.add(cargarAdministrativo);
+        }
 
         JButton salir = new JButton("Salir");
         menuPanel.add(salir);

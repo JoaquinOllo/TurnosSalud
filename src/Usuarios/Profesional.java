@@ -2,8 +2,10 @@ package Usuarios;
 
 import Citas.Turno;
 import Enumeradores.Especialidad;
+import Enumeradores.TipoDeVisualizacion;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_CompatibilidadHorarios;
+import Interfaces.I_GestionAdministrativa;
 import Interfaces.I_GestionTurnos;
 import Locaciones.Sede;
 import Utilidades.Agenda;
@@ -14,7 +16,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Profesional extends Usuario implements I_GestionTurnos, I_CompatibilidadHorarios {
+public class Profesional extends Usuario implements I_GestionTurnos, I_CompatibilidadHorarios, I_GestionAdministrativa {
     private Especialidad especialidad;
     private Set<FranjaHoraria> horarioDeTrabajo = new HashSet<>();
     private final int duracionTurnoMinutos = 60;
@@ -60,6 +62,11 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
     @Override
     public boolean soloAutoGestion() {
         return false;
+    }
+
+    @Override
+    public TipoDeVisualizacion modalidadVisualizacionDeTurnos() {
+        return TipoDeVisualizacion.PERSONAL;
     }
 
     public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
@@ -116,5 +123,15 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
             }
         }
         return fechasHabilitadas;
+    }
+
+    @Override
+    public boolean administraUsuarios() {
+        return false;
+    }
+
+    @Override
+    public TipoDeVisualizacion modalidadVisualizacionUsuarios() {
+        return TipoDeVisualizacion.PERSONAL;
     }
 }

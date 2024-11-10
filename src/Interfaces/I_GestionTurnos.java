@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Enumeradores.TipoDeVisualizacion;
+
 public interface I_GestionTurnos {
 
     public boolean agendaTurnos();
@@ -10,4 +12,7 @@ public interface I_GestionTurnos {
     public boolean reprogramaTurnos();
 
     public boolean soloAutoGestion();
+
+    public TipoDeVisualizacion modalidadVisualizacionDeTurnos();
+
 }

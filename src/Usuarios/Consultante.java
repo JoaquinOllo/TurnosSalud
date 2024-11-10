@@ -1,5 +1,6 @@
 package Usuarios;
 
+import Enumeradores.TipoDeVisualizacion;
 import Excepciones.UsuarioInvalidoException;
 import Interfaces.I_GestionTurnos;
 
@@ -41,6 +42,11 @@ public class Consultante extends Usuario implements I_GestionTurnos {
     @Override
     public boolean soloAutoGestion() {
         return true;
+    }
+
+    @Override
+    public TipoDeVisualizacion modalidadVisualizacionDeTurnos() {
+        return TipoDeVisualizacion.PERSONAL;
     }
 
     @Override
