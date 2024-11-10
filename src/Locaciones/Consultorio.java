@@ -11,7 +11,7 @@ import java.util.HashSet;
 
 public class Consultorio implements I_CompatibilidadHorarios {
     private Sede sede;
-    private ArrayList<Turno> turnos;
+    private Agenda<Turno> turnos = new Agenda<>();
     private int numero;
 
     public int getNumero() {
@@ -30,16 +30,20 @@ public class Consultorio implements I_CompatibilidadHorarios {
         this.sede = sede;
     }
 
-    public ArrayList<Turno> getTurnos() {
+    public Agenda<Turno> getTurnos() {
         return turnos;
     }
 
-    public void setTurnos(ArrayList<Turno> turnos) {
+    public void setTurnos(Agenda<Turno> turnos) {
         this.turnos = turnos;
     }
 
     public <T extends Turno> boolean citaCompatibleConFranjaHoraria(T turno) {
         return this.sede.citaCompatibleConFranjaHoraria(turno);
+    }
+
+    public void agendarTurno(Turno turno){
+        this.turnos.add(turno);
     }
 
     @Override

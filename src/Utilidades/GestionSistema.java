@@ -29,8 +29,6 @@ public class  GestionSistema {
 
     public final int maximoDiasTurnos = 45;
 
-    private Agenda<Turno> turnos;
-
     public ArrayList<Consultorio> getConsultorios() {
         ArrayList<Consultorio> consultorios = new ArrayList<>();
         for (Sede sede: this.sedes){
@@ -52,6 +50,14 @@ public class  GestionSistema {
     }
 
     public Agenda<Turno> getTurnos() {
+        Agenda<Turno> turnos = new Agenda<>();
+        for (int i = 0; i < this.sedes.size(); i++) {
+            Sede sede = this.sedes.get(i);
+            for (int j = 0; j < sede.getConsultorios().size(); j++) {
+                Consultorio cons = sede.getConsultorioByIndex(j);
+                turnos.addAll(cons.getTurnos());
+            }
+        }
         return turnos;
     }
 
@@ -70,10 +76,6 @@ public class  GestionSistema {
         this.usuarios = usuarios;
     }
 
-    public void setTurnos(Agenda<Turno> turnos) {
-        this.turnos = turnos;
-    }
-
     public void setUsuarioConectado(Usuario usuarioConectado) {
         this.usuarioConectado = usuarioConectado;
     }
@@ -81,7 +83,6 @@ public class  GestionSistema {
     /** Constructor utilizado para la inicialización del sistema sin json de datos.
      */
     public GestionSistema() {
-        this.turnos = new Agenda<>();
         this.sedes = new ArrayList<>();
         this.usuarios = new ListaUsuarios<>();
         this.menu = new Interfaz(this);
@@ -103,8 +104,9 @@ public class  GestionSistema {
                     turno.confirmar();
                 }
             }
-            this.turnos.add(turno);
-            System.out.println(this.turnos);
+            turno.getConsultorio().getTurnos().add(turno);
+//            this.turnos.add(turno);
+            System.out.println(this.getTurnos());
         } else {
             throw new HorarioNoDisponibleException(turno.getHorarioCompleto(), "No hay disponibilidad para este turno");
         }
@@ -113,13 +115,9 @@ public class  GestionSistema {
     private <T extends Turno> boolean citaDisponible(T turno) {
         boolean turnoDisponible = false;
 
-        System.out.println("Evaluando si la cita está disponible.");
-        System.out.println(turno.getProfesional().citaCompatibleConFranjaHoraria(turno));
-        System.out.println(turno.getConsultorio().citaCompatibleConFranjaHoraria(turno));
-        System.out.println(turnos.franjaDisponible(turno));
         if(turno.getProfesional().citaCompatibleConFranjaHoraria(turno)
         && turno.getConsultorio().citaCompatibleConFranjaHoraria(turno)
-        &&  turnos.franjaDisponible(turno)) {
+        &&  turno.getConsultorio().getTurnos().franjaDisponible(turno)) {
             turnoDisponible = true;
         }
 
@@ -181,7 +179,8 @@ public class  GestionSistema {
     }
 
     public void arranque(){
-        // acá va el arranque estándar del programa, sin usuarios inventados, tomando todo del json
+
+
     }
 
     public boolean conectarse (String nombreUsuario, JPasswordField contrasenha){
@@ -246,18 +245,18 @@ public class  GestionSistema {
     }
 
     public HashSet<LocalDate> getFechasHabilitadas(Profesional profesional) {
-        HashSet<LocalDate> fechasHabilitadas = new HashSet<>(profesional.getFechasHabilitadas(this.turnos.filtrarPorProfesional(profesional),
+        HashSet<LocalDate> fechasHabilitadas = new HashSet<>(profesional.getFechasHabilitadas(this.getTurnos().filtrarPorProfesional(profesional),
                 this.maximoDiasTurnos));
         return fechasHabilitadas;
     }
 
     public HashSet<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {
-        HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.turnos.filtrarPorProfesional(profesional)
+        HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.getTurnos().filtrarPorProfesional(profesional)
                 .filtrarPorDia(dia), profesional.getDuracionTurnoMinutos()));
 
         System.out.println(horariosDisponibles);
 
-        HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(this.turnos
+        HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(this.getTurnos()
                 .filtrarPorDia(dia).filtrarPorSede(sede), profesional.getDuracionTurnoMinutos()));
 
         System.out.println(horariosDispSede);

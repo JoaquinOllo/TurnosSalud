@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Sede implements I_CompatibilidadHorarios {
     private Set<FranjaHoraria> horarios = new HashSet<>();
@@ -101,5 +102,15 @@ public class Sede implements I_CompatibilidadHorarios {
         }
         throw new LugarNoDisponibleException(this, "sede sin consultorios disponibles para el día "
         + dia + " y para la franja horaria " + franjaHoraria);
+    }
+
+    public Consultorio getConsultorioByIndex(int j) {
+        return this.getConsultorios().get(j);
+    }
+
+    public Consultorio getConsultorio(int numero){
+        return this.getConsultorios().stream()
+                .filter(cs -> cs.getNumero() == numero)
+                .collect(Collectors.toCollection(ArrayList::new)).get(0);
     }
 }
