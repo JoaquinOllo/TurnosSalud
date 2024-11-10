@@ -11,10 +11,7 @@ import Utilidades.FranjaHoraria;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Sede implements I_CompatibilidadHorarios {
@@ -112,5 +109,14 @@ public class Sede implements I_CompatibilidadHorarios {
         return this.getConsultorios().stream()
                 .filter(cs -> cs.getNumero() == numero)
                 .collect(Collectors.toCollection(ArrayList::new)).get(0);
+    }
+
+    public Agenda<Turno> getTurnos() {
+        Agenda<Turno> turnos = new Agenda<>();
+        for (int j = 0; j < this.getConsultorios().size(); j++) {
+            Consultorio cons = this.getConsultorioByIndex(j);
+            turnos.addAll(cons.getTurnos());
+        }
+        return turnos;
     }
 }

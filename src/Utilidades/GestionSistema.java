@@ -53,10 +53,7 @@ public class  GestionSistema {
         Agenda<Turno> turnos = new Agenda<>();
         for (int i = 0; i < this.sedes.size(); i++) {
             Sede sede = this.sedes.get(i);
-            for (int j = 0; j < sede.getConsultorios().size(); j++) {
-                Consultorio cons = sede.getConsultorioByIndex(j);
-                turnos.addAll(cons.getTurnos());
-            }
+            turnos.addAll(sede.getTurnos());
         }
         return turnos;
     }
