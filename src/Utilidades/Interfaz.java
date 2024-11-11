@@ -138,7 +138,7 @@ public class Interfaz {
             menuPanel.add(agregarPaciente);
             agregarPaciente.addActionListener(e -> {
                 Consultante consultante = new Consultante();
-                menuAgregarPaciente(consultante);
+                consultante = menuAgregarUsuario(consultante);
             });
         }
 
@@ -146,7 +146,7 @@ public class Interfaz {
             JButton verPacientes = new JButton("Ver Pacientes");
             menuPanel.add(verPacientes);
             verPacientes.addActionListener(e -> {
-                menuVerPacientes(this.sistema.getPacientes());
+                menuVerPacientes(this.sistema.getPacientes(),"Lista de pacientes");
             });
         }
 
@@ -192,6 +192,17 @@ public class Interfaz {
 
             JButton cargarAdministrativo = new JButton("Cargar Nuevo Administrativo");
             menuPanel.add(cargarAdministrativo);
+            cargarAdministrativo.addActionListener(e -> {
+                Administrativo administrativo = new Administrativo();
+                administrativo = menuAgregarUsuario(administrativo);
+            });
+            if (this.getUsuarioConectado() instanceof I_GestionAdministrativa) {
+                JButton verAdministrativos = new JButton("Ver Administrativos");
+                menuPanel.add(verAdministrativos);
+                verAdministrativos.addActionListener(e -> {
+                    menuVerPacientes(this.sistema.getAdministrativos(),"Lista de Administrativos");
+                });
+            }
         }
 
         JButton salir = new JButton("Salir");
@@ -229,7 +240,7 @@ public class Interfaz {
 
         // Crear un panel para los campos de entrada y los botones
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(9, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
+        inputPanel.setLayout(new GridLayout(11, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
 
         NumberFormat integerFormat = NumberFormat.getIntegerInstance();
         NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
@@ -344,16 +355,16 @@ public class Interfaz {
         return profesional;  // Retorna el objeto profesional con los datos ingresados
     }
 
-    private void menuVerPacientes(ArrayList<Consultante> pacientes) {
+    private <T extends Usuario> void menuVerPacientes(ArrayList<T> usuarios, String titulo) {
         //armar la ventana y recorrer la lista de pacientes y mostrarlos
         //armar un panel para que me muestre los datos de c/paciente por separado
 
         // Crear la ventana principal
-        JFrame ventana = new JFrame("Lista de Pacientes");
+        JFrame ventana = new JFrame(titulo);
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
 
         // Recorremos la lista de pacientes y creamos un panel para cada uno
-        for (Consultante paciente : pacientes) {
+        for (T paciente : usuarios) {
             // Crear un panel para cada paciente
             JPanel panelPaciente = new JPanel();
             panelPaciente.setLayout(new BoxLayout(panelPaciente, BoxLayout.Y_AXIS));
@@ -608,12 +619,12 @@ public class Interfaz {
     }
 
 
-    public Consultante menuAgregarPaciente(Consultante consultante) {
+    public <T extends Usuario> T menuAgregarUsuario(T usuario) {
 
         // Método para mostrar la ventana y recoger los datos del paciente
 
         // Crear el marco de la ventana
-        JFrame frame = new JFrame("Agregar Paciente");
+        JFrame frame = new JFrame("Agregar Usuario");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 350);  // Aumentamos el tamaño para los campos de texto
 
@@ -623,11 +634,17 @@ public class Interfaz {
         mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
 
         // Crear un JLabel para el título
-        JLabel titleLabel = new JLabel("Nuevo Paciente", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
-        titleLabel.setForeground(Color.BLACK); // Color del texto del título
-        mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
-
+        if (usuario instanceof Consultante) {
+            JLabel titleLabel = new JLabel("Nuevo Paciente", SwingConstants.CENTER);
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
+            titleLabel.setForeground(Color.BLACK); // Color del texto del título
+            mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
+        }else if (usuario instanceof Administrativo){
+            JLabel titleLabel = new JLabel("Nuevo Administrativo", SwingConstants.CENTER);
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
+            titleLabel.setForeground(Color.BLACK); // Color del texto del título
+            mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
+        }
         // Crear un panel para los campos de entrada y los botones
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(8, 2, 10, 10)); // Organiza los campos y botones en una cuadrícula
@@ -651,29 +668,29 @@ public class Interfaz {
         JTextField correoField = new JTextField();
 
         // Crear los botones para ingresar información
-        JButton nombrePaciente = new JButton("Nombre");
-        JButton apellidoPaciente = new JButton("Apellido");
-        JButton edadPaciente = new JButton("Edad");
-        JButton direccionPaciente = new JButton("Direccion");
-        JButton telefonoPaciente = new JButton("Telefono");
-        JButton correoPaciente = new JButton("Correo");
-        JButton guardarPaciente = new JButton("Guardar Paciente");  // Nuevo botón para guardar el paciente
+        JButton nombreUsuario = new JButton("Nombre");
+        JButton apellidoUsuario = new JButton("Apellido");
+        JButton edadUsuario = new JButton("Edad");
+        JButton direccionUsuario = new JButton("Direccion");
+        JButton telefonoUsuario = new JButton("Telefono");
+        JButton correoUsuario = new JButton("Correo");
+        JButton guardarUsuario = new JButton("Guardar Usuario");  // Nuevo botón para guardar el paciente
         JButton volverAlInicio = new JButton("Volver al inicio");
 
         // Agregar los botones y campos de texto al panel de entrada
-        inputPanel.add(nombrePaciente);
+        inputPanel.add(nombreUsuario);
         inputPanel.add(nombreField);
-        inputPanel.add(apellidoPaciente);
+        inputPanel.add(apellidoUsuario);
         inputPanel.add(apellidoField);
-        inputPanel.add(edadPaciente);
+        inputPanel.add(edadUsuario);
         inputPanel.add(edadField);
-        inputPanel.add(direccionPaciente);
+        inputPanel.add(direccionUsuario);
         inputPanel.add(direccionField);
-        inputPanel.add(telefonoPaciente);
+        inputPanel.add(telefonoUsuario);
         inputPanel.add(telefonoField);
-        inputPanel.add(correoPaciente);
+        inputPanel.add(correoUsuario);
         inputPanel.add(correoField);
-        inputPanel.add(guardarPaciente);  // Agregar el botón para guardar el paciente
+        inputPanel.add(guardarUsuario);  // Agregar el botón para guardar el paciente o administrativo
         inputPanel.add(volverAlInicio);
 
         // Agregar el panel de entrada al panel principal
@@ -681,20 +698,20 @@ public class Interfaz {
 
 
         // Evento para el botón "Guardar Paciente"
-        guardarPaciente.addActionListener(e -> {
-            consultante.setNombre(nombreField.getText());
-            consultante.setApellido(apellidoField.getText());
-            consultante.setEdad(Integer.parseInt(edadField.getText()));
-            consultante.setDireccion(direccionField.getText());
-            consultante.setNroTelefono(telefonoField.getText());
-            consultante.setCorreo(correoField.getText());
-            consultante.setContrasenha(consultante.getNombre() + "." + consultante.getApellido());
+        guardarUsuario.addActionListener(e -> {
+            usuario.setNombre(nombreField.getText());
+            usuario.setApellido(apellidoField.getText());
+            usuario.setEdad(Integer.parseInt(edadField.getText()));
+            usuario.setDireccion(direccionField.getText());
+            usuario.setNroTelefono(telefonoField.getText());
+            usuario.setCorreo(correoField.getText());
+            usuario.setContrasenha(usuario.getNombre() + "." + usuario.getApellido());
             try {
-                consultante.setNombreUsuario(consultante.getNombre() + "." + consultante.getApellido());
-                JOptionPane.showMessageDialog(frame, "Usuario " + consultante.getNombreUsuario() + " guardado correctamente. " +
-                        "Su contrasenha es " + consultante.getContrasenha());
+                usuario.setNombreUsuario(usuario.getNombre() + "." + usuario.getApellido());
+                JOptionPane.showMessageDialog(frame, "Usuario " + usuario.getNombreUsuario() + " guardado correctamente. " +
+                        "Su contrasenha es " + usuario.getContrasenha());
 
-                this.sistema.agendarUsuario(consultante);
+                this.sistema.agendarUsuario(usuario);
             } catch (UsuarioInvalidoException ex) {
                 JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
             }
@@ -709,7 +726,8 @@ public class Interfaz {
         // Agregar el panel principal al marco
         frame.add(mainPanel);
         frame.setVisible(true);
-        return consultante;  // Retorna el objeto consultante con los datos ingresados
+        return usuario;  // Retorna el objeto consultante con los datos ingresados
     }
+
 
 }
