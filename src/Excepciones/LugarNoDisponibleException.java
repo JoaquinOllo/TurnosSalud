@@ -23,4 +23,7 @@ public class LugarNoDisponibleException extends Exception {
         super("El consultorio no se encuentra disponible para la operación.");
     }
 
+    public LugarNoDisponibleException(String nombreSede) {
+        super("La sede indicada no se encuentra disponible o registrada: " + nombreSede);
+    }
 }

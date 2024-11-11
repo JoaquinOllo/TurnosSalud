@@ -1,7 +1,7 @@
 package Usuarios;
 
 import Enumeradores.TipoDeVisualizacion;
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.NombreInvalidoException;
 import Interfaces.I_GestionAdministrativa;
 import Interfaces.I_GestionConsultorios;
 import Interfaces.I_GestionTurnos;
@@ -10,11 +10,11 @@ import Locaciones.Sede;
 public class Administrativo extends Usuario implements I_GestionTurnos, I_GestionAdministrativa, I_GestionConsultorios {
     private Sede sede;
 
-    public Administrativo(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+    public Administrativo(String nombreUsuario, String contrasenha) throws NombreInvalidoException {
         super(nombreUsuario, contrasenha);
     }
 
-    public Administrativo(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+    public Administrativo(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws NombreInvalidoException {
         super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
     }
 
@@ -79,4 +79,6 @@ public class Administrativo extends Usuario implements I_GestionTurnos, I_Gestio
     public Sede getSede() {
         return this.sede;
     }
+
+
 }

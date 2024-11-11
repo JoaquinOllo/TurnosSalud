@@ -1,10 +1,9 @@
 package Locaciones;
 
 import Citas.Turno;
-import Excepciones.HorarioNoDisponibleException;
 import Excepciones.LugarNoDisponibleException;
+import Excepciones.NombreInvalidoException;
 import Interfaces.I_CompatibilidadHorarios;
-import Usuarios.Consultante;
 import Usuarios.Usuario;
 import Utilidades.Agenda;
 import Utilidades.FranjaHoraria;
@@ -20,15 +19,37 @@ public class Sede implements I_CompatibilidadHorarios {
     private ArrayList<Consultorio> consultorios = new ArrayList<>();
     private String direccion;
     private String nombre;
+    private static Set<String> sedes = new HashSet<>();//garantiza que ningun usuario se repita
 
-    public Sede(String nombre, String direccion, ArrayList<FranjaHoraria> horariosSede) {
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.horarios = new HashSet<>(horariosSede);
+    public Sede(String nombre, String direccion, ArrayList<FranjaHoraria> horariosSede) throws NombreInvalidoException {
+        if (this.validarNombreSede(nombre)){
+            this.nombre = nombre;
+            this.direccion = direccion;
+            this.horarios = new HashSet<>(horariosSede);
+        }
     }
 
     public Sede() {
 
+    }
+
+    private boolean validarNombreSede(String nombreUsuario) throws NombreInvalidoException {
+        boolean usuarioValido = sedes.stream().noneMatch(e -> e.equals(nombreUsuario));
+
+        if (!usuarioValido){
+            throw new NombreInvalidoException(nombreUsuario);
+        } else {
+            sedes.add(nombreUsuario);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this.getClass().equals(obj.getClass())) {
+            return this.nombre.equals(((Sede)obj).nombre);
+        } else return false;
     }
 
     public Set<FranjaHoraria> getHorarios() {

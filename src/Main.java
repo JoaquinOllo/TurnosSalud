@@ -1,6 +1,3 @@
-
-import Excepciones.UsuarioInvalidoException;
-
 import Utilidades.GestionSistema;
 
 public class Main {

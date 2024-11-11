@@ -2,8 +2,9 @@ package UtilidadesJSON;
 
 import Citas.Turno;
 import Enumeradores.EstadoCita;
+import Excepciones.LugarNoDisponibleException;
 import Excepciones.UsuarioInexistenteException;
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.NombreInvalidoException;
 import Locaciones.Consultorio;
 import Locaciones.Sede;
 import Usuarios.*;
@@ -102,7 +103,7 @@ public class mapeoJSON {
                             throw new IllegalArgumentException("Rol de usuario desconocido: " + rol);
                     }
                     usuarios.add(usuario);
-                } catch (UsuarioInvalidoException e) {
+                } catch (NombreInvalidoException e) {
                     System.out.println("No se pudo cargar el usuario: " + e.getMessage());
                 }
             }
@@ -125,60 +126,67 @@ public class mapeoJSON {
                 }
 
                 // Crear la sede
-                Sede sede = new Sede(
-                        sedeNode.getString("nombre"),
-                        sedeNode.getString("direccion"),
-                        horariosSede
-                );
+                Sede sede = null;
                 try {
-                    sede.setResponsable(sistema.getUsuarioPorNombreUsuario(sedeNode.getString("responsable")));
-                } catch (UsuarioInexistenteException e) {
+                    sede = new Sede(
+                            sedeNode.getString("nombre"),
+                            sedeNode.getString("direccion"),
+                            horariosSede
+                    );
+                    try {
+                        sede.setResponsable(sistema.getUsuarioPorNombreUsuario(sedeNode.getString("responsable")));
+                    } catch (UsuarioInexistenteException e) {
+                        System.out.println("No se pudo definir responsable para la sede " + sede.getNombre());
+                    }
+
+                    // Consultorios de la sede
+                    ArrayList<Consultorio> consultorios = new ArrayList<>();
+                    JSONArray consultoriosArray = sedeNode.getJSONArray("consultorios");
+                    for (int j = 0; j < consultoriosArray.length(); j++) {
+                        JSONObject consultorioNode = consultoriosArray.getJSONObject(j);
+                        Consultorio consultorio = new Consultorio(
+                                consultorioNode.getInt("numero"),
+                                sede
+                        );
+
+                        // Turnos del consultorio
+                        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        ArrayList<Turno> turnos = new ArrayList<>();
+                        JSONArray turnosArray = consultorioNode.getJSONArray("turnos");
+                        for (int k = 0; k < turnosArray.length(); k++) {
+                            JSONObject turnoJson = turnosArray.getJSONObject(k);
+                            try {
+                                Turno turno = new Turno(
+                                        LocalDate.parse(turnoJson.getString("dia"), formatoFecha),
+                                        new FranjaHoraria(
+                                                LocalTime.parse(turnoJson.getJSONObject("horario").getString("inicio")),
+                                                LocalTime.parse(turnoJson.getJSONObject("horario").getString("fin"))
+                                        ),
+                                        sistema.getUsuarioPorNombreUsuario(turnoJson.getString("consultante")),
+                                        sistema.getUsuarioPorNombreUsuario(turnoJson.getString("profesional")),
+                                        sistema.getUsuarioPorNombreUsuario(turnoJson.getString("agendadoPor")),
+                                        EstadoCita.valueOf(turnoJson.getString("estado"))
+                                );
+                                if(turnoJson.has("razon")){
+                                    turno.setRazon(turnoJson.getString("razon"));
+                                }
+                                turno.setConsultorio(consultorio);
+                                turnos.add(turno);
+                                System.out.println(turno);
+                            } catch (UsuarioInexistenteException e) {
+                                System.out.println("error en carga de turno " + e.getMessage());
+                            }
+                        }
+                        consultorio.setTurnos(turnos);
+                        consultorios.add(consultorio);
+                    }
+                    sede.setConsultorios(consultorios);
+                    sedes.add(sede);
+
+                } catch (NombreInvalidoException e) {
                     throw new RuntimeException(e);
                 }
 
-                // Consultorios de la sede
-                ArrayList<Consultorio> consultorios = new ArrayList<>();
-                JSONArray consultoriosArray = sedeNode.getJSONArray("consultorios");
-                for (int j = 0; j < consultoriosArray.length(); j++) {
-                    JSONObject consultorioNode = consultoriosArray.getJSONObject(j);
-                    Consultorio consultorio = new Consultorio(
-                            consultorioNode.getInt("numero"),
-                            sede
-                    );
-
-                    // Turnos del consultorio
-                    DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    ArrayList<Turno> turnos = new ArrayList<>();
-                    JSONArray turnosArray = consultorioNode.getJSONArray("turnos");
-                    for (int k = 0; k < turnosArray.length(); k++) {
-                        JSONObject turnoJson = turnosArray.getJSONObject(k);
-                        try {
-                            Turno turno = new Turno(
-                                    LocalDate.parse(turnoJson.getString("dia"), formatoFecha),
-                                    new FranjaHoraria(
-                                            LocalTime.parse(turnoJson.getJSONObject("horario").getString("inicio")),
-                                            LocalTime.parse(turnoJson.getJSONObject("horario").getString("fin"))
-                                    ),
-                                    sistema.getUsuarioPorNombreUsuario(turnoJson.getString("consultante")),
-                                    sistema.getUsuarioPorNombreUsuario(turnoJson.getString("profesional")),
-                                    sistema.getUsuarioPorNombreUsuario(turnoJson.getString("agendadoPor")),
-                                    EstadoCita.valueOf(turnoJson.getString("estado"))
-                            );
-                            if(turnoJson.has("razon")){
-                                turno.setRazon(turnoJson.getString("razon"));
-                            }
-                            turno.setConsultorio(consultorio);
-                            turnos.add(turno);
-                            System.out.println(turno);
-                        } catch (UsuarioInexistenteException e) {
-                            System.out.println("error en carga de turno " + e.getMessage());
-                        }
-                    }
-                    consultorio.setTurnos(turnos);
-                    consultorios.add(consultorio);
-                }
-                sede.setConsultorios(consultorios);
-                sedes.add(sede);
             }
             sistema.setSedes(sedes);
 
@@ -192,6 +200,24 @@ public class mapeoJSON {
                     System.out.println(cons.getTurnos());
                 }
             }
+
+            for (int i = 0; i < usuariosArray.length(); i++) {
+                JSONObject usuarioJson = usuariosArray.getJSONObject(i);
+                String rol = usuarioJson.getString("rol");
+                String nombreUsuario = usuarioJson.getString("nombreUsuario");
+
+                try {
+                    if (rol.equals("administrativo")) {
+                        String nombreSede = usuarioJson.getString("sede");
+                        Sede sede = sistema.getSede(nombreSede);
+                        Usuario usuario =  sistema.getUsuarioPorNombreUsuario(nombreUsuario);
+                        ((Administrativo) usuario).setSede(sede);
+                    }
+                } catch (LugarNoDisponibleException | UsuarioInexistenteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -240,6 +266,7 @@ public class mapeoJSON {
                         usuarioJson.put("rol", "administrador");
                     } else if (usuario instanceof Administrativo) {
                         usuarioJson.put("rol", "administrativo");
+                        usuarioJson.put("sede", ((Administrativo) usuario).getSede().getNombre());
                     }
                     usuariosArray.put(usuarioJson);
                 } catch (JSONException e) {

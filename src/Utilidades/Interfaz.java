@@ -323,7 +323,7 @@ public class Interfaz {
                             "Su contrasenha es " + profesional.getContrasenha());
 
                     this.sistema.agendarUsuario(profesional);
-                } catch (UsuarioInvalidoException ex) {
+                } catch (NombreInvalidoException ex) {
                     JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
                 }
             }
@@ -695,7 +695,7 @@ public class Interfaz {
                         "Su contrasenha es " + consultante.getContrasenha());
 
                 this.sistema.agendarUsuario(consultante);
-            } catch (UsuarioInvalidoException ex) {
+            } catch (NombreInvalidoException ex) {
                 JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
             }
             // Confirmación de que se guardó el paciente

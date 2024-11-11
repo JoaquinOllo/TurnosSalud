@@ -1,12 +1,12 @@
 package Usuarios;
 
 import Enumeradores.TipoDeVisualizacion;
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.NombreInvalidoException;
 import Interfaces.I_GestionTurnos;
 
 public class Consultante extends Usuario implements I_GestionTurnos {
 
-    public Consultante(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+    public Consultante(String nombreUsuario, String contrasenha) throws NombreInvalidoException {
         super(nombreUsuario, contrasenha);
     }
 
@@ -14,7 +14,7 @@ public class Consultante extends Usuario implements I_GestionTurnos {
         super();
     }
 
-    public Consultante(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+    public Consultante(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws NombreInvalidoException {
         super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
     }
 

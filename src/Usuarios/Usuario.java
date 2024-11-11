@@ -1,6 +1,6 @@
 package Usuarios;
 
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.NombreInvalidoException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ public abstract class Usuario {
 
     private String direccion;
 
-    public Usuario(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+    public Usuario(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws NombreInvalidoException {
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
@@ -83,7 +83,7 @@ public abstract class Usuario {
         return nombreUsuario;
     }
 
-    public void setNombreUsuario(String nombreUsuario) throws UsuarioInvalidoException {
+    public void setNombreUsuario(String nombreUsuario) throws NombreInvalidoException {
         if (validarNombreUsuario(nombreUsuario)){
             this.nombreUsuario = nombreUsuario;
         }
@@ -111,11 +111,11 @@ public abstract class Usuario {
         this.contrasenha = contrasenha;
     }
 
-    private boolean validarNombreUsuario(String nombreUsuario) throws UsuarioInvalidoException {
+    private boolean validarNombreUsuario(String nombreUsuario) throws NombreInvalidoException {
         boolean usuarioValido = usuarios.stream().noneMatch(e -> e.equals(nombreUsuario));
 
         if (!usuarioValido){
-            throw new UsuarioInvalidoException(nombreUsuario);
+            throw new NombreInvalidoException(nombreUsuario);
         } else {
             usuarios.add(nombreUsuario);
         }
@@ -123,7 +123,7 @@ public abstract class Usuario {
         return true;
     }
 
-    public Usuario(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+    public Usuario(String nombreUsuario, String contrasenha) throws NombreInvalidoException {
         setNombreUsuario(nombreUsuario);
         this.contrasenha = contrasenha;
     }
