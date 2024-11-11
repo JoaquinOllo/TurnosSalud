@@ -220,7 +220,6 @@ public class Interfaz {
             });
         }
 
-
         JButton salir = new JButton("Salir");
         menuPanel.add(salir);
 
