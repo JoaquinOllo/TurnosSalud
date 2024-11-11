@@ -10,6 +10,7 @@ import Usuarios.*;
 import UtilidadesJSON.mapeoJSON;
 
 import javax.swing.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class  GestionSistema {
     private ListaUsuarios<Usuario> usuarios;
     private Usuario usuarioConectado;
     private final Interfaz menu;
+    public static final DayOfWeek[] diasNoLaborables = new DayOfWeek[]{DayOfWeek.SATURDAY, DayOfWeek.SUNDAY};
 
 
     public final int maximoDiasTurnos = 45;
@@ -260,9 +262,7 @@ public class  GestionSistema {
 
         HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(profesional.getDuracionTurnoMinutos()));
 
-
         horariosDisponibles.retainAll(horariosDispSede);
-        
 
         ArrayList<LocalTime> horarios = new ArrayList<>(horariosDisponibles);
         horarios.sort(Comparator.comparing(e -> e));

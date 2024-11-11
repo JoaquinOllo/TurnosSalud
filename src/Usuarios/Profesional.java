@@ -9,7 +9,9 @@ import Interfaces.I_GestionAdministrativa;
 import Interfaces.I_GestionTurnos;
 import Utilidades.Agenda;
 import Utilidades.FranjaHoraria;
+import Utilidades.GestionSistema;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -114,10 +116,12 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         Set<LocalDate> fechasHabilitadas = new HashSet<>();
         for (int i = 0; i < limiteEnDias; i++) {
             LocalDate fecha = LocalDate.now().plusDays(i);
-            HashSet<FranjaHoraria> turnosDelDia = turnos.filtrarPorDia(fecha).stream().map(Turno::getFranjaHoraria).collect(Collectors.toCollection(HashSet::new));
-            for (FranjaHoraria franja: this.horarioDeTrabajo){
-                if (franja.quedanEspaciosEnFranja(turnosDelDia, this.duracionTurnoMinutos)){
-                    fechasHabilitadas.add(fecha);
+            if (Arrays.stream(GestionSistema.diasNoLaborables).noneMatch(dt -> dt.equals(fecha.getDayOfWeek()))) {
+                HashSet<FranjaHoraria> turnosDelDia = turnos.filtrarPorDia(fecha).stream().map(Turno::getFranjaHoraria).collect(Collectors.toCollection(HashSet::new));
+                for (FranjaHoraria franja: this.horarioDeTrabajo){
+                    if (franja.quedanEspaciosEnFranja(turnosDelDia, this.duracionTurnoMinutos)){
+                        fechasHabilitadas.add(fecha);
+                    }
                 }
             }
         }
