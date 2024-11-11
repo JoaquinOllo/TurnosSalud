@@ -171,4 +171,8 @@ public class Turno  {
     public void setRazon(String razon) {
         this.razon = razon;
     }
+
+    public void setEstado(EstadoCita estadoCita) {
+        this.estado = estadoCita;
+    }
 }

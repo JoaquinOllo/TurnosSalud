@@ -2,6 +2,7 @@ package Utilidades;
 
 import Citas.Turno;
 import Enumeradores.Especialidad;
+import Enumeradores.EstadoCita;
 import Locaciones.Consultorio;
 import Locaciones.Sede;
 import Usuarios.Consultante;
@@ -124,6 +125,15 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
             }
         }
         return turnosPorConsultante;
+    }
 
+    public Agenda<T> filtrarPorEstado(EstadoCita estadoCita) {
+        Agenda<T> turnosPorEstado =new Agenda<>();
+        for(T turno:this){
+            if(turno.getEstado().equals(estadoCita)){
+                turnosPorEstado.add(turno);
+            }
+        }
+        return turnosPorEstado;
     }
 }

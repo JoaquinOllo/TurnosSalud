@@ -2,6 +2,7 @@ package Utilidades;
 import Citas.Turno;
 
 import Enumeradores.Especialidad;
+import Enumeradores.EstadoCita;
 import Enumeradores.TipoDeVisualizacion;
 import Excepciones.*;
 import Interfaces.I_GestionAdministrativa;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import javax.swing.border.Border;
 import javax.swing.text.NumberFormatter;
 
 public class Interfaz {
@@ -194,6 +196,31 @@ public class Interfaz {
             menuPanel.add(cargarAdministrativo);
         }
 
+        if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
+                ((I_GestionTurnos) this.getUsuarioConectado()).confirmaTurnos()) {
+            JButton confirmarTurnoBtn = new JButton("Confirmar turno");
+            menuPanel.add(confirmarTurnoBtn);
+            confirmarTurnoBtn.addActionListener(e -> {
+                Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
+                switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
+                    case PERSONAL:
+                        if(this.getUsuarioConectado() instanceof Profesional){
+                            turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
+                        }else {
+                            turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
+                        }
+                        break;
+                    case TODOS:
+                        break;
+                    case POR_SEDE:
+                        turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
+                        break;
+                }
+                menuSeleccionarTurno(turnos, EstadoCita.CONFIRMADO);
+            });
+        }
+
+
         JButton salir = new JButton("Salir");
         menuPanel.add(salir);
 
@@ -207,6 +234,75 @@ public class Interfaz {
         // Agregar el panel principal al marco
         frame.add(mainPanel);
         frame.setVisible(true);
+    }
+
+    private void menuSeleccionarTurno(ArrayList<Turno> turnos, EstadoCita estadoCita) {
+        JFrame ventana = new JFrame("Seleccionar Turno");
+        ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
+
+        ButtonGroup grupoTurnos = new ButtonGroup();
+        JPanel panelTurnos = new JPanel();
+        panelTurnos.setLayout(new BoxLayout(panelTurnos, BoxLayout.Y_AXIS));
+
+        ArrayList<JRadioButton> botonesTurno = new ArrayList<>();
+
+        // Crear radio buttons para cada turno
+        for (Turno turno : turnos) {
+            JRadioButton botonTurno = new JRadioButton(
+                    "Paciente: " + turno.getConsultante() + ", Día: " + turno.getDia() + ", Hora: " + turno.getHoraInicio());
+            botonesTurno.add(botonTurno);
+            grupoTurnos.add(botonTurno);
+
+            JPanel panelTurno = new JPanel();
+            panelTurno.setLayout(new BoxLayout(panelTurno, BoxLayout.Y_AXIS));
+
+            // Crear los JLabel con la información del turno
+            JLabel pacienteLabel = new JLabel("Nombre del paciente: " + turno.getConsultante());
+            JLabel diaLabel = new JLabel("Día: " + turno.getDia());
+            JLabel horaLabel = new JLabel("Hora: " + turno.getHoraInicio());
+            JLabel especialidadLabel = new JLabel("Especialidad: " + turno.getEspecialidad());
+            JLabel profesionalLabel = new JLabel("Nombre Profesional: " + turno.getProfesional());
+            JLabel consultorioLabel = new JLabel("Consultorio: " + turno.getConsultorio());
+            JLabel estadoLabel = new JLabel("Estado actual: " + turno.getEstado());
+
+            // Añadir los componentes al panel del turno
+            panelTurno.add(botonTurno);
+            panelTurno.add(pacienteLabel);
+            panelTurno.add(diaLabel);
+            panelTurno.add(horaLabel);
+            panelTurno.add(especialidadLabel);
+            panelTurno.add(profesionalLabel);
+            panelTurno.add(consultorioLabel);
+            panelTurno.add(estadoLabel);
+
+            Border borde = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE);
+            panelTurno.setBorder(borde);
+            panelTurnos.add(panelTurno);
+        }
+
+        // Botón de confirmación
+        JButton confirmarBtn = new JButton("Confirmar");
+        confirmarBtn.addActionListener(e -> {
+                // Verificar cuál botón está seleccionado
+                for (int i = 0; i < botonesTurno.size(); i++) {
+                    if (botonesTurno.get(i).isSelected()) {
+                        // Actualizar el estado del turno seleccionado
+                        Turno turnoSeleccionado = turnos.get(i);
+                        turnoSeleccionado.setEstado(estadoCita);
+                        JOptionPane.showMessageDialog(ventana, "El estado del turno se ha actualizado a: " + estadoCita);
+                        ventana.dispose();  // Cerrar la ventana
+                        break;
+                    }
+                }
+        });
+
+        ventana.add(panelTurnos);
+        ventana.add(confirmarBtn);
+
+        // Configurar la ventana
+        ventana.setSize(500, 700);
+        ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ventana.setVisible(true);
     }
 
     //este metodo carga un nuevo profesional:

@@ -22,7 +22,7 @@ public class  GestionSistema {
     private ArrayList<Sede> sedes;
     private ListaUsuarios<Usuario> usuarios;
     private Usuario usuarioConectado;
-    private Interfaz menu;
+    private final Interfaz menu;
 
 
     public final int maximoDiasTurnos = 45;
@@ -56,8 +56,8 @@ public class  GestionSistema {
         return turnos;
     }
 
-    /**
-     * @param sedes
+    /** Establecer las sedes del sistema
+     * @param sedes lista de sedes
      */
     public void setSedes(ArrayList<Sede> sedes) {
         this.sedes = sedes;
