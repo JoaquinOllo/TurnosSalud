@@ -1,17 +1,17 @@
 package Usuarios;
 
 import Enumeradores.TipoDeVisualizacion;
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.NombreInvalidoException;
 import Interfaces.I_GestionAdministrativa;
 import Interfaces.I_GestionConsultorios;
 import Interfaces.I_GestionTurnos;
 
 public class Administrador extends Usuario implements I_GestionTurnos, I_GestionAdministrativa, I_GestionConsultorios {
-    public Administrador(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+    public Administrador(String nombreUsuario, String contrasenha) throws NombreInvalidoException {
         super(nombreUsuario, contrasenha);
     }
 
-    public Administrador(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws UsuarioInvalidoException {
+    public Administrador(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion) throws NombreInvalidoException {
         super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
     }
 

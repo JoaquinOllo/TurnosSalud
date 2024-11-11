@@ -10,14 +10,12 @@ import Usuarios.*;
 import UtilidadesJSON.mapeoJSON;
 
 import javax.swing.*;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class  GestionSistema {
 
@@ -122,7 +120,7 @@ public class  GestionSistema {
         return turnoDisponible;
     }
 
-    public void arranqueParaPruebas() throws UsuarioInvalidoException {
+    public void arranqueParaPruebas() throws NombreInvalidoException {
         Sede sede = new Sede();
         sedes.add(sede);
         sede.setDireccion("Maipú 3532");
@@ -309,5 +307,14 @@ public class  GestionSistema {
             }
         }
         throw new LugarNoDisponibleException(sede);
+    }
+
+    public Sede getSede(String nombreSede) throws LugarNoDisponibleException{
+        for (Sede sede : this.sedes){
+            if (sede.getNombre().equals(nombreSede)){
+                return sede;
+            }
+        }
+        throw new LugarNoDisponibleException(nombreSede);
     }
 }

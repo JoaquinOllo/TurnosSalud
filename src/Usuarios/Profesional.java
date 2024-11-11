@@ -3,11 +3,10 @@ package Usuarios;
 import Citas.Turno;
 import Enumeradores.Especialidad;
 import Enumeradores.TipoDeVisualizacion;
-import Excepciones.UsuarioInvalidoException;
+import Excepciones.NombreInvalidoException;
 import Interfaces.I_CompatibilidadHorarios;
 import Interfaces.I_GestionAdministrativa;
 import Interfaces.I_GestionTurnos;
-import Locaciones.Sede;
 import Utilidades.Agenda;
 import Utilidades.FranjaHoraria;
 
@@ -21,7 +20,7 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
     private Set<FranjaHoraria> horarioDeTrabajo = new HashSet<>();
     private final int duracionTurnoMinutos = 60;
 
-    public Profesional(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion, String especialidad, HashSet<FranjaHoraria> horarios) throws UsuarioInvalidoException {
+    public Profesional(String nombre, String apellido, int edad, String correo, String telefono, String nombreUsuario, String contrasena, String direccion, String especialidad, HashSet<FranjaHoraria> horarios) throws NombreInvalidoException {
         super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
         this.setEspecialidad(Especialidad.valueOf(especialidad));
         this.setHorarioDeTrabajo(horarios);
@@ -31,7 +30,7 @@ public class Profesional extends Usuario implements I_GestionTurnos, I_Compatibi
         return duracionTurnoMinutos;
     }
 
-    public Profesional(String nombreUsuario, String contrasenha) throws UsuarioInvalidoException {
+    public Profesional(String nombreUsuario, String contrasenha) throws NombreInvalidoException {
         super(nombreUsuario, contrasenha);
     }
 
