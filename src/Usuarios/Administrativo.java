@@ -14,6 +14,10 @@ public class Administrativo extends Usuario implements I_GestionTurnos, I_Gestio
         super(nombre, apellido, edad, correo, telefono, nombreUsuario, contrasena, direccion);
     }
 
+    public Administrativo(){
+        super();
+    }
+
 
     public void setSede(Sede sede){
         this.sede = sede;
