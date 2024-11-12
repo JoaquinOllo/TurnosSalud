@@ -126,10 +126,7 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
 
     @Override
     public String toString() {
-        return "FranjaHoraria{" +
-                "horaInicio=" + horaInicio +
-                ", horaCierre=" + horaCierre +
-                ", duracion=" + duracion +
-                '}';
+        return "de " + horaInicio +
+                " a " + horaCierre;
     }
 }

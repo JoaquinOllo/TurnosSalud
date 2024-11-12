@@ -461,32 +461,49 @@ public class Interfaz {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
 
+        usuarios.sort(Comparator.comparing(Usuario::getApellido).thenComparing(Usuario::getNombre));
+
         // Recorremos la lista de pacientes y creamos un panel para cada uno
-        for (T paciente : usuarios) {
-            // Crear un panel para cada paciente
+        for (T usuario : usuarios) {
+            // Crear un panel para cada usuario
             JPanel panelPaciente = new JPanel();
             panelPaciente.setLayout(new BoxLayout(panelPaciente, BoxLayout.Y_AXIS));
 
-            // Crear los componentes para mostrar la información del paciente
-            JLabel nombreLabel = new JLabel("Nombre: " + paciente.getNombre());
-            JLabel apellidoLabel = new JLabel("Apellido: " + paciente.getApellido());
-            JLabel edadLabel = new JLabel("Edad: " + paciente.getEdad());
-            JLabel correoLabel = new JLabel("Correo: " + paciente.getCorreo());
-            JLabel telefonoLabel = new JLabel("Teléfono: " + paciente.getNroTelefono());
-            JLabel direccionLabel = new JLabel("Direccion: " + paciente.getDireccion());
+            // Crear los componentes para mostrar la información del usuario
+            JLabel nombreLabel = new JLabel("Nombre: " + usuario.getNombre());
+            JLabel apellidoLabel = new JLabel("Apellido: " + usuario.getApellido());
+            JLabel edadLabel = new JLabel("Edad: " + usuario.getEdad());
+            JLabel correoLabel = new JLabel("Correo: " + usuario.getCorreo());
+            JLabel telefonoLabel = new JLabel("Teléfono: " + usuario.getNroTelefono());
+            JLabel direccionLabel = new JLabel("Direccion: " + usuario.getDireccion());
 
-            // Agregar los JLabel al panel del paciente
+            // Agregar los JLabel al panel del usuario
             panelPaciente.add(nombreLabel);
             panelPaciente.add(apellidoLabel);
             panelPaciente.add(edadLabel);
             panelPaciente.add(correoLabel);
             panelPaciente.add(telefonoLabel);
             panelPaciente.add(direccionLabel);
-            // Añadir un borde al panel del paciente para separarlo de los demás
+
+            if(usuario instanceof Administrativo){
+                JLabel sedeLabel = new JLabel("Sede laboral: " + ((Administrativo)usuario).getSede());
+                panelPaciente.add(sedeLabel);
+            } else if (usuario instanceof Profesional) {
+                JLabel especialidadLabel = new JLabel("Especialidad: " + ((Profesional)usuario).getEspecialidad().toString().toLowerCase());
+                panelPaciente.add(especialidadLabel);
+
+                StringBuilder textoEtiqueta = new StringBuilder("Horarios:");
+                for (FranjaHoraria franjaHoraria: ((Profesional) usuario).getHorarioDeTrabajo()){
+                    textoEtiqueta.append(" " + franjaHoraria);
+                }
+                JLabel horariosLabel = new JLabel(textoEtiqueta.toString());
+                panelPaciente.add(horariosLabel);
+            }
+
+            // Añadir un borde al panel del usuario para separarlo de los demás
             panelPaciente.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
 
-            // Agregar el panel del paciente al panel principal de la ventana
-
+            // Agregar el panel del usuario al panel principal de la ventana
             panelPrincipal.add(panelPaciente);
         }
 
@@ -495,7 +512,6 @@ public class Interfaz {
 
         // Agregar el JScrollPane a la ventana
         ventana.add(scrollPane);
-
 
         // Configurar la ventana
         ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
