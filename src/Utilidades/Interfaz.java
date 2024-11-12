@@ -779,6 +779,16 @@ public class Interfaz {
         inputPanel.add(telefonoField);
         inputPanel.add(correoUsuario);
         inputPanel.add(correoField);
+
+        final JComboBox<Sede> sedeJComboBox = new JComboBox<>();
+        if (usuario instanceof Administrativo){
+            ComboBoxModel<Sede> sedeComboBoxModel = new DefaultComboBoxModel<>(sistema.getSedes().toArray(new Sede[0]));
+            JLabel sedeJLabel = new JLabel("Sede");
+            sedeJComboBox.setModel(sedeComboBoxModel);
+            inputPanel.add(sedeJLabel);
+            inputPanel.add(sedeJComboBox);
+        }
+
         inputPanel.add(guardarUsuario);  // Agregar el botón para guardar el paciente
         inputPanel.add(volverAlInicio);
 
@@ -795,6 +805,10 @@ public class Interfaz {
             usuario.setNroTelefono(telefonoField.getText());
             usuario.setCorreo(correoField.getText());
             usuario.setContrasenha((usuario.getNombre() + "." + usuario.getApellido()).replace(' ', '_'));
+            if (usuario instanceof Administrativo){
+                ((Administrativo) usuario).setSede((Sede) sedeJComboBox.getSelectedItem());
+            }
+
             try {
                 usuario.setNombreUsuario(usuario.getNombre() + "." + usuario.getApellido());
                 JOptionPane.showMessageDialog(frame, "Usuario " + usuario.getNombreUsuario() + " guardado correctamente. " +
