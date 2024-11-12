@@ -198,13 +198,16 @@ public class Interfaz {
                 Administrativo administrativo = new Administrativo();
                 administrativo = menuAgregarUsuario(administrativo);
             });
-            if (this.getUsuarioConectado() instanceof I_GestionAdministrativa) {
-                JButton verAdministrativos = new JButton("Ver Administrativos");
-                menuPanel.add(verAdministrativos);
-                verAdministrativos.addActionListener(e -> {
-                    menuVerUsuarios(this.sistema.getAdministrativos(),"Lista de Administrativos");
-                });
-            }
+            JButton verAdministrativos = new JButton("Ver Administrativos");
+            menuPanel.add(verAdministrativos);
+            verAdministrativos.addActionListener(e -> {
+                menuVerUsuarios(this.sistema.getAdministrativos(),"Lista de Administrativos");
+            });
+            JButton verProfesionales = new JButton("Ver Profesionales");
+            menuPanel.add(verProfesionales);
+            verProfesionales.addActionListener(e -> {
+                menuVerUsuarios(this.sistema.getProfesionales(),"Lista de Profesionales");
+            });
         }
 
         if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
