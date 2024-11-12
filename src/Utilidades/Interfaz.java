@@ -230,7 +230,7 @@ public class Interfaz {
                         turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
                         break;
                 }
-                menuSeleccionarTurno(turnos, EstadoCita.CONFIRMADO);
+                menuCambiarEstadoTurno(turnos, EstadoCita.CONFIRMADO);
             });
         }
 
@@ -249,7 +249,7 @@ public class Interfaz {
         frame.setVisible(true);
     }
 
-    private void menuSeleccionarTurno(ArrayList<Turno> turnos, EstadoCita estadoCita) {
+    private void menuCambiarEstadoTurno(ArrayList<Turno> turnos, EstadoCita estadoCita) {
         JFrame ventana = new JFrame("Seleccionar Turno");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
 
@@ -302,7 +302,7 @@ public class Interfaz {
                         // Actualizar el estado del turno seleccionado
                         Turno turnoSeleccionado = turnos.get(i);
                         turnoSeleccionado.setEstado(estadoCita);
-                        JOptionPane.showMessageDialog(ventana, "El estado del turno se ha actualizado a: " + estadoCita);
+                        JOptionPane.showMessageDialog(ventana, "El estado del turno se ha actualizado a: " + estadoCita.toString().toLowerCase());
                         ventana.dispose();  // Cerrar la ventana
                         break;
                     }
