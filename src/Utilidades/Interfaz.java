@@ -148,7 +148,7 @@ public class Interfaz {
             JButton verPacientes = new JButton("Ver Pacientes");
             menuPanel.add(verPacientes);
             verPacientes.addActionListener(e -> {
-                menuVerPacientes(this.sistema.getPacientes(),"Lista de pacientes");
+                menuVerUsuarios(this.sistema.getPacientes(),"Lista de pacientes");
             });
         }
 
@@ -202,7 +202,7 @@ public class Interfaz {
                 JButton verAdministrativos = new JButton("Ver Administrativos");
                 menuPanel.add(verAdministrativos);
                 verAdministrativos.addActionListener(e -> {
-                    menuVerPacientes(this.sistema.getAdministrativos(),"Lista de Administrativos");
+                    menuVerUsuarios(this.sistema.getAdministrativos(),"Lista de Administrativos");
                 });
             }
         }
@@ -450,13 +450,16 @@ public class Interfaz {
         return profesional;  // Retorna el objeto profesional con los datos ingresados
     }
 
-    private <T extends Usuario> void menuVerPacientes(ArrayList<T> usuarios, String titulo) {
+    private <T extends Usuario> void menuVerUsuarios(ArrayList<T> usuarios, String titulo) {
         //armar la ventana y recorrer la lista de pacientes y mostrarlos
         //armar un panel para que me muestre los datos de c/paciente por separado
 
         // Crear la ventana principal
         JFrame ventana = new JFrame(titulo);
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
+
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
 
         // Recorremos la lista de pacientes y creamos un panel para cada uno
         for (T paciente : usuarios) {
@@ -472,7 +475,6 @@ public class Interfaz {
             JLabel telefonoLabel = new JLabel("Teléfono: " + paciente.getNroTelefono());
             JLabel direccionLabel = new JLabel("Direccion: " + paciente.getDireccion());
 
-
             // Agregar los JLabel al panel del paciente
             panelPaciente.add(nombreLabel);
             panelPaciente.add(apellidoLabel);
@@ -483,11 +485,17 @@ public class Interfaz {
             // Añadir un borde al panel del paciente para separarlo de los demás
             panelPaciente.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
 
-
             // Agregar el panel del paciente al panel principal de la ventana
 
-            ventana.add(panelPaciente);
+            panelPrincipal.add(panelPaciente);
         }
+
+        JScrollPane scrollPane = new JScrollPane(panelPrincipal);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // Agregar el JScrollPane a la ventana
+        ventana.add(scrollPane);
+
 
         // Configurar la ventana
         ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
