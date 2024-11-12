@@ -673,6 +673,8 @@ public class Interfaz {
 
     public void menuVerTurnos(ArrayList<Turno> turnos) {
         System.out.println(turnos);
+        turnos.sort(Comparator.comparing(Turno::getDia)
+                .thenComparing(Turno::getHoraInicio));
         // Crear la ventana principal
         JFrame ventana = new JFrame("Lista de Turnos");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
@@ -697,7 +699,6 @@ public class Interfaz {
             panelTurno.add(profesionalLabel);
             panelTurno.add(consultorioLabel);
             panelTurno.add(estadoLabel);
-
 
             // Añadir un borde al panel del turno para separarlo de los demás
             panelTurno.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
