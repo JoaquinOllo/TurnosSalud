@@ -649,6 +649,7 @@ public class Interfaz {
                         & turnoNuevo.getConsultante() != null) {
                     this.sistema.agendarTurno(turnoNuevo);
                     JOptionPane.showMessageDialog(frame, "Turno agendado con éxito!");
+                    frame.dispose();  // Cerrar la ventana
                 } else {
                     JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
                 }

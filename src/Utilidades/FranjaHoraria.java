@@ -80,7 +80,6 @@ public class FranjaHoraria implements I_CompatibilidadHorarios {
         LocalTime horaInicioTurno = franja.horaInicio;
         LocalTime horaFinTurno = franja.horaCierre;
 
-
         return turnoHabilitado.queryFrom(horaInicioTurno)
                 && turnoHabilitado.queryFrom(horaFinTurno);
     }
