@@ -675,9 +675,13 @@ public class Interfaz {
         System.out.println(turnos);
         turnos.sort(Comparator.comparing(Turno::getDia)
                 .thenComparing(Turno::getHoraInicio));
-        // Crear la ventana principal
+
         JFrame ventana = new JFrame("Lista de Turnos");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
+
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+
         for (Turno turno : turnos) {
             JPanel panelTurno = new JPanel();
             panelTurno.setLayout(new BoxLayout(panelTurno, BoxLayout.Y_AXIS));
@@ -705,8 +709,15 @@ public class Interfaz {
 
             // Agregar el panel del paciente al panel principal de la ventana
 
-            ventana.add(panelTurno);
+            panelPrincipal.add(panelTurno);
         }
+
+        JScrollPane scrollPane = new JScrollPane(panelPrincipal);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        // Agregar el JScrollPane al frame
+        ventana.add(scrollPane);
 
         // Configurar la ventana
         ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
