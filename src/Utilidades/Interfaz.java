@@ -93,7 +93,7 @@ public class Interfaz {
                 JPanel panel = new JPanel();
                 panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
                 panel.add(mensaje);
-                panel.add(Box.createVerticalStrut(10));  // Espacio entre el mensaje y el botón
+                panel.add(Box.createVerticalStrut(10));
                 panel.add(botonCerrar);
 
                 // Configurar el diálogo
@@ -122,18 +122,18 @@ public class Interfaz {
         // Crear un panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
-        frame.setLocationRelativeTo(null); // Centrar ventana
+        mainPanel.setBackground(Color.CYAN);
+        frame.setLocationRelativeTo(null);
 
         // Crear un JLabel para el título
         JLabel titleLabel = new JLabel("Bienvenido a SuperDoctors", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
-        titleLabel.setForeground(Color.BLACK); // Color del texto del título
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setForeground(Color.BLACK);
         mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
 
         // Crear un panel para el menú de opciones
         JPanel menuPanel = new JPanel();
-        menuPanel.setBackground(Color.CYAN); // Color de fondo del panel del menú
+        menuPanel.setBackground(Color.CYAN);
 
         if (this.getUsuarioConectado() instanceof I_GestionAdministrativa) {
             JButton agregarPaciente = new JButton("Agregar Paciente");
@@ -210,85 +210,85 @@ public class Interfaz {
             });
         }
 
-        if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
-                ((I_GestionTurnos) this.getUsuarioConectado()).confirmaTurnos()) {
-            JButton confirmarTurnoBtn = new JButton("Confirmar turno");
-            menuPanel.add(confirmarTurnoBtn);
-            confirmarTurnoBtn.addActionListener(e -> {
-                Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
-                switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
-                    case PERSONAL:
-                        if(this.getUsuarioConectado() instanceof Profesional){
-                            turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
-                        }else {
-                            turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
-                        }
-                        break;
-                    case TODOS:
-                        break;
-                    case POR_SEDE:
-                        turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
-                        break;
-                }
-                menuCambiarEstadoTurno(turnos, EstadoCita.CONFIRMADO);
-            });
-        }
-        if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
-                ((I_GestionTurnos) this.getUsuarioConectado()).cancelaTurnos()) {
-            JButton cancelarTurnoBtn = new JButton("Cancelar turno");
-            menuPanel.add(cancelarTurnoBtn);
-            cancelarTurnoBtn.addActionListener(e -> {
-                Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
-                switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
-                    case PERSONAL:
-                        if(this.getUsuarioConectado() instanceof Profesional){
-                            turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
-                        }else {
-                            turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
-                        }
-                        break;
+
+        if (this.getUsuarioConectado() instanceof I_GestionTurnos) {
+            if (((I_GestionTurnos) this.getUsuarioConectado()).confirmaTurnos()) {
+                JButton confirmarTurnoBtn = new JButton("Confirmar turno");
+                menuPanel.add(confirmarTurnoBtn);
+                confirmarTurnoBtn.addActionListener(e -> {
+                    Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
+                    switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
+                        case PERSONAL:
+                            if(this.getUsuarioConectado() instanceof Profesional){
+                                turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
+                            }else {
+                                turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
+                            }
+                            break;
                         case TODOS:
                             break;
                         case POR_SEDE:
                             turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
                             break;
                     }
-                    menuSeleccionarTurno(turnos, EstadoCita.CANCELADO);
-        });
-    }
-
-        if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
-                ((I_GestionTurnos) this.getUsuarioConectado()).reprogramaTurnos()) {
-
-            JButton reprogramarTurnoBtn = new JButton("Reprogramar turno");
-            menuPanel.add(reprogramarTurnoBtn);
-
-            reprogramarTurnoBtn.addActionListener(e -> {
-                Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
-
-                // Filtrar los turnos según la modalidad de visualización
-                switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
-                    case PERSONAL:
-                        if (this.getUsuarioConectado() instanceof Profesional) {
-                            turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
-                        } else {
-                            turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
+                    menuCambiarEstadoTurno(turnos, EstadoCita.CONFIRMADO, true);
+                });
+            }
+            if (((I_GestionTurnos) this.getUsuarioConectado()).cancelaTurnos()) {
+                JButton cancelarTurnoBtn = new JButton("Cancelar turno");
+                menuPanel.add(cancelarTurnoBtn);
+                cancelarTurnoBtn.addActionListener(e -> {
+                    Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
+                    switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
+                        case PERSONAL:
+                            if(this.getUsuarioConectado() instanceof Profesional){
+                                turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
+                            }else {
+                                turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
+                            }
+                            break;
+                            case TODOS:
+                                break;
+                            case POR_SEDE:
+                                turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
+                                break;
                         }
-                        break;
-                    case TODOS:
-                        break;
-                    case POR_SEDE:
-                        turnos.filtrarPorSede(((Administrativo) this.getUsuarioConectado()).getSede());
-                        break;
-                }
-
-                // Método para seleccionar el turno a posponer
-                menuSeleccionarTurno(turnos, EstadoCita.PENDIENTE_CONFIRMACION);
-
-                // Aquí podrías agregar un formulario o ventana para que el usuario elija la nueva fecha y hora.
-                // Por ejemplo:
-                // turnoSeleccionado.posponer(nuevaFecha);
+                    menuCambiarEstadoTurno(turnos.filtrarPorTurnosNoCancelados(), EstadoCita.CANCELADO, true);
             });
+        }
+
+            if (((I_GestionTurnos) this.getUsuarioConectado()).reprogramaTurnos()) {
+
+                JButton reprogramarTurnoBtn = new JButton("Reprogramar turno");
+                menuPanel.add(reprogramarTurnoBtn);
+
+                reprogramarTurnoBtn.addActionListener(e -> {
+                    Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
+
+                    // Filtrar los turnos según la modalidad de visualización
+                    switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
+                        case PERSONAL:
+                            if (this.getUsuarioConectado() instanceof Profesional) {
+                                turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
+                            } else {
+                                turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
+                            }
+                            break;
+                        case TODOS:
+                            break;
+                        case POR_SEDE:
+                            turnos.filtrarPorSede(((Administrativo) this.getUsuarioConectado()).getSede());
+                            break;
+                    }
+
+                    // Método para seleccionar el turno a posponer
+                    menuCambiarEstadoTurno(turnos.filtrarPorTurnosNoCancelados(), EstadoCita.PENDIENTE_CONFIRMACION, true);
+
+                    // Aquí podrías agregar un formulario o ventana para que el usuario elija la nueva fecha y hora.
+                    // Por ejemplo:
+                    // turnoSeleccionado.posponer(nuevaFecha);
+                });
+            }
         }
 
         JButton salir = new JButton("Salir");
@@ -306,7 +306,7 @@ public class Interfaz {
         frame.setVisible(true);
     }
 
-    private void menuCambiarEstadoTurno(ArrayList<Turno> turnos, EstadoCita estadoCita) {
+    private void menuCambiarEstadoTurno(ArrayList<Turno> turnos, EstadoCita estadoCita, boolean reprogramarFecha) {
         JFrame ventana = new JFrame("Seleccionar Turno");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
 
@@ -359,8 +359,12 @@ public class Interfaz {
                         // Actualizar el estado del turno seleccionado
                         Turno turnoSeleccionado = turnos.get(i);
                         turnoSeleccionado.setEstado(estadoCita);
-                        JOptionPane.showMessageDialog(ventana, "El estado del turno se ha actualizado a: " + estadoCita.toString().toLowerCase());
-                        ventana.dispose();  // Cerrar la ventana
+                        if (! reprogramarFecha){
+                            JOptionPane.showMessageDialog(ventana, "El estado del turno se ha actualizado a: " + estadoCita.toString().toLowerCase());
+                            ventana.dispose();  // Cerrar la ventana
+                        } else {
+                            reprogramarFechaYHora(turnoSeleccionado, "Elija nueva fecha y horario para el turno.");
+                        }
                         break;
                     }
                 }
@@ -373,6 +377,113 @@ public class Interfaz {
         ventana.setSize(500, 700);
         ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ventana.setVisible(true);
+    }
+
+    private void reprogramarFechaYHora(Turno turno, String textoTitulo) {
+        Sede sede = turno.getSede();
+        final boolean[] datosSeleccionados = new boolean[]{false, false};
+
+        // Crear el marco de la ventana
+        JFrame frame = new JFrame(textoTitulo);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(300, 400);  // Aumentamos el tamaño para los campos de texto
+
+        // Crear un panel principal
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
+
+        // Crear un JLabel para el título
+        JLabel titleLabel = new JLabel(textoTitulo, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
+        titleLabel.setForeground(Color.BLACK); // Color del texto del título
+        mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
+
+        JPanel panelTurno = new JPanel();
+        panelTurno.setLayout(new BoxLayout(panelTurno, BoxLayout.Y_AXIS));
+
+        // Crear los componentes para mostrar la información del turno
+        JLabel pacienteLabel = new JLabel("Nombre del paciente: " + turno.getConsultante());
+        JLabel diaLabel = new JLabel("Dia Previo a la Reprogramación: " + turno.getDia());
+        JLabel horaLabel = new JLabel("Hora Previa a la Reprogramación: " + turno.getHoraInicio());
+        JLabel especialidadLabel = new JLabel("Especialidad: " + Especialidad.CARDIOLOGIA);
+        JLabel profesionalLabel = new JLabel("Nombre Profesional: " + turno.getProfesional());
+        JLabel consultorioLabel = new JLabel("Consultorio: " + turno.getConsultorio());
+        JLabel estadoLabel = new JLabel("Estado: " + turno.getEstado());
+
+        // Agregar los JLabel al panel del turno
+        panelTurno.add(pacienteLabel);
+        panelTurno.add(diaLabel);
+        panelTurno.add(horaLabel);
+        panelTurno.add(especialidadLabel);
+        panelTurno.add(profesionalLabel);
+        panelTurno.add(consultorioLabel);
+        panelTurno.add(estadoLabel);
+
+        // Añadir un borde al panel del turno para separarlo de los demás
+        panelTurno.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
+
+        JPanel panelNuevaFechaHora = new JPanel();
+        ArrayList<LocalDate> fechasHabilitadas = this.sistema.getFechasHabilitadas(turno.getProfesional());
+
+        // ComboBoxModel<LocalDate> fechasDisponiblesModel = new DefaultComboBoxModel<>();
+        ComboBoxModel<LocalTime> horariosDisponiblesModel = new DefaultComboBoxModel<>();
+
+
+        JComboBox<LocalDate> elegirDia = new JComboBox(fechasHabilitadas.toArray());
+        JComboBox<LocalTime> elegirHorario = new JComboBox<>(horariosDisponiblesModel);
+        JButton confirmar = new JButton("confirmar cambio");
+
+        elegirDia.setEnabled(true);
+        elegirHorario.setEnabled(false);
+
+        panelNuevaFechaHora.add(elegirDia);
+        panelNuevaFechaHora.add(elegirHorario);
+        panelNuevaFechaHora.add(confirmar);
+
+        elegirDia.addActionListener(e -> {
+            turno.setDia((LocalDate) elegirDia.getSelectedItem());
+            elegirHorario.removeAllItems();
+            ArrayList<LocalTime> horariosHabilitados = this.sistema.getHorariosDisponibles(turno.getProfesional(), sede, turno.getDia());
+            ComboBoxModel<LocalTime> horarioModelo = new DefaultComboBoxModel<>(
+                    horariosHabilitados.toArray(new LocalTime[0])
+            );
+            elegirHorario.setModel(horarioModelo);
+            elegirHorario.setEnabled(true);
+            datosSeleccionados[0] = true;
+        });
+
+        elegirHorario.addActionListener(e -> {
+            try {
+                Duration duracionTurno = Duration.of(turno.getProfesional().getDuracionTurnoMinutos(), ChronoUnit.MINUTES);
+                FranjaHoraria franja = new FranjaHoraria((LocalTime) Objects.requireNonNull(elegirHorario.getSelectedItem()), duracionTurno);
+                turno.setHorario(franja);
+                turno.setConsultorio(sede.buscarConsultorioDisponible(this.sistema.getTurnos(), turno.getDia(), turno.getFranjaHoraria()));
+                System.out.println("Consultorio asignado: " + turno.getConsultorio());
+                confirmar.setEnabled(true);
+                datosSeleccionados[1] = true;
+            } catch (LugarNoDisponibleException ex) {
+                JOptionPane.showMessageDialog(frame, "No hay consultorios disponibles para la fecha y hora seleccionadas. Elija otra hora.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        confirmar.addActionListener(e -> {
+            if (datosSeleccionados[0] && datosSeleccionados[1]){
+                sistema.guardarDatosSedesYTurnos();
+                JOptionPane.showMessageDialog(frame, "Turno reprogramado con éxito, para la hora " +
+                        "" + turno.getDia() + " y hora " + turno.getHorarioCompleto(), "Error", JOptionPane.ERROR_MESSAGE);
+                frame.dispose();
+            }
+        });
+
+
+        // Agregar el panel del paciente al panel principal de la ventana
+        mainPanel.add(panelTurno);
+        mainPanel.add(panelNuevaFechaHora);
+
+        frame.add(mainPanel);
+        frame.setVisible(true);
+
     }
 
     //este metodo carga un nuevo profesional:
@@ -612,7 +723,7 @@ public class Interfaz {
         JLabel lblPaciente;
         JComboBox<Consultante> elegirPaciente = new JComboBox<>();
         if (this.sistema.getUsuarioConectado() instanceof Consultante) {
-            lblPaciente = new JLabel("Creación de turno para usuario conectado.");
+            lblPaciente = new JLabel("Creatine de turno para usuario conectado.");
             turnoNuevo.setConsultante((Consultante) this.sistema.getUsuarioConectado());
         } else {
             lblPaciente = new JLabel("Seleccione un paciente: ");
@@ -790,10 +901,9 @@ public class Interfaz {
             panelTurno.add(estadoLabel);
 
             // Añadir un borde al panel del turno para separarlo de los demás
-            panelTurno.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
+            panelTurno.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
 
             // Agregar el panel del paciente al panel principal de la ventana
-
             panelPrincipal.add(panelTurno);
         }
 
@@ -805,7 +915,7 @@ public class Interfaz {
         ventana.add(scrollPane);
 
         // Configurar la ventana
-        ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
+        ventana.setSize(400, 600);
         ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ventana.setVisible(true);
     }
@@ -818,17 +928,17 @@ public class Interfaz {
         // Crear el marco de la ventana
         JFrame frame = new JFrame("Agregar Usuario");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 350);  // Aumentamos el tamaño para los campos de texto
+        frame.setSize(400, 500);  // Aumentamos el tamaño para los campos de texto
 
         // Crear un panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(Color.CYAN); // Color de fondo del panel principal
+        mainPanel.setBackground(Color.CYAN);
 
         // Crear un JLabel para el título
         JLabel titleLabel = new JLabel("Nuevo " + usuario.getClass().getSimpleName(), SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Cambiar la fuente y tamaño
-        titleLabel.setForeground(Color.BLACK); // Color del texto del título
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setForeground(Color.BLACK);
         mainPanel.add(titleLabel, BorderLayout.NORTH); // Agregar el título en la parte superior del panel
 
         // Crear un panel para los campos de entrada y los botones
@@ -842,9 +952,6 @@ public class Interfaz {
         numberFormatter.setMinimum(0); // Límite inferior (opcional)
         numberFormatter.setMaximum(Integer.MAX_VALUE); // Límite superior (opcional)
 
-        // Campo de texto formateado
-                /*JFormattedTextField integerField = new JFormattedTextField(numberFormatter);
-                integerField.setColumns(10);*/
         // Crear los campos de texto para ingresar datos del paciente
         JTextField nombreField = new JTextField();
         JTextField apellidoField = new JTextField();
@@ -860,7 +967,7 @@ public class Interfaz {
         JLabel direccionUsuario = new JLabel("Direccion");
         JLabel telefonoUsuario = new JLabel("Telefono");
         JLabel correoUsuario = new JLabel("Correo");
-        JButton guardarUsuario = new JButton("Guardar Usuario");  // Nuevo botón para guardar el paciente
+        JButton guardarUsuario = new JButton("Guardar Usuario");
         JButton volverAlInicio = new JButton("Volver al inicio");
 
         // Agregar los botones y campos de texto al panel de entrada
@@ -886,12 +993,11 @@ public class Interfaz {
             inputPanel.add(sedeJComboBox);
         }
 
-        inputPanel.add(guardarUsuario);  // Agregar el botón para guardar el paciente
+        inputPanel.add(guardarUsuario);
         inputPanel.add(volverAlInicio);
 
         // Agregar el panel de entrada al panel principal
         mainPanel.add(inputPanel, BorderLayout.CENTER);
-
 
         // Evento para el botón "Guardar Paciente"
         guardarUsuario.addActionListener(e -> {
@@ -915,7 +1021,6 @@ public class Interfaz {
             } catch (NombreInvalidoException ex) {
                 JOptionPane.showMessageDialog(frame, "Este usuario ya existe, ingrese otro nuevo usuario");
             }
-            // Confirmación de que se guardó el paciente
         });
 
         volverAlInicio.addActionListener(e -> {

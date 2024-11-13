@@ -258,7 +258,7 @@ public class  GestionSistema {
 
     public ArrayList<LocalTime> getHorariosDisponibles(Profesional profesional, Sede sede, LocalDate dia) {
         HashSet<LocalTime> horariosDisponibles = new HashSet<>(profesional.getHorariosHabilitados(this.getTurnos().filtrarPorProfesional(profesional)
-                .filtrarPorDia(dia), profesional.getDuracionTurnoMinutos()));
+                .filtrarPorDia(dia).filtrarPorTurnosNoCancelados(), profesional.getDuracionTurnoMinutos()));
 
         HashSet<LocalTime> horariosDispSede = new HashSet<>(sede.getHorariosHabilitados(profesional.getDuracionTurnoMinutos()));
 

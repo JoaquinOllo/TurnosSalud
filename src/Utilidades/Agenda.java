@@ -136,4 +136,14 @@ public class Agenda<T extends Turno> extends ArrayList<T> {
         }
         return turnosPorEstado;
     }
+
+    public Agenda<T> filtrarPorTurnosNoCancelados() {
+        Agenda<T> turnosNoCancelados =new Agenda<>();
+        for(T turno:this){
+            if(! turno.getEstado().equals(EstadoCita.CANCELADO)){
+                turnosNoCancelados.add(turno);
+            }
+        }
+        return turnosNoCancelados;
+    }
 }

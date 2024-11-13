@@ -4,6 +4,7 @@ import Enumeradores.Especialidad;
 import Enumeradores.EstadoCita;
 import Excepciones.OperacionNoPermitidaException;
 import Locaciones.Consultorio;
+import Locaciones.Sede;
 import Usuarios.Consultante;
 import Usuarios.Profesional;
 import Usuarios.Usuario;
@@ -147,7 +148,7 @@ public class Turno  {
         this.razon = "Profesional ausente";
     }
 
-    public Object getSede() {
+    public Sede getSede() {
         return this.getConsultorio().getSede();
     }
 
