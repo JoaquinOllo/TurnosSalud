@@ -230,7 +230,63 @@ public class Interfaz {
                 menuSeleccionarTurno(turnos, EstadoCita.CONFIRMADO);
             });
         }
+        if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
+                ((I_GestionTurnos) this.getUsuarioConectado()).cancelaTurnos()) {
+            JButton cancelarTurnoBtn = new JButton("Cancelar turno");
+            menuPanel.add(cancelarTurnoBtn);
+            cancelarTurnoBtn.addActionListener(e -> {
+                Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
+                switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
+                    case PERSONAL:
+                        if(this.getUsuarioConectado() instanceof Profesional){
+                            turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
+                        }else {
+                            turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
+                        }
+                        break;
+                        case TODOS:
+                            break;
+                        case POR_SEDE:
+                            turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
+                            break;
+                    }
+                    menuSeleccionarTurno(turnos, EstadoCita.CANCELADO);
+        });
+    }
 
+        if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
+                ((I_GestionTurnos) this.getUsuarioConectado()).reprogramaTurnos()) {
+
+            JButton reprogramarTurnoBtn = new JButton("Reprogramar turno");
+            menuPanel.add(reprogramarTurnoBtn);
+
+            reprogramarTurnoBtn.addActionListener(e -> {
+                Agenda<Turno> turnos = this.sistema.getTurnos().filtrarPorEstado(EstadoCita.PENDIENTE_CONFIRMACION);
+
+                // Filtrar los turnos según la modalidad de visualización
+                switch (((I_GestionTurnos) this.getUsuarioConectado()).modalidadVisualizacionDeTurnos()) {
+                    case PERSONAL:
+                        if (this.getUsuarioConectado() instanceof Profesional) {
+                            turnos.filtrarPorProfesional((Profesional) this.getUsuarioConectado());
+                        } else {
+                            turnos.filtrarPorConsultante((Consultante) this.getUsuarioConectado());
+                        }
+                        break;
+                    case TODOS:
+                        break;
+                    case POR_SEDE:
+                        turnos.filtrarPorSede(((Administrativo) this.getUsuarioConectado()).getSede());
+                        break;
+                }
+
+                // Método para seleccionar el turno a posponer
+                menuSeleccionarTurno(turnos, EstadoCita.PENDIENTE_CONFIRMACION);
+
+                // Aquí podrías agregar un formulario o ventana para que el usuario elija la nueva fecha y hora.
+                // Por ejemplo:
+                // turnoSeleccionado.posponer(nuevaFecha);
+            });
+        }
 
         JButton salir = new JButton("Salir");
         menuPanel.add(salir);
