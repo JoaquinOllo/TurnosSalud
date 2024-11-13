@@ -799,9 +799,12 @@ public class Interfaz {
         });
 
         elegirProfesional.addActionListener(e -> {
-            turnoNuevo.setProfesional(this.sistema.getProfesionales()
-                    .filtrarPorEspecialidad(especialidadElegida[0])
-                    .get(elegirProfesional.getSelectedIndex()));
+            try {
+                Profesional profesional = this.sistema.getProfesionales().get(((Profesional) elegirProfesional.getSelectedItem()).getNombreUsuario());
+                turnoNuevo.setProfesional(profesional);
+            } catch (UsuarioInexistenteException ex) {
+                throw new RuntimeException(ex);
+            }
             ArrayList<LocalDate> fechasHabilitadas = this.sistema.getFechasHabilitadas(turnoNuevo.getProfesional());
             ComboBoxModel<LocalDate> fechasHabilitadasModel = new DefaultComboBoxModel<>(fechasHabilitadas.toArray(new LocalDate[0]));
             elegirDia.setModel(fechasHabilitadasModel);
