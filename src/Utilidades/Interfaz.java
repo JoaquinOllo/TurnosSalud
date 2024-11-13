@@ -148,7 +148,7 @@ public class Interfaz {
             JButton verPacientes = new JButton("Ver Pacientes");
             menuPanel.add(verPacientes);
             verPacientes.addActionListener(e -> {
-                menuVerPacientes(this.sistema.getPacientes(),"Lista de pacientes");
+                menuVerUsuarios(this.sistema.getPacientes(),"Lista de pacientes");
             });
         }
 
@@ -198,13 +198,16 @@ public class Interfaz {
                 Administrativo administrativo = new Administrativo();
                 administrativo = menuAgregarUsuario(administrativo);
             });
-            if (this.getUsuarioConectado() instanceof I_GestionAdministrativa) {
-                JButton verAdministrativos = new JButton("Ver Administrativos");
-                menuPanel.add(verAdministrativos);
-                verAdministrativos.addActionListener(e -> {
-                    menuVerPacientes(this.sistema.getAdministrativos(),"Lista de Administrativos");
-                });
-            }
+            JButton verAdministrativos = new JButton("Ver Administrativos");
+            menuPanel.add(verAdministrativos);
+            verAdministrativos.addActionListener(e -> {
+                menuVerUsuarios(this.sistema.getAdministrativos(),"Lista de Administrativos");
+            });
+            JButton verProfesionales = new JButton("Ver Profesionales");
+            menuPanel.add(verProfesionales);
+            verProfesionales.addActionListener(e -> {
+                menuVerUsuarios(this.sistema.getProfesionales(),"Lista de Profesionales");
+            });
         }
 
         if (this.getUsuarioConectado() instanceof I_GestionTurnos &&
@@ -227,10 +230,9 @@ public class Interfaz {
                         turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
                         break;
                 }
-                menuSeleccionarTurno(turnos, EstadoCita.CONFIRMADO);
+                menuCambiarEstadoTurno(turnos, EstadoCita.CONFIRMADO);
             });
         }
-
 
         JButton salir = new JButton("Salir");
         menuPanel.add(salir);
@@ -247,7 +249,7 @@ public class Interfaz {
         frame.setVisible(true);
     }
 
-    private void menuSeleccionarTurno(ArrayList<Turno> turnos, EstadoCita estadoCita) {
+    private void menuCambiarEstadoTurno(ArrayList<Turno> turnos, EstadoCita estadoCita) {
         JFrame ventana = new JFrame("Seleccionar Turno");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
 
@@ -300,7 +302,7 @@ public class Interfaz {
                         // Actualizar el estado del turno seleccionado
                         Turno turnoSeleccionado = turnos.get(i);
                         turnoSeleccionado.setEstado(estadoCita);
-                        JOptionPane.showMessageDialog(ventana, "El estado del turno se ha actualizado a: " + estadoCita);
+                        JOptionPane.showMessageDialog(ventana, "El estado del turno se ha actualizado a: " + estadoCita.toString().toLowerCase());
                         ventana.dispose();  // Cerrar la ventana
                         break;
                     }
@@ -451,7 +453,7 @@ public class Interfaz {
         return profesional;  // Retorna el objeto profesional con los datos ingresados
     }
 
-    private <T extends Usuario> void menuVerPacientes(ArrayList<T> usuarios, String titulo) {
+    private <T extends Usuario> void menuVerUsuarios(ArrayList<T> usuarios, String titulo) {
         //armar la ventana y recorrer la lista de pacientes y mostrarlos
         //armar un panel para que me muestre los datos de c/paciente por separado
 
@@ -459,36 +461,60 @@ public class Interfaz {
         JFrame ventana = new JFrame(titulo);
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
 
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+
+        usuarios.sort(Comparator.comparing(Usuario::getApellido).thenComparing(Usuario::getNombre));
+
         // Recorremos la lista de pacientes y creamos un panel para cada uno
-        for (T paciente : usuarios) {
-            // Crear un panel para cada paciente
+        for (T usuario : usuarios) {
+            // Crear un panel para cada usuario
             JPanel panelPaciente = new JPanel();
             panelPaciente.setLayout(new BoxLayout(panelPaciente, BoxLayout.Y_AXIS));
 
-            // Crear los componentes para mostrar la información del paciente
-            JLabel nombreLabel = new JLabel("Nombre: " + paciente.getNombre());
-            JLabel apellidoLabel = new JLabel("Apellido: " + paciente.getApellido());
-            JLabel edadLabel = new JLabel("Edad: " + paciente.getEdad());
-            JLabel correoLabel = new JLabel("Correo: " + paciente.getCorreo());
-            JLabel telefonoLabel = new JLabel("Teléfono: " + paciente.getNroTelefono());
-            JLabel direccionLabel = new JLabel("Direccion: " + paciente.getDireccion());
+            // Crear los componentes para mostrar la información del usuario
+            JLabel nombreLabel = new JLabel("Nombre: " + usuario.getNombre());
+            JLabel apellidoLabel = new JLabel("Apellido: " + usuario.getApellido());
+            JLabel edadLabel = new JLabel("Edad: " + usuario.getEdad());
+            JLabel correoLabel = new JLabel("Correo: " + usuario.getCorreo());
+            JLabel telefonoLabel = new JLabel("Teléfono: " + usuario.getNroTelefono());
+            JLabel direccionLabel = new JLabel("Direccion: " + usuario.getDireccion());
 
-
-            // Agregar los JLabel al panel del paciente
+            // Agregar los JLabel al panel del usuario
             panelPaciente.add(nombreLabel);
             panelPaciente.add(apellidoLabel);
             panelPaciente.add(edadLabel);
             panelPaciente.add(correoLabel);
             panelPaciente.add(telefonoLabel);
             panelPaciente.add(direccionLabel);
-            // Añadir un borde al panel del paciente para separarlo de los demás
+
+            if(usuario instanceof Administrativo){
+                JLabel sedeLabel = new JLabel("Sede laboral: " + ((Administrativo)usuario).getSede());
+                panelPaciente.add(sedeLabel);
+            } else if (usuario instanceof Profesional) {
+                JLabel especialidadLabel = new JLabel("Especialidad: " + ((Profesional)usuario).getEspecialidad().toString().toLowerCase());
+                panelPaciente.add(especialidadLabel);
+
+                StringBuilder textoEtiqueta = new StringBuilder("Horarios:");
+                for (FranjaHoraria franjaHoraria: ((Profesional) usuario).getHorarioDeTrabajo()){
+                    textoEtiqueta.append(" " + franjaHoraria);
+                }
+                JLabel horariosLabel = new JLabel(textoEtiqueta.toString());
+                panelPaciente.add(horariosLabel);
+            }
+
+            // Añadir un borde al panel del usuario para separarlo de los demás
             panelPaciente.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
 
-
-            // Agregar el panel del paciente al panel principal de la ventana
-
-            ventana.add(panelPaciente);
+            // Agregar el panel del usuario al panel principal de la ventana
+            panelPrincipal.add(panelPaciente);
         }
+
+        JScrollPane scrollPane = new JScrollPane(panelPrincipal);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // Agregar el JScrollPane a la ventana
+        ventana.add(scrollPane);
 
         // Configurar la ventana
         ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
@@ -650,6 +676,7 @@ public class Interfaz {
                         & turnoNuevo.getConsultante() != null) {
                     this.sistema.agendarTurno(turnoNuevo);
                     JOptionPane.showMessageDialog(frame, "Turno agendado con éxito!");
+                    frame.dispose();  // Cerrar la ventana
                 } else {
                     JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.");
                 }
@@ -674,9 +701,15 @@ public class Interfaz {
 
     public void menuVerTurnos(ArrayList<Turno> turnos) {
         System.out.println(turnos);
-        // Crear la ventana principal
+        turnos.sort(Comparator.comparing(Turno::getDia)
+                .thenComparing(Turno::getHoraInicio));
+
         JFrame ventana = new JFrame("Lista de Turnos");
         ventana.setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
+
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+
         for (Turno turno : turnos) {
             JPanel panelTurno = new JPanel();
             panelTurno.setLayout(new BoxLayout(panelTurno, BoxLayout.Y_AXIS));
@@ -699,14 +732,20 @@ public class Interfaz {
             panelTurno.add(consultorioLabel);
             panelTurno.add(estadoLabel);
 
-
             // Añadir un borde al panel del turno para separarlo de los demás
             panelTurno.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));  // Borde inferior
 
             // Agregar el panel del paciente al panel principal de la ventana
 
-            ventana.add(panelTurno);
+            panelPrincipal.add(panelTurno);
         }
+
+        JScrollPane scrollPane = new JScrollPane(panelPrincipal);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        // Agregar el JScrollPane al frame
+        ventana.add(scrollPane);
 
         // Configurar la ventana
         ventana.setSize(400, 600);  // Ajusta el tamaño de la ventana
@@ -780,6 +819,16 @@ public class Interfaz {
         inputPanel.add(telefonoField);
         inputPanel.add(correoUsuario);
         inputPanel.add(correoField);
+
+        final JComboBox<Sede> sedeJComboBox = new JComboBox<>();
+        if (usuario instanceof Administrativo){
+            ComboBoxModel<Sede> sedeComboBoxModel = new DefaultComboBoxModel<>(sistema.getSedes().toArray(new Sede[0]));
+            JLabel sedeJLabel = new JLabel("Sede");
+            sedeJComboBox.setModel(sedeComboBoxModel);
+            inputPanel.add(sedeJLabel);
+            inputPanel.add(sedeJComboBox);
+        }
+
         inputPanel.add(guardarUsuario);  // Agregar el botón para guardar el paciente
         inputPanel.add(volverAlInicio);
 
@@ -796,6 +845,10 @@ public class Interfaz {
             usuario.setNroTelefono(telefonoField.getText());
             usuario.setCorreo(correoField.getText());
             usuario.setContrasenha((usuario.getNombre() + "." + usuario.getApellido()).replace(' ', '_'));
+            if (usuario instanceof Administrativo){
+                ((Administrativo) usuario).setSede((Sede) sedeJComboBox.getSelectedItem());
+            }
+
             try {
                 usuario.setNombreUsuario(usuario.getNombre() + "." + usuario.getApellido());
                 JOptionPane.showMessageDialog(frame, "Usuario " + usuario.getNombreUsuario() + " guardado correctamente. " +

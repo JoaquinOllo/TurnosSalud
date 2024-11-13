@@ -274,14 +274,18 @@ public class mapeoJSON {
                 }
             }
             if (usuariosArray.length() != 0){
-                turnosSaludJson.remove("Usuarios");
                 turnosSaludJson.put("Usuarios", usuariosArray);
             } else{
                 throw new JSONException("No se guardan usuarios debido a que se borraría el listado completo.");
             }
             // Guardar en archivo usando JSONUtiles
-            JSONUtiles.grabar(turnosSaludJson, nombreArchivo);
+            if(turnosSaludJson.has("Usuarios")){
+                JSONUtiles.grabar(turnosSaludJson, nombreArchivo);
+            } else {
+                System.out.println("No se guarda el cambio en el registro de usuarios, debido a un error.");
+            }
         } catch (JSONException e) {
+            System.out.println("Error en el guardado de todos los usuarios. ");
             throw new RuntimeException(e);
         }
 
@@ -291,8 +295,6 @@ public class mapeoJSON {
         try {
             // Leer el archivo JSON
             JSONObject turnosSaludJson = new JSONObject(JSONUtiles.leer("./turnos.json"));
-
-            turnosSaludJson.remove("Usuarios");
 
             // Guardar Sedes
             JSONArray sedesArray = new JSONArray();
