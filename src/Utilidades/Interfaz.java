@@ -231,7 +231,7 @@ public class Interfaz {
                             turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
                             break;
                     }
-                    menuCambiarEstadoTurno(turnos, EstadoCita.CONFIRMADO, true);
+                    menuCambiarEstadoTurno(turnos, EstadoCita.CONFIRMADO, false);
                 });
             }
             if (((I_GestionTurnos) this.getUsuarioConectado()).cancelaTurnos()) {
@@ -253,7 +253,7 @@ public class Interfaz {
                                 turnos.filtrarPorSede(((Administrativo)this.getUsuarioConectado()).getSede());
                                 break;
                         }
-                    menuCambiarEstadoTurno(turnos.filtrarPorTurnosNoCancelados(), EstadoCita.CANCELADO, true);
+                    menuCambiarEstadoTurno(turnos.filtrarPorTurnosNoCancelados(), EstadoCita.CANCELADO, false);
             });
         }
 
@@ -284,9 +284,6 @@ public class Interfaz {
                     // Método para seleccionar el turno a posponer
                     menuCambiarEstadoTurno(turnos.filtrarPorTurnosNoCancelados(), EstadoCita.PENDIENTE_CONFIRMACION, true);
 
-                    // Aquí podrías agregar un formulario o ventana para que el usuario elija la nueva fecha y hora.
-                    // Por ejemplo:
-                    // turnoSeleccionado.posponer(nuevaFecha);
                 });
             }
         }
