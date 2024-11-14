@@ -323,6 +323,8 @@ public class Interfaz {
             JPanel panelTurno = new JPanel();
             panelTurno.setLayout(new BoxLayout(panelTurno, BoxLayout.Y_AXIS));
 
+            JPanel panelPrincipal = new JPanel();
+
             // Crear los JLabel con la información del turno
             JLabel pacienteLabel = new JLabel("Nombre del paciente: " + turno.getConsultante());
             JLabel diaLabel = new JLabel("Día: " + turno.getDia());
@@ -367,8 +369,16 @@ public class Interfaz {
                 }
         });
 
-        ventana.add(panelTurnos);
-        ventana.add(confirmarBtn);
+//        ventana.add(panelTurnos);
+//        ventana.add(confirmarBtn);
+        panelTurnos.add(confirmarBtn);
+
+        JScrollPane scrollPane = new JScrollPane(panelTurnos);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        // Agregar el JScrollPane al frame
+        ventana.add(scrollPane);
 
         // Configurar la ventana
         ventana.setSize(500, 700);
